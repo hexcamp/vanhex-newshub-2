@@ -1,0 +1,50 @@
+:root {
+	--accent: #1d9bf0;
+	--accent-text: #ffffff;
+
+	--text-primary: #0f1419;
+	--text-blurb: #536471;
+	--text-link: var(--accent);
+
+	--bg-slate: #e6ecf0;
+	--bg-primary: #ffffff;
+	--bg-secondary: #cfd9de;
+
+	--divider-sm: #eff3f4;
+	--divider-md: #cfd9de;
+
+	--tap: var(--text-primary);
+}
+
+:root {
+	--tap-sm: rgb(from var(--tap) r g b / 0.03);
+	--tap-sm-pressed: rgb(from var(--tap) r g b / 0.07);
+	--tap-md: rgb(from var(--tap) r g b / 0.1);
+	--tap-md-pressed: rgb(from var(--tap) r g b / 0.2);
+}
+
+body {
+	background: var(--bg-slate);
+	overflow-y: scroll;
+	color: var(--text-primary);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-family: sans-serif;
+}
+
+:where(*, *::before, *::after) {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:where(a) {
+	color: var(--text-link);
+	text-decoration: none;
+}
+
+.sv-icon {
+	flex-shrink: 0;
+	width: 1em;
+	height: 1em;
+}
