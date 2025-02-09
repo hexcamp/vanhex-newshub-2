@@ -30,10 +30,11 @@
 <script lang="ts">
 	interface Props {
 		scriptUrl: string;
+		fetchPriority?: 'auto' | 'high' | 'low';
 		children: Snippet;
 	}
 
-	const { scriptUrl, children }: Props = $props();
+	const { scriptUrl, fetchPriority, children }: Props = $props();
 
 	const context = injectIsland();
 
@@ -46,7 +47,7 @@
 
 <svelte:head>
 	{#if first}
-		<script type="module" src={scriptUrl}></script>
+		<script type="module" src={scriptUrl} fetchpriority={fetchPriority}></script>
 	{/if}
 </svelte:head>
 

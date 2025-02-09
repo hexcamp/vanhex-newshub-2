@@ -20,7 +20,7 @@
 		{formatRelativeTime(date.getTime())}
 	</time>
 {:else}
-	<Island scriptUrl="{base}/_scripts/relative-time.js">
+	<Island scriptUrl="{base}/_scripts/relative-time.js" fetchPriority="low">
 		<time class="isl-relative-time" title={formatLongDate(date.getTime())} datetime={date.toISOString()}>
 			{formatShortDate(date.getTime())}
 		</time>
