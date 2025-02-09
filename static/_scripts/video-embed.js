@@ -38,7 +38,7 @@ const observer = new ResizeObserver((entries) => {
 			// observe the parent element to resize the iframe
 			callbacks.set(parent, (entry) => {
 				iframe.width = '' + entry.contentRect.width;
-				iframe.height = '' + entry.contentRect.width;
+				iframe.height = '' + entry.contentRect.height;
 			});
 
 			observer.observe(parent);
