@@ -36,7 +36,8 @@
 	import { base } from '$app/paths';
 
 	import { parseAtUri } from '$lib/types/at-uri';
-	import { formatRelativeTime } from '$lib/utils/intl/date';
+
+	import RelativeTime from '$lib/components/islands/relative-time.svelte';
 
 	import ImageEmbed from './image-embed.svelte';
 	import VideoEmbed from './video-embed.svelte';
@@ -79,9 +80,9 @@
 
 		<span aria-hidden="true" class="dot">·</span>
 
-		<time datetime={record.createdAt} class="date">
-			{formatRelativeTime(record.createdAt)}
-		</time>
+		<span class="date">
+			<RelativeTime date={record.createdAt} />
+		</span>
 	</div>
 
 	{#if text}
