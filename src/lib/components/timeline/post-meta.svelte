@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/client/lexicons';
 
-	import { formatLongDate, formatRelativeTime } from '$lib/utils/intl/date';
+	import RelativeTime from '$lib/components/islands/relative-time.svelte';
 
 	interface Props {
 		post: AppBskyFeedDefs.PostView;
@@ -31,8 +31,8 @@
 
 	<span aria-hidden="true" class="dot"> · </span>
 
-	<a href={postUrl} title={formatLongDate(createdAt)} class="date">
-		<time datetime={createdAt}>{formatRelativeTime(createdAt)}</time>
+	<a href={postUrl} class="date">
+		<RelativeTime date={createdAt} />
 	</a>
 </div>
 

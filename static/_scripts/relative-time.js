@@ -1,3 +1,7 @@
+// @ts-check
+
+import { signal, effect } from './_lib/signals.js';
+
 let startOfYear = 0;
 let endOfYear = 0;
 
@@ -5,7 +9,11 @@ const fmtAbsoluteLong = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', ti
 const fmtAbsShortWithYear = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
 const fmtAbsShort = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
 
-export const formatShortDate = (date: string | number): string => {
+/**
+ * @param {string | number} date
+ * @returns {string}
+ */
+const formatShortDate = (date) => {
 	const inst = new Date(date);
 	const time = inst.getTime();
 
@@ -33,7 +41,11 @@ export const formatShortDate = (date: string | number): string => {
 	return fmtAbsShortWithYear.format(inst);
 };
 
-export const formatLongDate = (date: string | number): string => {
+/**
+ * @param {string | number} date
+ * @returns {string}
+ */
+const formatLongDate = (date) => {
 	const inst = new Date(date);
 
 	if (isNaN(inst.getTime())) {
@@ -43,7 +55,8 @@ export const formatLongDate = (date: string | number): string => {
 	return fmtAbsoluteLong.format(inst);
 };
 
-const relativeFormatters: Record<string, Intl.NumberFormat> = {};
+/** @type {Record<string, Intl.NumberFormat>} */
+const relativeFormatters = {};
 
 const SECOND = 1e3;
 const NOW = SECOND * 10;
@@ -52,10 +65,14 @@ const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 const WEEK = DAY * 7;
 
-export const formatRelativeTime = (date: string | number): string => {
+/**
+ * @param {string | number} date
+ * @param {number} now
+ * @returns {string}
+ */
+const formatRelativeTime = (date, now) => {
 	const time = new Date(date).getTime();
 
-	const now = Date.now();
 	const delta = now - time;
 
 	if (delta < -NOW || delta > WEEK) {
@@ -84,8 +101,10 @@ export const formatRelativeTime = (date: string | number): string => {
 	}
 
 	{
-		let value: number;
-		let unit: Intl.RelativeTimeFormatUnit;
+		/** @type {number} */
+		let value;
+		/** @type {Intl.RelativeTimeFormatUnit} */
+		let unit;
 
 		if (delta < MINUTE) {
 			value = Math.floor(delta / SECOND);
@@ -112,3 +131,28 @@ export const formatRelativeTime = (date: string | number): string => {
 		return formatter.format(Math.abs(value));
 	}
 };
+
+(() => {
+	/** @type {NodeListOf<HTMLTimeElement>} */
+	const nodes = document.querySelectorAll('time.isl-relative-time');
+
+	if (nodes.length === 0) {
+		return;
+	}
+
+	const now = signal(Date.now());
+	setInterval(() => {
+		now.value = Date.now();
+	}, 60_000);
+
+	effect(() => {
+		const $now = now.value;
+
+		for (const node of nodes) {
+			const dt = node.dateTime;
+
+			node.textContent = formatRelativeTime(dt, $now);
+			node.title = formatLongDate(dt);
+		}
+	});
+})();
