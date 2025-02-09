@@ -56,6 +56,8 @@
 	</div>
 {/snippet}
 
+<noscript class="alert">HLS video playback requires JavaScript to be enabled.</noscript>
+
 {#if dev}
 	{@render Content()}
 {:else}
@@ -134,5 +136,13 @@
 	.hack {
 		width: 100vw;
 		height: 100vh;
+	}
+
+	.alert {
+		border-radius: 6px;
+		background: #fca5a5;
+		padding: 8px 12px;
+		color: #450a0a;
+		font-weight: 500;
 	}
 </style>
