@@ -130,54 +130,54 @@
 		display: flex;
 		padding: 12px 12px 0 12px;
 		color: var(--text-blurb);
+	}
 
-		.avatar-wrapper {
-			flex-shrink: 0;
-			margin: 0 8px 0 0;
-			border-radius: 9999px;
-			background: var(--bg-secondary);
-			width: 20px;
-			height: 20px;
-			overflow: hidden;
-		}
-		.avatar {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			font-size: 0;
-		}
+	.avatar-wrapper {
+		flex-shrink: 0;
+		margin: 0 8px 0 0;
+		border-radius: 9999px;
+		background: var(--bg-secondary);
+		width: 20px;
+		height: 20px;
+		overflow: hidden;
+	}
+	.avatar {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		font-size: 0;
+	}
 
-		.name-wrapper {
-			display: flex;
-			gap: 4px;
-			max-width: 100%;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-		.display-name-wrapper {
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		.display-name {
-			color: var(--text-primary);
-			font-weight: 700;
-		}
-		.handle {
-			display: block;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
+	.name-wrapper {
+		display: flex;
+		gap: 4px;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.display-name-wrapper {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.display-name {
+		color: var(--text-primary);
+		font-weight: 700;
+	}
+	.handle {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-		.dot {
-			flex-shrink: 0;
-			margin: 0 6px;
-		}
+	.dot {
+		flex-shrink: 0;
+		margin: 0 6px;
+	}
 
-		.date {
-			white-space: nowrap;
-		}
+	.date {
+		white-space: nowrap;
 	}
 
 	.body {
