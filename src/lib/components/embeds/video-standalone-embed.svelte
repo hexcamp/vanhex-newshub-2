@@ -125,6 +125,10 @@
 			width: 40%;
 			height: 40%;
 		}
+
+		.link:hover & {
+			background: rgba(64, 64, 64, 0.8);
+		}
 	}
 
 	.hack {
