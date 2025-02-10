@@ -2,7 +2,7 @@
 	import { dev } from '$app/environment';
 	import { base } from '$app/paths';
 
-	import { formatLongDate, formatRelativeTime, formatShortDate } from '$lib/utils/intl/date';
+	import { formatLongDate } from '$lib/utils/intl/date';
 
 	import Island from '../island.svelte';
 
@@ -16,13 +16,13 @@
 </script>
 
 {#if dev}
-	<time class="isl-relative-time" title={formatLongDate(date.getTime())} datetime={date.toISOString()}>
-		{formatRelativeTime(date.getTime())}
+	<time class="isl-long-date" datetime={date.toISOString()}>
+		{formatLongDate(date.getTime())}
 	</time>
 {:else}
 	<Island scriptUrl="{base}/_scripts/time-formatter.js" fetchPriority="low">
-		<time class="isl-relative-time" title={formatLongDate(date.getTime())} datetime={date.toISOString()}>
-			{formatShortDate(date.getTime())}
+		<time class="isl-long-date" datetime={date.toISOString()}>
+			{formatLongDate(date.getTime())}
 		</time>
 	</Island>
 {/if}

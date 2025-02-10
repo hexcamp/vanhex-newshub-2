@@ -152,3 +152,16 @@ const formatRelativeTime = (date, now) => {
 	update();
 	setInterval(update, 60_000);
 })();
+
+(() => {
+	/** @type {NodeListOf<HTMLTimeElement>} */
+	const nodes = document.querySelectorAll('time.isl-long-date');
+
+	if (nodes.length === 0) {
+		return;
+	}
+
+	for (const node of nodes) {
+		node.textContent = formatLongDate(node.dateTime);
+	}
+})();

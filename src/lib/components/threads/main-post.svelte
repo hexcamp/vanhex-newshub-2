@@ -4,9 +4,9 @@
 	import { base } from '$app/paths';
 
 	import { parseAtUri } from '$lib/types/at-uri';
-	import { formatLongDate } from '$lib/utils/intl/date';
 
 	import Embeds from '../embeds/embeds.svelte';
+	import LongDate from '../islands/long-date.svelte';
 	import RichTextRenderer from '../richtext-renderer.svelte';
 
 	import MainPostMetrics from './main-post-metrics.svelte';
@@ -59,9 +59,7 @@
 
 	<div class="footer">
 		<a href={postUrl} class="date">
-			<time datetime={record.createdAt}>
-				{formatLongDate(record.createdAt)}
-			</time>
+			<LongDate date={record.createdAt} />
 		</a>
 	</div>
 
