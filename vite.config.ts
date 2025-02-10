@@ -3,6 +3,12 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(({ command }) => {
 	return {
+		build: {
+			target: 'es2024',
+		},
+		esbuild: {
+			target: 'es2024',
+		},
 		plugins: [
 			sveltekit(),
 
