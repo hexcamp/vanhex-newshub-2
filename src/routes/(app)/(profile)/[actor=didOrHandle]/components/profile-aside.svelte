@@ -4,7 +4,7 @@
 	import { base } from '$app/paths';
 
 	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
-	import { formatCompactNumber } from '$lib/utils/intl/number';
+	import { formatCompactNumber, formatLongNumber } from '$lib/utils/intl/number';
 
 	interface Props {
 		profile: AppBskyActorDefs.ProfileViewDetailed;
@@ -14,6 +14,20 @@
 
 	const did = $derived(profile.did);
 </script>
+
+{#snippet Stat(count: number = 0, one: string, many: string, href: string)}
+	{@const compact = formatCompactNumber(count)}
+	{@const long = formatLongNumber(count)}
+
+	<a
+		href="{base}/{did}/{href}"
+		title={compact !== long ? (count === 1 ? `${long} ${one}` : `${long} ${many}`) : ''}
+		class="stat-entry"
+	>
+		<span class="stat-count">{compact}</span>
+		<span> {count === 1 ? one : many}</span>
+	</a>
+{/snippet}
 
 <div class="profile-aside">
 	<div class="avatar-wrapper">
@@ -30,15 +44,8 @@
 	{/if}
 
 	<div class="stats">
-		<a class="stat-entry" href="{base}/{did}/followers">
-			<span class="stat-count">{formatCompactNumber(profile.followersCount || 0)}</span>
-			<span> {profile.followersCount === 1 ? `follower` : `followers`}</span>
-		</a>
-
-		<a class="stat-entry" href="{base}/{did}/following">
-			<span class="stat-count">{formatCompactNumber(profile.followsCount || 0)}</span>
-			<span> following</span>
-		</a>
+		{@render Stat(profile.followersCount, 'follower', 'followers', 'followers')}
+		{@render Stat(profile.followsCount, 'following', 'following', 'following')}
 	</div>
 </div>
 
