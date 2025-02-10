@@ -32,12 +32,12 @@
 	<div class="stats">
 		<a class="stat-entry" href="{base}/{did}/followers">
 			<span class="stat-count">{formatCompactNumber(profile.followersCount || 0)}</span>
-			<span> {profile.followersCount === 1 ? `Follower` : `Followers`}</span>
+			<span> {profile.followersCount === 1 ? `follower` : `followers`}</span>
 		</a>
 
 		<a class="stat-entry" href="{base}/{did}/following">
 			<span class="stat-count">{formatCompactNumber(profile.followsCount || 0)}</span>
-			<span> Following</span>
+			<span> following</span>
 		</a>
 	</div>
 </div>
