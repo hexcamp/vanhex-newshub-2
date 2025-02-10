@@ -3,8 +3,9 @@
 
 	import { base } from '$app/paths';
 
-	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
 	import { formatCompactNumber, formatLongNumber } from '$lib/utils/intl/number';
+
+	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
 
 	interface Props {
 		profile: AppBskyActorDefs.ProfileViewDetailed;
