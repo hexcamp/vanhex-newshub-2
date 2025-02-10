@@ -13,6 +13,7 @@
 
 	import PostMeta from './post-meta.svelte';
 	import PostMetrics from './post-metrics.svelte';
+	import Avatar from '../avatar.svelte';
 
 	interface Props {
 		item: UiTimelineItem;
@@ -65,11 +66,7 @@
 
 	<div class="content">
 		<div class="aside">
-			<a tabindex={-1} href={authorUrl} class="avatar-wrapper">
-				{#if author.avatar}
-					<img loading="lazy" fetchpriority="low" src={author.avatar} alt="" class="avatar" />
-				{/if}
-			</a>
+			<Avatar profile={author} tabindex={-1} href={authorUrl} />
 
 			{#if item.next}
 				<div class="descendant-line"></div>
@@ -205,25 +202,6 @@
 			padding-bottom: 12px;
 			min-width: 0;
 		}
-	}
-
-	.avatar-wrapper {
-		display: block;
-		border-radius: 9999px;
-		background: var(--bg-secondary);
-		width: 36px;
-		height: 36px;
-		overflow: hidden;
-
-		&:hover {
-			filter: brightness(0.85);
-		}
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		font-size: 0;
 	}
 
 	.reply-context {

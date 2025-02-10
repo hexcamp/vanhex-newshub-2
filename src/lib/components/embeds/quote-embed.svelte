@@ -37,6 +37,7 @@
 
 	import { parseAtUri } from '$lib/types/at-uri';
 
+	import Avatar from '$lib/components/avatar.svelte';
 	import RelativeTime from '$lib/components/islands/relative-time.svelte';
 
 	import ImageEmbed from './image-embed.svelte';
@@ -62,11 +63,7 @@
 
 <a href="{base}/{author.did}/{parseAtUri(quote.uri).rkey}#main" class="quote-embed">
 	<div class="meta">
-		<div class="avatar-wrapper">
-			{#if author.avatar}
-				<img loading="lazy" src={author.avatar} alt="" class="avatar" />
-			{/if}
-		</div>
+		<Avatar profile={author} src={author.avatar} size="xs" />
 
 		<span class="name-wrapper">
 			{#if authorName}
@@ -133,25 +130,10 @@
 		color: var(--text-blurb);
 	}
 
-	.avatar-wrapper {
-		flex-shrink: 0;
-		margin: 0 8px 0 0;
-		border-radius: 9999px;
-		background: var(--bg-secondary);
-		width: 20px;
-		height: 20px;
-		overflow: hidden;
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		font-size: 0;
-	}
-
 	.name-wrapper {
 		display: flex;
 		gap: 4px;
+		margin: 0 0 0 8px;
 		max-width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;

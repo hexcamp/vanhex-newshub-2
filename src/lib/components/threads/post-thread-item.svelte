@@ -6,8 +6,10 @@
 	import { type PostAncestorItem, type PostDescendantItem } from '$lib/models/thread';
 	import { parseAtUri } from '$lib/types/at-uri';
 
+	import Avatar from '$lib/components/avatar.svelte';
+	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
+
 	import Embeds from '../embeds/embeds.svelte';
-	import RichtextRenderer from '../richtext-renderer.svelte';
 	import PostMeta from '../timeline/post-meta.svelte';
 	import PostMetrics from '../timeline/post-metrics.svelte';
 
@@ -45,11 +47,7 @@
 		<div class="aside">
 			<div class="ascendant-line"></div>
 
-			<a href={authorUrl} class="avatar-wrapper">
-				{#if author.avatar}
-					<img loading="lazy" src={author.avatar} alt="" class="avatar" />
-				{/if}
-			</a>
+			<Avatar profile={author} size={treeView ? 'xs' : 'md'} tabindex={-1} href={authorUrl} />
 
 			<div class="descendant-line"></div>
 		</div>
@@ -134,30 +132,6 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: 12px;
-	}
-
-	.avatar-wrapper {
-		display: block;
-		border-radius: 9999px;
-		background: var(--bg-secondary);
-		width: 36px;
-		height: 36px;
-		overflow: hidden;
-
-		.is-tree & {
-			width: 20px;
-			height: 20px;
-		}
-
-		&:hover {
-			filter: brightness(0.85);
-		}
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		font-size: 0;
 	}
 
 	.main {

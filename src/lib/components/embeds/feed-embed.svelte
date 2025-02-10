@@ -5,6 +5,8 @@
 
 	import { parseAtUri } from '$lib/types/at-uri';
 
+	import Avatar from '$lib/components/avatar.svelte';
+
 	interface Props {
 		embed: AppBskyFeedDefs.GeneratorView;
 	}
@@ -16,20 +18,7 @@
 
 <a href="{base}/{creator.did}/feeds/{parseAtUri(feed.uri).rkey}" class="feed-embed">
 	<div class="main">
-		<div class="avatar-wrapper">
-			{#if feed.avatar}
-				<img loading="lazy" src={feed.avatar} alt="" class="avatar" />
-			{:else}
-				<svg viewBox="0 0 32 32" class="avatar">
-					<path fill="#0070FF" d="M0 0h32v32H0z" />
-					<path
-						fill="#fff"
-						d="M22.153 22.354a9.328 9.328 0 0 0 3.837-.491 3.076 3.076 0 0 0-4.802-2.79m.965 3.281a6.128 6.128 0 0 0-.965-3.28Zm-11.342-3.28a3.077 3.077 0 0 0-4.801 2.79 9.21 9.21 0 0 0 3.835.49m.966-3.28a6.127 6.127 0 0 0-.966 3.28Zm8.265-8.997a3.076 3.076 0 1 1-6.153 0 3.076 3.076 0 0 1 6.153 0Zm6.154 3.077a2.307 2.307 0 1 1-4.615 0 2.307 2.307 0 0 1 4.615 0Zm-13.847 0a2.307 2.307 0 1 1-4.614 0 2.307 2.307 0 0 1 4.614 0Z"
-					/>
-					<path fill="#fff" d="M22 22c0 3.314-2.686 3.5-6 3.5s-6-.186-6-3.5a6 6 0 0 1 12 0Z" />
-				</svg>
-			{/if}
-		</div>
+		<Avatar type="generator" src={feed.avatar} />
 
 		<div class="info">
 			<p class="name">{feed.displayName}</p>
@@ -58,21 +47,10 @@
 	.main {
 		display: flex;
 		gap: 12px;
-	}
 
-	.avatar-wrapper {
-		margin: 2px 0 0 0;
-		border-radius: 6px;
-		background: var(--bg-secondary);
-		width: 36px;
-		height: 36px;
-		overflow: hidden;
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		font-size: 0;
+		:global(.avatar) {
+			margin: 2px;
+		}
 	}
 
 	.name {

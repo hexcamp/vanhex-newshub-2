@@ -2,6 +2,7 @@
 	import type { AppBskyActorDefs } from '@atcute/client/lexicons';
 
 	import { base } from '$app/paths';
+	import Avatar from '../avatar.svelte';
 
 	interface Props {
 		item: AppBskyActorDefs.ProfileView | AppBskyActorDefs.ProfileViewBasic;
@@ -14,11 +15,7 @@
 
 <div class="profile-item">
 	<div class="aside">
-		<a {href} tabindex={-1} class="avatar-wrapper">
-			{#if profile.avatar}
-				<img loading="lazy" src={profile.avatar} alt="" class="avatar" />
-			{/if}
-		</a>
+		<Avatar {profile} tabindex={-1} {href} />
 	</div>
 
 	<div class="main">
@@ -54,26 +51,10 @@
 		flex-shrink: 0;
 		flex-direction: column;
 		align-items: center;
-	}
 
-	.avatar-wrapper {
-		display: block;
-		margin: 2px 0 0;
-		border-radius: 9999px;
-		background: var(--bg-secondary);
-		width: 36px;
-		height: 36px;
-		overflow: hidden;
-
-		&:hover {
-			filter: brightness(0.85);
+		:global(.avatar) {
+			margin: 2px;
 		}
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		font-size: 0;
 	}
 
 	.main {

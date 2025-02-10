@@ -5,9 +5,11 @@
 
 	import { parseAtUri } from '$lib/types/at-uri';
 
+	import Avatar from '$lib/components/avatar.svelte';
+	import LongDate from '$lib/components/islands/long-date.svelte';
+	import RichTextRenderer from '$lib/components/richtext-renderer.svelte';
+
 	import Embeds from '../embeds/embeds.svelte';
-	import LongDate from '../islands/long-date.svelte';
-	import RichTextRenderer from '../richtext-renderer.svelte';
 
 	import MainPostMetrics from './main-post-metrics.svelte';
 
@@ -34,11 +36,7 @@
 			</div>
 		{/if}
 
-		<a href={authorUrl} class="avatar-wrapper">
-			{#if author.avatar}
-				<img loading="lazy" src={author.avatar} alt="" class={`avatar`} />
-			{/if}
-		</a>
+		<Avatar profile={author} size="lg" tabindex={-1} href={authorUrl} />
 
 		<a href={authorUrl} class="name-wrapper">
 			{#if authorName}
@@ -78,30 +76,6 @@
 		gap: 12px;
 		margin: 0 0 12px 0;
 		color: var(--text-blurb);
-	}
-
-	.avatar-wrapper {
-		display: block;
-		flex-shrink: 0;
-		border-radius: 9999px;
-		background: var(--bg-secondary);
-		width: 40px;
-		height: 40px;
-		overflow: hidden;
-
-		&:hover {
-			filter: brightness(0.85);
-		}
-	}
-
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-	.is-blurred {
-		scale: 125%;
-		filter: blur(4px);
 	}
 
 	.name-wrapper {

@@ -6,6 +6,7 @@
 	import { formatCompactNumber, formatLongNumber } from '$lib/utils/intl/number';
 
 	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
+	import Avatar from '$lib/components/avatar.svelte';
 
 	interface Props {
 		profile: AppBskyActorDefs.ProfileViewDetailed;
@@ -31,9 +32,7 @@
 {/snippet}
 
 <div class="profile-aside">
-	<div class="avatar-wrapper">
-		<img loading="lazy" src={profile.avatar} alt="" class="avatar" />
-	</div>
+	<Avatar {profile} size="xl" />
 
 	<div class="name-wrapper">
 		<p dir="auto" class="display-name">{profile.displayName?.trim() || profile.handle.slice(0, 64)}</p>
@@ -58,21 +57,6 @@
 		background: var(--bg-primary);
 		padding: 16px;
 		min-width: 0;
-	}
-
-	.avatar-wrapper {
-		flex-shrink: 0;
-		border-radius: 50%;
-		background: var(--bg-secondary);
-		aspect-ratio: 1 / 1;
-		width: 100%;
-		max-width: 90px;
-		overflow: hidden;
-	}
-	.avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
 	}
 
 	.display-name {
