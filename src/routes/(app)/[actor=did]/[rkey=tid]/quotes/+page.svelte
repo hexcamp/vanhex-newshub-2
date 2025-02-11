@@ -4,7 +4,7 @@
 	import type { PageProps } from './$types';
 
 	import { paginate } from '$lib/utils/pagination';
-	O;
+
 	import PageContainer from '$lib/components/page/page-container.svelte';
 	import PageHeader from '$lib/components/page/page-header.svelte';
 	import PageListing from '$lib/components/page/page-listing.svelte';
