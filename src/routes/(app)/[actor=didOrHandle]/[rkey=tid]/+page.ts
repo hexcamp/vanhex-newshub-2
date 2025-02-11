@@ -32,7 +32,6 @@ export const load: PageLoad = async ({ params }) => {
 	});
 
 	const thread = data.thread;
-
 	switch (thread.$type) {
 		case 'app.bsky.feed.defs#notFoundPost': {
 			throw new XRPCError(400, {
@@ -49,5 +48,5 @@ export const load: PageLoad = async ({ params }) => {
 		}
 	}
 
-	return { thread };
+	return { thread, threadgate: data.threadgate };
 };

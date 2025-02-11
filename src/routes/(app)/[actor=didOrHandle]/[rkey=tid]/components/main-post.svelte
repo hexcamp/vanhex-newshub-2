@@ -9,7 +9,7 @@
 	import LongDate from '$lib/components/islands/long-date.svelte';
 	import RichTextRenderer from '$lib/components/richtext-renderer.svelte';
 
-	import Embeds from '../embeds/embeds.svelte';
+	import Embeds from '$lib/components/embeds/embeds.svelte';
 
 	import MainPostMetrics from './main-post-metrics.svelte';
 
