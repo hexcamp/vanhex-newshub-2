@@ -2,7 +2,8 @@
 	import type { AppBskyActorDefs } from '@atcute/client/lexicons';
 
 	import { base } from '$app/paths';
-	import Avatar from '../avatar.svelte';
+
+	import Avatar from '$lib/components/avatar.svelte';
 
 	interface Props {
 		item: AppBskyActorDefs.ProfileView | AppBskyActorDefs.ProfileViewBasic;
