@@ -29,7 +29,7 @@
 		</div>
 	</div>
 
-	<p class="description">{feed.description}</p>
+	<p class="description">{feed.description?.trim()}</p>
 </a>
 
 <style>

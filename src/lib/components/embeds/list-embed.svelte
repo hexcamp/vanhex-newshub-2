@@ -42,7 +42,7 @@
 		</div>
 	</div>
 
-	<p class="description">{list.description}</p>
+	<p class="description">{list.description?.trim()}</p>
 </a>
 
 <style>
