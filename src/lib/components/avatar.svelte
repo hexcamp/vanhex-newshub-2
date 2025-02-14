@@ -48,7 +48,7 @@
 		loading="lazy"
 		src={src ?? AVATARS[type]}
 		alt=""
-		class={['image', src && 'has-src', src && blur && 'sv-img-blurred']}
+		class={['image', src && 'has-src', src && blur && 'is-blurred']}
 	/>
 {/snippet}
 
@@ -104,5 +104,9 @@
 	}
 	.has-src {
 		background: var(--divider-md);
+	}
+	.is-blurred {
+		scale: 125%;
+		filter: blur(4px);
 	}
 </style>
