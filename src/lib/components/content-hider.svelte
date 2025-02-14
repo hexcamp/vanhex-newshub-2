@@ -36,7 +36,9 @@
 			<span class="action"></span>
 		</summary>
 
-		{@render children()}
+		<div class="contents">
+			{@render children()}
+		</div>
 	</details>
 {/if}
 
@@ -87,5 +89,10 @@
 		.content-hider[open] &::before {
 			content: 'Hide';
 		}
+	}
+
+	.contents {
+		display: flex;
+		flex-direction: column;
 	}
 </style>
