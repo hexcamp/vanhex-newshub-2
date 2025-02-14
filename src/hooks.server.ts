@@ -14,6 +14,12 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 		}
 	}
 
+	if (status === 404) {
+		return {
+			message: `Page not found`,
+		};
+	}
+
 	return {
 		message: `Something went wrong, sorry about that`,
 	};
