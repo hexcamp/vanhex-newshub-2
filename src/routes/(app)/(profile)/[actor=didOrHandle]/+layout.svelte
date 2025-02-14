@@ -18,6 +18,7 @@
 
 <svelte:head>
 	<link rel="canonical" href="{base}/{data.profile.did}" />
+	<link rel="alternate" href="at://{data.profile.did}/app.bsky.actor.profile/self" />
 </svelte:head>
 
 {#key profile.did}

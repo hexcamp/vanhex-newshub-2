@@ -20,6 +20,7 @@
 <svelte:head>
 	<title>{data.feed.displayName} — {PUBLIC_APP_NAME}</title>
 	<link rel="canonical" href={canonical} />
+	<link rel="alternate" href={data.feed.uri} />
 </svelte:head>
 
 <PageListing subject="timeline" {rootUrl} {nextUrl}>
