@@ -163,7 +163,7 @@
 		object-fit: cover;
 		font-size: 0px;
 	}
-	.is-defaulted .image {
+	.single-item .image {
 		object-fit: contain;
 	}
 	.is-blurred {
