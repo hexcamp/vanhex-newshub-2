@@ -28,6 +28,6 @@ export const parseAtUri = (str: string): ParsedAtUri => {
 	};
 };
 
-export const makeAtUri = (repo: string, collection: keyof Records | (string & {}), rkey: string) => {
+export const makeAtUri = (repo: string, collection: keyof Records | (string & {}), rkey: string): AtUri => {
 	return `at://${repo}/${collection}/${rkey}`;
 };
