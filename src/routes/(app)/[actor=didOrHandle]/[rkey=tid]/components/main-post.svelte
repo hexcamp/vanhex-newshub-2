@@ -80,7 +80,6 @@
 
 	.name-wrapper {
 		display: block;
-		flex-grow: 1;
 		max-width: 100%;
 		overflow: hidden;
 		color: inherit;
