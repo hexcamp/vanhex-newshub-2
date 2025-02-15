@@ -14,10 +14,23 @@
 	const { rootUrl, nextUrl } = $derived(
 		paginate(page.url, data.timeline.cursor, `${base}/${data.profile.did}/with_replies`),
 	);
+
+	const title = $derived.by(() => {
+		let str = ``;
+
+		if (data.profile.displayName?.trim()) {
+			str += `${data.profile.displayName.trim()} (@${data.profile.handle})`;
+		} else {
+			str += `@${data.profile.handle}`;
+		}
+
+		str += ` — ${PUBLIC_APP_NAME}`;
+		return str;
+	});
 </script>
 
 <svelte:head>
-	<title>@{data.profile.handle} — {PUBLIC_APP_NAME}</title>
+	<title>{title}</title>
 </svelte:head>
 
 <PageListing subject="timeline" {rootUrl} {nextUrl}>
