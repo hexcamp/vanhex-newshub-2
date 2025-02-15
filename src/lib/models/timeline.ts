@@ -1,4 +1,5 @@
 import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+import { mapDefined } from '@mary/array-fns';
 
 export type TimelineItem = AppBskyFeedDefs.FeedViewPost;
 
@@ -151,5 +152,36 @@ export const createJoinedItems = (
 				next: !!(flags & TimelineFlags.HAS_NEXT),
 			};
 		});
+	});
+};
+
+export const createUnjoinedItems = (arr: TimelineItem[], filterPost?: PostFilter): UiTimelineItem[] => {
+	return mapDefined(arr, (item) => {
+		if (filterPost && !filterPost(item)) {
+			return;
+		}
+
+		const post = item.post;
+		const reason = item.reason;
+
+		let flags = 0;
+
+		switch (reason?.$type) {
+			case 'app.bsky.feed.defs#reasonRepost': {
+				flags |= TimelineFlags.IS_REPOSTED;
+				break;
+			}
+			case 'app.bsky.feed.defs#reasonPin': {
+				flags |= TimelineFlags.IS_PINNED;
+				break;
+			}
+		}
+
+		return {
+			...item,
+			id: `${post.author.did}-${post.cid}-${flags}`,
+			prev: false,
+			next: false,
+		};
 	});
 };
