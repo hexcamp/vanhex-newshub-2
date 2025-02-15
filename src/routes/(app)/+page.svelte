@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { PageProps } from './$types';
 
 	import ArrowRightOutlined from '$lib/components/central-icons/arrow-right-outlined.svelte';
@@ -9,6 +10,10 @@
 
 	const { form }: PageProps = $props();
 </script>
+
+<svelte:head>
+	<title>{PUBLIC_APP_NAME}</title>
+</svelte:head>
 
 <div class="wrapper">
 	<div class="container">
