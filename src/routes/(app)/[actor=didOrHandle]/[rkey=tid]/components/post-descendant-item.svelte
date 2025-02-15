@@ -75,6 +75,10 @@
 		.post-descendant-item:not([open]) & {
 			opacity: 0.5;
 		}
+
+		&:focus-visible {
+			outline-offset: -2px;
+		}
 	}
 
 	.contents {
