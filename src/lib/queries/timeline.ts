@@ -113,6 +113,7 @@ export const fetchTimeline = async ({
 				feed: data.feed,
 			};
 
+			postFilter = createDuplicatePostFilter();
 			break;
 		}
 		case TimelineType.USER_LIST: {
@@ -142,6 +143,20 @@ export const fetchTimeline = async ({
 };
 
 // #region Post filters
+const createDuplicatePostFilter = (): PostFilter => {
+	const set = new Set<string>();
+
+	return (item) => {
+		const uri = item.post.uri;
+
+		if (set.has(uri)) {
+			return false;
+		}
+
+		set.add(uri);
+		return true;
+	};
+};
 
 // #region Slice filters
 const createProfileSliceFilter = (did: Did): SliceFilter | undefined => {
