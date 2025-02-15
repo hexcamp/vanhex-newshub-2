@@ -79,7 +79,7 @@
 		border: 1px solid var(--divider-md);
 		border-radius: 6px;
 		background: var(--bg-slate);
-		overflow: hidden;
+		overflow: clip;
 
 		:global(iframe) {
 			border: 0;
@@ -104,8 +104,13 @@
 	}
 	.link {
 		display: block;
+		border-radius: 5px;
 		width: 100%;
 		height: 100%;
+
+		&:focus-visible {
+			outline-offset: -2px;
+		}
 	}
 
 	.thumbnail {
