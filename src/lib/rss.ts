@@ -177,7 +177,7 @@ export const richtextToHtml = (text: string, facets: AppBskyRichtextFacet.Main[]
 	return html;
 };
 
-export const feedPostToFeedItem = (item: UiTimelineItem): FeedItem => {
+export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem => {
 	const post = item.post;
 	const author = post.author;
 
