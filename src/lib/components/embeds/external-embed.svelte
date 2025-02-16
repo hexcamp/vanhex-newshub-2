@@ -33,7 +33,7 @@
 
 	const external = embed.external;
 
-	const domain = safeParseUrl(external.uri)?.host;
+	const domain = safeParseUrl(external.uri)?.host.replace(/^www\./, '');
 </script>
 
 <a target="_blank" href={domain && external.uri} rel="noopener noreferrer nofollow" class="external-embed">
