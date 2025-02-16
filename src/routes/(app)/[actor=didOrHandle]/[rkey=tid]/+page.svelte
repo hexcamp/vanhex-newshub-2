@@ -163,13 +163,13 @@
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		left: 21px;
+		left: 25px;
 		border-left: 2px solid var(--divider-md);
 	}
 	.right-line {
 		position: absolute;
 		top: 0;
-		left: 21px;
+		left: 25px;
 		border-bottom: 2px solid var(--divider-md);
 		border-left: 2px solid var(--divider-md);
 		border-bottom-left-radius: 9px;

@@ -12,7 +12,7 @@
 
 <style>
 	.missing-descendant-item {
-		padding: 12px;
+		padding: 12px 16px;
 		color: var(--text-blurb);
 		font-style: italic;
 	}

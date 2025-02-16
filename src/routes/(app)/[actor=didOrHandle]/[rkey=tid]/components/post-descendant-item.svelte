@@ -69,7 +69,7 @@
 		display: flex;
 		gap: 8px;
 		contain: content;
-		padding: 12px;
+		padding: 12px 16px;
 		list-style: none;
 
 		.post-descendant-item:not([open]) & {
@@ -86,14 +86,14 @@
 		position: relative;
 		flex-direction: column;
 		margin: -10px 0 0 0;
-		padding: 0 12px 12px calc(20px + 12px + 8px);
+		padding: 0 16px 12px calc(20px + 16px + 8px);
 	}
 
 	.descendant-line {
 		position: absolute;
 		top: 0;
 		bottom: -10px;
-		left: calc(12px + (20px / 2) - 1px);
+		left: calc(16px + (20px / 2) - 1px);
 		border-left: 2px solid var(--divider-md);
 	}
 

@@ -20,7 +20,7 @@
 	.overflow-descendant-item {
 		display: flex;
 		gap: 12px;
-		padding: 12px;
+		padding: 12px 16px;
 		user-select: none;
 	}
 
