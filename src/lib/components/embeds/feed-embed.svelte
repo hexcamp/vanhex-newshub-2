@@ -5,6 +5,7 @@
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
+	import { truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
 
@@ -29,7 +30,7 @@
 		</div>
 	</div>
 
-	<p class="description">{feed.description?.trim()}</p>
+	<p class="description">{truncateRight(feed.description?.trim() ?? '', 190)}</p>
 </a>
 
 <style>

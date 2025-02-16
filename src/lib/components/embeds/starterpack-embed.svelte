@@ -4,6 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { parseAtUri } from '$lib/types/at-uri';
+	import { truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
 
@@ -36,7 +37,7 @@
 			</div>
 		</div>
 
-		<p class="description">{record.description}</p>
+		<p class="description">{truncateRight(record.description?.trim() ?? '', 190)}</p>
 	</div>
 </a>
 
