@@ -83,7 +83,6 @@
 		display: -webkit-box;
 		overflow: hidden;
 		font-weight: 700;
-		white-space: pre-wrap;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
@@ -98,7 +97,6 @@
 		overflow: hidden;
 		color: var(--text-blurb);
 		font-size: 0.8125rem;
-		white-space: pre-wrap;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
