@@ -31,9 +31,9 @@
 
 	const { embed }: Props = $props();
 
-	const external = embed.external;
+	const external = $derived(embed.external);
 
-	const domain = safeParseUrl(external.uri)?.host.replace(/^www\./, '');
+	const domain = $derived(safeParseUrl(external.uri)?.host.replace(/^www\./, ''));
 </script>
 
 <a target="_blank" href={domain && external.uri} rel="noopener noreferrer nofollow" class="external-embed">
