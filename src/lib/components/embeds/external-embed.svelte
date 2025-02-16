@@ -40,8 +40,8 @@
 	{/if}
 
 	<div class="meta">
-		<p class="title">{external.title}</p>
-		<p class="description">{external.description}</p>
+		<p class="title">{external.title.trim()}</p>
+		<p class="description">{external.description.trim()}</p>
 
 		{#if domain}
 			<div class="domain">
