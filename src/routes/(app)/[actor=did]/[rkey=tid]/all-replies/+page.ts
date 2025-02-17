@@ -1,17 +1,17 @@
 import { error } from '@sveltejs/kit';
 
 import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedGetPostThread, Records } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs, AppBskyFeedGetPostThread, Records } from '@atcute/client/lexicons';
 import { definite } from '@mary/array-fns';
-import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
 
 import { PUBLIC_APPVIEW_URL, PUBLIC_CONSTELLATION_URL } from '$env/static/public';
+import type { PageLoad } from './$types';
 
 import { getPost } from '$lib/queries/post';
 import { makeAtUri } from '$lib/types/at-uri';
 import type { Did } from '$lib/types/identity';
 
-export const load = async ({ url, params, fetch }) => {
+export const load: PageLoad = async ({ url, params, fetch }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const parentUri = makeAtUri(params.actor, 'app.bsky.feed.post', params.rkey);

@@ -2,11 +2,12 @@ import { simpleFetchHandler, XRPC } from '@atcute/client';
 import type { AppBskyActorDefs } from '@atcute/client/lexicons';
 
 import { PUBLIC_APP_URL, PUBLIC_APPVIEW_URL } from '$env/static/public';
+import type { RequestHandler } from './$types';
 
 import { buildTimelineSlices } from '$lib/models/timeline';
 import { createRssFeed, feedPostToFeedItem } from '$lib/rss';
 
-export const GET = async ({ params, fetch }) => {
+export const GET: RequestHandler = async ({ params, fetch }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const [profile, timeline] = await Promise.all([

@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 import { ATURI_RE } from '$lib/types/at-uri.js';
 import { isDid, isHandle } from '$lib/types/identity.js';
@@ -48,7 +48,7 @@ export const actions = {
 
 		return fail(400, { place: 'redirect', error: `Invalid link provided` });
 	},
-};
+} satisfies Actions;
 
 const findLinkRedirect = (raw: string): string | null | undefined => {
 	const url = URL.parse(raw);
