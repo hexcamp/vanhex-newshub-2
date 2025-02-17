@@ -7,6 +7,7 @@
 	import { formatLongNumber } from '$lib/utils/intl/number';
 
 	import Avatar from '$lib/components/avatar.svelte';
+	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
 
 	interface Props {
@@ -24,7 +25,11 @@
 
 	<p dir="auto" class="display-name">{feed.displayName?.trim()}</p>
 
-	<RichtextRenderer text={feed.description ?? ''} facets={feed.descriptionFacets} />
+	{#if feed.descriptionFacets === undefined}
+		<RichtextRawRenderer text={feed.description ?? ''} />
+	{:else}
+		<RichtextRenderer text={feed.description ?? ''} facets={feed.descriptionFacets} />
+	{/if}
 
 	<p class="metric">
 		<a href="{feedUrl}/likes" class="metric-link">
