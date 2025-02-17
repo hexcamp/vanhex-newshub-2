@@ -7,6 +7,7 @@
 	import CompassRoundOutlined from '$lib/components/central-icons/compass-round-outlined.svelte';
 	import MagnifyingGlassOutlined from '$lib/components/central-icons/magnifying-glass-outlined.svelte';
 	import Trending_2Outlined from '$lib/components/central-icons/trending-2-outlined.svelte';
+	import HashtagOutlined from '$lib/components/central-icons/hashtag-outlined.svelte';
 
 	const { form }: PageProps = $props();
 </script>
@@ -66,6 +67,11 @@
 		<a href="{base}/trending" class="link">
 			<Trending_2Outlined />
 			<span>Trending</span>
+		</a>
+
+		<a href="{base}/search/feeds?q=" class="link">
+			<HashtagOutlined />
+			<span>Feeds</span>
 		</a>
 
 		<a href="{base}/did:plc:z72i7hdynmk6r22z27h6tvur/feeds/whats-hot" class="link">
