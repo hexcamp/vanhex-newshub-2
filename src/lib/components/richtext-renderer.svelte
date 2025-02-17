@@ -14,6 +14,8 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 
+	import { redirectBskyUrl } from '$lib/redirector';
+
 	interface Props {
 		text: string;
 		facets?: Facet[];
@@ -30,7 +32,13 @@
 		{#if !feature}
 			{segment.text}
 		{:else if feature.$type === 'app.bsky.richtext.facet#link'}
-			<a target="_blank" href={feature.uri} rel="noopener nofollow" class="link">{segment.text}</a>
+			{@const redirectUrl = redirectBskyUrl(feature.uri)}
+
+			{#if redirectUrl}
+				<a href={redirectUrl} class="link">{segment.text}</a>
+			{:else}
+				<a target="_blank" href={feature.uri} rel="noopener nofollow" class="link">{segment.text}</a>
+			{/if}
 		{:else if feature.$type === 'app.bsky.richtext.facet#mention'}
 			<a href="{base}/{feature.did}" class="mention">{segment.text}</a>
 		{:else if feature.$type === 'app.bsky.richtext.facet#tag'}

@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { redirectBskyUrl } from '$lib/redirector';
 
 	import { tokenize } from '@atcute/bluesky-richtext-parser';
 
@@ -18,9 +19,16 @@
 <p class={`rich-text` + (large ? ` is-large` : ` is-small`)}>
 	{#each tokenize(text) as token}
 		{#if token.type === 'autolink'}
-			<a target="_blank" href={token.url} rel="noopener nofollow" class="link">
-				{token.raw.replace(HTTP_RE, '')}
-			</a>
+			{@const redirectUrl = redirectBskyUrl(token.url)}
+			{@const label = token.raw.replace(HTTP_RE, '')}
+
+			{#if redirectUrl}
+				<a href={redirectUrl} class="link">{label}</a>
+			{:else}
+				<a target="_blank" href={token.url} rel="noopener nofollow" class="link">
+					{label}
+				</a>
+			{/if}
 		{:else if token.type === 'mention'}
 			<a href="{base}/{token.handle.toLowerCase()}" class="mention">{token.raw}</a>
 		{:else if token.type === 'topic'}

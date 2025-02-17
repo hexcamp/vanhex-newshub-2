@@ -21,6 +21,7 @@
 <script lang="ts">
 	import type { AppBskyEmbedExternal } from '@atcute/client/lexicons';
 
+	import { redirectBskyUrl } from '$lib/redirector';
 	import { truncateRight } from '$lib/utils/strings';
 
 	import EarthOutlined from '$lib/components/central-icons/earth-outlined.svelte';
@@ -34,9 +35,13 @@
 	const external = $derived(embed.external);
 
 	const domain = $derived(safeParseUrl(external.uri)?.host.replace(/^www\./, ''));
+	const href = $derived.by(() => {
+		const uri = external.uri;
+		return redirectBskyUrl(uri) || (domain ? uri : '');
+	});
 </script>
 
-<a target="_blank" href={domain && external.uri} rel="noopener noreferrer nofollow" class="external-embed">
+<a target="_blank" {href} rel="noopener noreferrer nofollow" class="external-embed">
 	{#if external.thumb}
 		<img loading="lazy" src={external.thumb} alt="" class="thumbnail" />
 	{/if}
