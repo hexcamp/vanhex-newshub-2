@@ -2,9 +2,10 @@ import type { Records } from '@atcute/client/lexicons';
 
 import { assert } from '$lib/utils/invariant';
 
-import type { Did } from './identity';
+import type { Did, Handle } from './identity';
+import type { Nsid } from './nsid';
 
-export type AtUri = `at://${string}`;
+export type AtUri = `at://${Did | Handle}/${Nsid}/${string}`;
 
 export const ATURI_RE =
 	/^at:\/\/(did:[a-z]+:[a-zA-Z0-9._:%\-]*[a-zA-Z0-9._\-]|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])\/([a-zA-Z0-9-.]+)\/((?!\.{1,2}$)[a-zA-Z0-9_~.:-]{1,512})(?:#(\/[a-zA-Z0-9._~:@!$&%')(*+,;=\-[\]/\\]*))?$/;
