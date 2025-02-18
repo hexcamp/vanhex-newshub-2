@@ -44,6 +44,7 @@
 <style>
 	.external-embed {
 		display: block;
+		outline-offset: -1px;
 		border: 1px solid var(--divider-md);
 		border-radius: 6px;
 		overflow: hidden;

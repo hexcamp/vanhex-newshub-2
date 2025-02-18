@@ -51,6 +51,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
+		outline-offset: -1px;
 		border: 1px solid var(--divider-md);
 		border-radius: 6px;
 		padding: 12px;
