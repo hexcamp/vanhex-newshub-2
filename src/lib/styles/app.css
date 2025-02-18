@@ -52,6 +52,11 @@ body {
 	}
 }
 
+:where(button, input, select, textarea) {
+	font: inherit;
+	line-height: inherit;
+}
+
 :where(a) {
 	color: var(--text-link);
 	text-decoration: none;
