@@ -51,6 +51,8 @@
 
 <style>
 	.rich-text {
+		margin: -2px;
+		padding: 2px;
 		overflow: hidden;
 		white-space: pre-wrap;
 		overflow-wrap: break-word;
