@@ -1,15 +1,13 @@
-import { error } from '@sveltejs/kit';
-
 import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedDefs, AppBskyFeedGetPostThread, Records } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs, AppBskyFeedGetPostThread } from '@atcute/client/lexicons';
 import { definite } from '@mary/array-fns';
 
-import { PUBLIC_APPVIEW_URL, PUBLIC_CONSTELLATION_URL } from '$env/static/public';
+import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
+import { getLinks } from '$lib/queries/constellation';
 import { getPost } from '$lib/queries/post';
 import { makeAtUri } from '$lib/types/at-uri';
-import type { Did } from '$lib/types/identity';
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
@@ -79,44 +77,4 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
 		thread: thread,
 		threadgate,
 	};
-};
-
-interface LinkResponse<K extends keyof Records> {
-	total: number;
-	cursor: string | null;
-	linking_records: Array<{
-		did: Did;
-		collection: K;
-		rkey: string;
-	}>;
-}
-
-const getLinks = async <K extends keyof Records>({
-	uri,
-	collection,
-	path,
-	limit = 10,
-	cursor = null,
-}: {
-	uri: string;
-	collection: K;
-	path: string;
-	limit?: number;
-	cursor?: string | null;
-}): Promise<LinkResponse<K>> => {
-	const requestUrl =
-		`${PUBLIC_CONSTELLATION_URL}/links` +
-		`?target=${encodeURIComponent(uri)}` +
-		`&collection=${collection}` +
-		`&path=${path}` +
-		`&limit=${limit}` +
-		(cursor ? `&cursor=${cursor}` : '');
-
-	const response = await fetch(requestUrl);
-	if (!response.ok) {
-		error(503, `Constellation API returned ${response.status}`);
-	}
-
-	const json = await response.json();
-	return json as LinkResponse<K>;
 };
