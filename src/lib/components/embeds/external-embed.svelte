@@ -1,28 +1,9 @@
-<script lang="ts" module>
-	const safeParseUrl = (str: string): URL | null => {
-		let url: URL | null | undefined;
-		if ('parse' in URL) {
-			url = URL.parse(str);
-		} else {
-			try {
-				// @ts-expect-error: `'parse' in URL` is giving truthy
-				url = new URL(str);
-			} catch {}
-		}
-
-		if (url && (url.protocol === 'https:' || url.protocol === 'http:')) {
-			return url;
-		}
-
-		return null;
-	};
-</script>
-
 <script lang="ts">
 	import type { AppBskyEmbedExternal } from '@atcute/client/lexicons';
 
 	import { redirectBskyUrl } from '$lib/redirector';
 	import { truncateRight } from '$lib/utils/strings';
+	import { safeUrlParse } from '$lib/utils/url';
 
 	import EarthOutlined from '$lib/components/central-icons/earth-outlined.svelte';
 
@@ -34,7 +15,7 @@
 
 	const external = $derived(embed.external);
 
-	const domain = $derived(safeParseUrl(external.uri)?.host.replace(/^www\./, ''));
+	const domain = $derived(safeUrlParse(external.uri)?.host.replace(/^www\./, ''));
 	const href = $derived.by(() => {
 		const uri = external.uri;
 		return redirectBskyUrl(uri) || (domain ? uri : '');
