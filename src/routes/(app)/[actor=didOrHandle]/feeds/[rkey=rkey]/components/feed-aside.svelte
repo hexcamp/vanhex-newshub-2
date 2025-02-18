@@ -40,7 +40,7 @@
 	</p>
 
 	<div class="creator">
-		<Avatar profile={feed.creator} size="xs" href={creatorUrl} />
+		<Avatar profile={feed.creator} size="xs" href={creatorUrl} tabindex={-1} />
 		<a href={creatorUrl} class="handle">{feed.creator.handle}</a>
 	</div>
 </div>
