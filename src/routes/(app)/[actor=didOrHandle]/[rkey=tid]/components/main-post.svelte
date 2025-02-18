@@ -118,7 +118,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 4px;
+		gap: 8px;
 		margin: 12px 0 0;
 		padding: 0 0 12px 0;
 		color: var(--text-blurb);
@@ -132,7 +132,6 @@
 	}
 	.dot {
 		flex-shrink: 0;
-		margin: 0 6px;
 	}
 
 	.ancestor-line-wrapper {
