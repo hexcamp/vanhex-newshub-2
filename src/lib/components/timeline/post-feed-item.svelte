@@ -4,6 +4,7 @@
 	import { base } from '$app/paths';
 
 	import type { UiTimelineItem } from '$lib/models/timeline';
+	import { findLabel, FlagsBlurContent } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
 
 	import ArrowsRepeatRightLeftOutlined from '$lib/components/central-icons/arrows-repeat-right-left-outlined.svelte';
@@ -11,9 +12,10 @@
 	import Embeds from '$lib/components/embeds/embeds.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
 
+	import Avatar from '../avatar.svelte';
+	import ContentHider from '../content-hider.svelte';
 	import PostMeta from './post-meta.svelte';
 	import PostMetrics from './post-metrics.svelte';
-	import Avatar from '../avatar.svelte';
 
 	interface Props {
 		item: UiTimelineItem;
@@ -28,6 +30,8 @@
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
 	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+
+	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
 </script>
 
 <div class={['post-feed-item', !item.next && `is-leaf`]}>
@@ -97,7 +101,9 @@
 				</p>
 			{/if}
 
-			<RichtextRenderer text={record.text} facets={record.facets} />
+			<ContentHider {blur}>
+				<RichtextRenderer text={record.text} facets={record.facets} />
+			</ContentHider>
 
 			{#if post.embed}
 				<Embeds {post} embed={post.embed} />
@@ -205,6 +211,10 @@
 			flex-grow: 1;
 			padding-bottom: 12px;
 			min-width: 0;
+
+			& > :global(.content-hider) {
+				margin: 8px 0 0 0;
+			}
 		}
 	}
 

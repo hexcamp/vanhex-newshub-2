@@ -3,13 +3,14 @@
 
 	import { base } from '$app/paths';
 
+	import { findLabel, FlagsBlurContent } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
 
 	import Avatar from '$lib/components/avatar.svelte';
+	import ContentHider from '$lib/components/content-hider.svelte';
+	import Embeds from '$lib/components/embeds/embeds.svelte';
 	import LongDate from '$lib/components/islands/long-date.svelte';
 	import RichTextRenderer from '$lib/components/richtext-renderer.svelte';
-
-	import Embeds from '$lib/components/embeds/embeds.svelte';
 
 	import MainPostMetrics from './main-post-metrics.svelte';
 
@@ -26,6 +27,8 @@
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
 	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+
+	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
 </script>
 
 <div class="highlighted-post">
@@ -49,7 +52,9 @@
 		</a>
 	</div>
 
-	<RichTextRenderer text={record.text} facets={record.facets} large />
+	<ContentHider {blur}>
+		<RichTextRenderer text={record.text} facets={record.facets} large />
+	</ContentHider>
 
 	{#if post.embed}
 		<Embeds {post} embed={post.embed} large />

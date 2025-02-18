@@ -5,9 +5,11 @@
 
 	import { base } from '$app/paths';
 
+	import { findLabel, FlagsBlurContent } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
 
 	import Avatar from '$lib/components/avatar.svelte';
+	import ContentHider from '$lib/components/content-hider.svelte';
 	import Embeds from '$lib/components/embeds/embeds.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
 	import PostMeta from '$lib/components/timeline/post-meta.svelte';
@@ -28,6 +30,8 @@
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
 	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+
+	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
 </script>
 
 <details open={!defaultCollapsed} class="post-descendant-item">
@@ -37,7 +41,9 @@
 	</summary>
 
 	<div class="contents">
-		<RichtextRenderer text={record.text} facets={record.facets} />
+		<ContentHider {blur}>
+			<RichtextRenderer text={record.text} facets={record.facets} />
+		</ContentHider>
 
 		{#if post.embed}
 			<Embeds {post} embed={post.embed} />
@@ -87,6 +93,10 @@
 		flex-direction: column;
 		margin: -10px 0 0 0;
 		padding: 0 16px 12px calc(20px + 16px + 8px);
+
+		& > :global(.content-hider) {
+			margin: 8px 0 0 0;
+		}
 	}
 
 	.descendant-line {

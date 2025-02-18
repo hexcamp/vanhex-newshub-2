@@ -3,11 +3,13 @@
 
 	import { base } from '$app/paths';
 
+	import { findLabel, FlagsBlurContent } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
 
+	import ContentHider from '$lib/components/content-hider.svelte';
 	import Embeds from '$lib/components/embeds/embeds.svelte';
 	import PostMeta from '$lib/components/timeline/post-meta.svelte';
 	import PostMetrics from '$lib/components/timeline/post-metrics.svelte';
@@ -27,6 +29,8 @@
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
 	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+
+	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
 </script>
 
 <div class="post-thread-item">
@@ -44,7 +48,9 @@
 		<div class="main">
 			<PostMeta {post} {postUrl} {authorUrl} gutterBottom />
 
-			<RichtextRenderer text={record.text} facets={record.facets} />
+			<ContentHider {blur}>
+				<RichtextRenderer text={record.text} facets={record.facets} />
+			</ContentHider>
 
 			{#if post.embed}
 				<Embeds {post} embed={post.embed} />
@@ -100,5 +106,9 @@
 		flex-grow: 1;
 		padding: 12px 0;
 		min-width: 0;
+
+		& > :global(.content-hider) {
+			margin: 8px 0 0 0;
+		}
 	}
 </style>
