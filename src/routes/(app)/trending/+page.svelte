@@ -81,6 +81,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
+		outline-offset: -1px;
 		border: 1px solid var(--divider-sm);
 		border-radius: 9999px;
 		padding: 4px 12px;
