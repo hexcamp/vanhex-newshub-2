@@ -12,6 +12,7 @@
 	import LongDate from '$lib/components/islands/long-date.svelte';
 	import RichTextRenderer from '$lib/components/richtext-renderer.svelte';
 
+	import InteractionState from './interaction-state.svelte';
 	import MainPostMetrics from './main-post-metrics.svelte';
 
 	interface Props {
@@ -64,6 +65,8 @@
 		<a href={postUrl} class="date">
 			<LongDate date={record.createdAt} />
 		</a>
+		<span aria-hidden="true" class="dot"> • </span>
+		<InteractionState threadgate={post.threadgate} />
 	</div>
 
 	<MainPostMetrics {post} />
@@ -114,16 +117,21 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
+		gap: 4px;
 		margin: 12px 0 0;
 		padding: 0 0 12px 0;
+		color: var(--text-blurb);
 	}
 	.date {
-		color: var(--text-blurb);
+		color: inherit;
 
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+	.dot {
+		flex-shrink: 0;
+		margin: 0 6px;
 	}
 
 	.ancestor-line-wrapper {
