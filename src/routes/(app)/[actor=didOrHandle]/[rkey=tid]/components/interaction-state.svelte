@@ -72,12 +72,12 @@
 	});
 </script>
 
-<button class="button" popovertarget={id}>
+<button class="button" popovertarget={id} style="anchor-name: --{id}">
 	<summary.icon />
 	<span>{summary.label}</span>
 </button>
 
-<dialog popover="auto" class="dialog" {id}>
+<dialog popover="auto" class="dialog" {id} style="position-anchor: --{id}">
 	<h3 class="title">Who can reply?</h3>
 
 	{#if allow === undefined}
@@ -127,7 +127,6 @@
 		color: inherit;
 		list-style: none;
 		user-select: none;
-		anchor-name: --myAnchor;
 
 		&:hover {
 			text-decoration: underline;
@@ -135,15 +134,16 @@
 	}
 
 	.dialog {
+		margin: 16px;
 		box-shadow:
-			0 10px 15px -3px rgb(0 0 0 / 0.1),
-			0 4px 6px -4px rgb(0 0 0 / 0.1);
+			0 20px 25px -5px rgb(0 0 0 / 0.25),
+			0 8px 10px -6px rgb(0 0 0 / 0.25);
 		border: 1px solid var(--divider-md);
 		border-radius: 4px;
 		background: var(--bg-primary);
 		padding: 16px;
 		width: max-content;
-		max-width: 384px;
+		max-width: min(384px, calc(100dvw - 16px * 2));
 		color: var(--text-primary);
 
 		@supports not (position-anchor: auto) {
@@ -152,9 +152,10 @@
 			transform: translate(-50%, -50%);
 		}
 		@supports (position-anchor: auto) {
-			position-anchor: --myAnchor;
-			top: calc(anchor(bottom) + 5px);
+			top: calc(anchor(bottom) - 12px);
+			bottom: unset;
 			justify-self: anchor-center;
+			position-try: flip-block;
 		}
 	}
 
