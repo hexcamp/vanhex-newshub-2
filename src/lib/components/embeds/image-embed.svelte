@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import type { AppBskyEmbedImages } from '@atcute/client/lexicons';
+	import ImageAlt from './components/image-alt.svelte';
 
 	interface Props {
 		embed: AppBskyEmbedImages.View;
@@ -16,6 +17,8 @@
 
 	const images = $derived(embed.images);
 	const length = $derived(images.length);
+
+	const instanceId = $props.id();
 </script>
 
 <div class={['image-embed', !borderless && 'is-bordered', standalone && length === 1 && 'is-aligned']}>
@@ -87,6 +90,10 @@
 	{@const image = images[index]}
 
 	<img loading="lazy" src={image.thumb} alt={image.alt} class={`image` + (blur ? ` is-blurred` : ``)} />
+
+	{#if image.alt.trim()}
+		<ImageAlt alt={image.alt} />
+	{/if}
 {/snippet}
 
 <style>
