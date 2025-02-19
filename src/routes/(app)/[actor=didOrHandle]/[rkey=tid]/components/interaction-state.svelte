@@ -144,6 +144,7 @@
 		padding: 16px;
 		width: max-content;
 		max-width: min(384px, calc(100dvw - 16px * 2));
+		max-height: 55dvh;
 		color: var(--text-primary);
 
 		@supports not (position-anchor: auto) {
