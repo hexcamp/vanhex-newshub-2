@@ -9,6 +9,8 @@
 	import Avatar from '$lib/components/avatar.svelte';
 	import RichtextRawRenderer from '$lib/components/richtext-raw-renderer.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
+	import OverflowMenu from '$lib/components/overflow-menu.svelte';
+	import SquareArrowTopRightOutlined from '$lib/components/central-icons/square-arrow-top-right-outlined.svelte';
 
 	interface Props {
 		feed: AppBskyFeedDefs.GeneratorView;
@@ -22,6 +24,24 @@
 
 <div class="feed-aside">
 	<Avatar type="generator" src={feed.avatar} size="xl" />
+
+	<OverflowMenu
+		class="feed-overflow"
+		items={[
+			{
+				label: `Open in Bluesky app`,
+				href: `https://bsky.app/profile/${feed.creator.did}/feed/${parseAtUri(feed.uri).rkey}`,
+				external: true,
+				icon: SquareArrowTopRightOutlined,
+			},
+			{
+				label: `Open in PDSls`,
+				href: `https://pdsls.dev/${feed.uri}`,
+				external: true,
+				icon: SquareArrowTopRightOutlined,
+			},
+		]}
+	/>
 
 	<p dir="auto" class="display-name">{feed.displayName?.trim()}</p>
 
@@ -48,10 +68,17 @@
 <style>
 	.feed-aside {
 		display: flex;
+		position: relative;
 		flex-direction: column;
 		background: var(--bg-primary);
 		padding: 16px;
 		min-width: 0;
+
+		:global(.feed-overflow) {
+			position: absolute;
+			top: 12px;
+			right: 12px;
+		}
 	}
 
 	.display-name {
