@@ -83,6 +83,7 @@
 	.item {
 		display: flex;
 		gap: 12px;
+		outline-offset: -2px;
 		padding: 12px 16px;
 		color: var(--text-primary);
 		font-weight: 600;
@@ -90,6 +91,13 @@
 		& > :global(.sv-icon) {
 			margin: 1px 0 0 0;
 			font-size: 18px;
+		}
+
+		&:first-child {
+			border-radius: 4px 4px 0 0;
+		}
+		&:last-child {
+			border-radius: 0 0 4px 4px;
 		}
 
 		&:hover {
