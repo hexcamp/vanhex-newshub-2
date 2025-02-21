@@ -71,7 +71,7 @@
 			}
 		}
 
-		return content;
+		return content.trimStart();
 	});
 </script>
 
