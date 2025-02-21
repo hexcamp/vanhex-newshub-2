@@ -16,15 +16,17 @@
 	import OverflowAscendantItem from './components/overflow-ascendant-item.svelte';
 	import PostAscendantItem from './components/post-ascendant-item.svelte';
 
+	import PostMetaTags from './components/post-meta-tags.svelte';
 	import { getAncestors } from './utils';
 
 	const { data }: PageProps = $props();
 
-	const title = $derived.by(() => {
-		const post = data.thread.post;
+	const main = $derived(data.thread.post);
+	const uri = $derived(parseAtUri(main.uri));
 
-		const author = `@${truncateMiddle(post.author.handle, 29)}`;
-		const content = truncateRight((post.record as AppBskyFeedPost.Record).text.trim(), 70);
+	const title = $derived.by(() => {
+		const author = `@${truncateMiddle(main.author.handle, 29)}`;
+		const content = truncateRight((main.record as AppBskyFeedPost.Record).text.trim(), 70);
 
 		return `${author}: "${content}" — ${PUBLIC_APP_NAME}`;
 	});
@@ -32,17 +34,16 @@
 	const ancestors = $derived(getAncestors(data.thread));
 
 	const missingReplyCount = $derived.by(() => {
-		return (data.thread.post.replyCount ?? 0) - (data.thread.replies?.length ?? 0);
+		return (main.replyCount ?? 0) - (data.thread.replies?.length ?? 0);
 	});
 </script>
 
 <svelte:head>
 	<title>{title}</title>
-	<link
-		rel="canonical"
-		href="https://bsky.app/profile/{data.thread.post.author.did}/post/{parseAtUri(data.thread.post.uri).rkey}"
-	/>
-	<link rel="alternate" href={data.thread.post.uri} />
+	<link rel="canonical" href="https://bsky.app/profile/{uri.repo}/post/{uri.rkey}" />
+	<link rel="alternate" href={main.uri} />
+
+	<PostMetaTags post={main} />
 </svelte:head>
 
 <div class="thread-page">
@@ -68,14 +69,14 @@
 
 	<div class="thread">
 		<div class="main" id="main">
-			<MainPost post={data.thread.post} prev={ancestors.length > 0} />
+			<MainPost post={main} prev={ancestors.length > 0} />
 		</div>
 
 		<div class="descendants">
 			<!-- thanks Svelte for your whitespace handling -->
 			<!-- prettier-ignore -->
 			<Descendants thread={data.thread} threadgate={data.threadgate} />{#if missingReplyCount > 0}
-				<MissingDescendantItem count={missingReplyCount} post={data.thread.post} />
+				<MissingDescendantItem count={missingReplyCount} post={main} />
 			{/if}
 		</div>
 	</div>
