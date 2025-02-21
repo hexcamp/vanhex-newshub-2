@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { AppBskyFeedPost } from '@atcute/client/lexicons';
 	import { cluster } from '@mary/array-fns';
-	import { isSameCalendarDate } from '@mary/date-fns';
 
 	import { base } from '$app/paths';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
@@ -9,16 +8,15 @@
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
-	import { formatLongDate, formatTime } from '$lib/utils/intl/date';
 	import { truncateMiddle, truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import BubblesOutlined from '$lib/components/central-icons/bubbles-outlined.svelte';
 	import Embeds from '$lib/components/embeds/embeds.svelte';
+	import Time from '$lib/components/islands/time.svelte';
 	import OverflowMenu from '$lib/components/overflow-menu.svelte';
 	import PageContainer from '$lib/components/page/page-container.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
-	import Time from '$lib/components/islands/time.svelte';
 
 	const { data }: PageProps = $props();
 
@@ -89,9 +87,6 @@
 				{@const first = cluster[0]}
 				{@const date = new Date(first.indexedAt)}
 
-				{@const prevCluster = clusters[idx - 1] as typeof cluster | undefined}
-				{@const prevClusterDate = prevCluster && new Date(prevCluster[0].indexedAt)}
-
 				<li class="item" role="article">
 					<div class="aside">
 						<div class="dot"></div>
@@ -104,11 +99,7 @@
 					<div class="content">
 						<p class="meta">
 							<span class="date">
-								{#if !prevClusterDate || !isSameCalendarDate(date, prevClusterDate)}
-									<Time {date} format="long-date" />
-								{:else}
-									<Time {date} format="time" />
-								{/if}
+								<Time {date} format="long-date" />
 							</span>
 						</p>
 
