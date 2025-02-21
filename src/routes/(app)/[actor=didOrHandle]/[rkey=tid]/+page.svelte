@@ -42,9 +42,9 @@
 	<title>{title}</title>
 	<link rel="canonical" href="https://bsky.app/profile/{uri.repo}/post/{uri.rkey}" />
 	<link rel="alternate" href={main.uri} />
-
-	<PostMetaTags post={main} />
 </svelte:head>
+
+<PostMetaTags post={main} />
 
 <div class="thread-page">
 	<div class="ancestors">
