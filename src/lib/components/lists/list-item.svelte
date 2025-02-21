@@ -3,51 +3,43 @@
 
 	import { base } from '$app/paths';
 
-	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
 	import { purposeToLabel } from '$lib/utils/bluesky/lists';
-	import { truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
 
 	interface Props {
-		embed: AppBskyGraphDefs.ListView;
+		item: AppBskyGraphDefs.ListView;
 	}
 
-	const { embed: list }: Props = $props();
+	const { item: list }: Props = $props();
 
 	const creator = $derived(list.creator);
 
-	const blurAvi = $derived(!!findLabel(list.labels, creator.did, FlagsBlurMedia));
+	const href = $derived(`${base}/${creator.did}/lists/${parseAtUri(list.uri).rkey}`);
 </script>
 
-<a href="{base}/{creator.did}/lists/{parseAtUri(list.uri).rkey}" class="list-embed">
+<div class="feed-item">
 	<div class="main">
-		<Avatar type="list" src={list.avatar} blur={blurAvi} />
+		<Avatar type="list" src={list.avatar} {href} tabindex={-1} />
 
-		<div class="info">
+		<a {href} class="info">
 			<p class="name">{list.name}</p>
 			<p class="creator">{purposeToLabel(list.purpose)} by @{creator.handle}</p>
-		</div>
+		</a>
 	</div>
 
-	<p class="description">{truncateRight(list.description?.trim() ?? '', 190)}</p>
-</a>
+	<p class="description">{list.description?.trim()}</p>
+</div>
 
 <style>
-	.list-embed {
+	.feed-item {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		outline-offset: -1px;
-		border: 1px solid var(--divider-md);
-		border-radius: 6px;
-		padding: 12px;
+		border-bottom: 1px solid var(--divider-md);
+		padding: 12px 16px;
 		color: var(--text-primary);
-
-		&:hover {
-			background: var(--tap-sm);
-		}
 	}
 
 	.main {
@@ -59,19 +51,28 @@
 		}
 	}
 
+	.info {
+		color: inherit;
+	}
 	.name {
 		font-weight: 700;
+
+		.info &:hover {
+			text-decoration: underline;
+		}
 	}
 
 	.creator {
 		color: var(--text-blurb);
 		font-size: 0.8125rem;
+		line-height: 1.25rem;
 	}
 
 	.description {
 		display: -webkit-box;
 		overflow: hidden;
 		font-size: 0.8125rem;
+		line-height: 1.25rem;
 		white-space: pre-wrap;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
