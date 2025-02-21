@@ -78,7 +78,7 @@
 <svelte:head>
 	<meta property="og:site_name" content={PUBLIC_APP_NAME} />
 	<meta property="og:type" content="article" />
-	<meta property="twitter:card" content="summary" />
+	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="og:url" content="{PUBLIC_APP_URL}/{uri.repo}/{uri.rkey}#main" />
 	<meta property="profile:username" content={author.handle} />
 	<meta property="og:published_time" content={post.indexedAt} />
