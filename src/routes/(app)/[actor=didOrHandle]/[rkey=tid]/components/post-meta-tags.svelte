@@ -15,6 +15,8 @@
 	const { post }: Props = $props();
 
 	const uri = $derived(parseAtUri(post.uri));
+
+	const author = $derived(post.author);
 	const { media, record } = $derived(unwrapEmbedView(post.embed));
 
 	const description = $derived.by(() => {
@@ -78,9 +80,14 @@
 	<meta property="og:type" content="article" />
 	<meta property="twitter:card" content="summary" />
 	<meta property="og:url" content="{PUBLIC_APP_URL}/{uri.repo}/{uri.rkey}" />
-	<meta property="profile:username" content={post.author.handle} />
+	<meta property="profile:username" content={author.handle} />
 	<meta property="og:published_time" content={post.indexedAt} />
-	<meta property="og:title" content="@{truncateMiddle(post.author.handle, 29)}" />
+	<meta
+		property="og:title"
+		content={author.displayName?.trim()
+			? `${author.displayName.trim()} (@${truncateMiddle(post.author.handle, 29)})`
+			: `@${truncateMiddle(post.author.handle, 29)}`}
+	/>
 	<meta property="og:description" content={description} />
 
 	{#if media?.$type === 'app.bsky.embed.images#view'}
