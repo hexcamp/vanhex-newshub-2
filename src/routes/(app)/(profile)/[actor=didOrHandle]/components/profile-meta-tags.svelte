@@ -25,6 +25,6 @@
 	<meta property="og:description" content={profile.description} />
 
 	{#if profile.avatar}
-		<meta property="og:image" content={profile.avatar} />
+		<meta property="og:image" content={profile.avatar.replace('@jpeg', '@png')} />
 	{/if}
 </svelte:head>
