@@ -95,4 +95,7 @@
 			<meta property="og:image" content={image.fullsize.replace('@jpeg', '@png')} />
 		{/each}
 	{/if}
+
+	<!-- Nasty hack that gives pretty iMessage link embeds -->
+	<link type="application/activity+json" href="" />
 </svelte:head>
