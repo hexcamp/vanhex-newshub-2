@@ -31,7 +31,8 @@
 		"@atcute/bluesky-richtext-segmenter": "^1.0.5",
 		"@atcute/client": "^2.0.7",
 		"@badrap/valita": "^0.4.2",
-		"@mary/array-fns": "npm:@jsr/mary__array-fns@^0.1.2",
+		"@mary/array-fns": "npm:@jsr/mary__array-fns@^0.1.4",
+		"@mary/date-fns": "npm:@jsr/mary__date-fns@^0.1.2",
 		"hls.js": "^1.5.20"
 	},
 	"pnpm": {

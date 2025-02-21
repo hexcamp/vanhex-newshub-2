@@ -8,6 +8,7 @@
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import SquareArrowTopRightOutlined from '$lib/components/central-icons/square-arrow-top-right-outlined.svelte';
+	import ThreadOutlined from '$lib/components/central-icons/thread-outlined.svelte';
 	import ContentHider from '$lib/components/content-hider.svelte';
 	import Embeds from '$lib/components/embeds/embeds.svelte';
 	import LongDate from '$lib/components/islands/long-date.svelte';
@@ -61,6 +62,11 @@
 		<OverflowMenu
 			class="post-actions"
 			items={[
+				{
+					label: `Unroll thread`,
+					href: `${base}/${author.did}/${uri.rkey}/unroll`,
+					icon: ThreadOutlined,
+				},
 				{
 					label: `Open in Bluesky app`,
 					href: `https://bsky.app/profile/${author.did}/post/${uri.rkey}`,

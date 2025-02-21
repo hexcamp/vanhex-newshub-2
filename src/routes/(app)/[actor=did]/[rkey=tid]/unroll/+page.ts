@@ -57,12 +57,6 @@ export const load: PageLoad = async ({ params }) => {
 					return false;
 				}
 
-				// If it's more than 5 minutes than tail, skip
-				const diff = new Date(reply.post.indexedAt).getTime() - new Date(tail.post.indexedAt).getTime();
-				if (diff > 5 * 60 * 1000) {
-					return false;
-				}
-
 				return true;
 			});
 

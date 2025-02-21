@@ -5,26 +5,30 @@ const timezone = !dev ? 'UTC' : undefined;
 let startOfYear = 0;
 let endOfYear = 0;
 
-const fmtAbsoluteLong = new Intl.DateTimeFormat('en-US', {
+const fmtTime = new Intl.DateTimeFormat('en-US', {
+	timeZone: timezone,
+	timeStyle: 'short',
+});
+const fmtDateTime = new Intl.DateTimeFormat('en-US', {
 	timeZone: timezone,
 	dateStyle: 'long',
 	timeStyle: 'short',
 });
-const fmtAbsShortWithYear = new Intl.DateTimeFormat('en-US', {
+const fmtShortDateWithYear = new Intl.DateTimeFormat('en-US', {
 	timeZone: timezone,
 	dateStyle: 'medium',
 });
-const fmtAbsShort = new Intl.DateTimeFormat('en-US', {
+const fmtShortDate = new Intl.DateTimeFormat('en-US', {
 	timeZone: timezone,
 	month: 'short',
 	day: 'numeric',
 });
 
-export const formatShortDate = (date: string | number): string => {
+export const formatShortDate = (date: Date | string | number): string => {
 	const inst = new Date(date);
 	const time = inst.getTime();
 
-	if (isNaN(time)) {
+	if (Number.isNaN(time)) {
 		return 'N/A';
 	}
 
@@ -42,20 +46,30 @@ export const formatShortDate = (date: string | number): string => {
 	}
 
 	if (time >= startOfYear && time <= endOfYear) {
-		return fmtAbsShort.format(inst);
+		return fmtShortDate.format(inst);
 	}
 
-	return fmtAbsShortWithYear.format(inst);
+	return fmtShortDateWithYear.format(inst);
 };
 
-export const formatLongDate = (date: string | number): string => {
+export const formatTime = (date: Date | string | number): string => {
 	const inst = new Date(date);
 
-	if (isNaN(inst.getTime())) {
+	if (Number.isNaN(inst.getTime())) {
 		return 'N/A';
 	}
 
-	return fmtAbsoluteLong.format(inst);
+	return fmtTime.format(inst);
+};
+
+export const formatLongDate = (date: Date | string | number): string => {
+	const inst = new Date(date);
+
+	if (Number.isNaN(inst.getTime())) {
+		return 'N/A';
+	}
+
+	return fmtDateTime.format(inst);
 };
 
 const relativeFormatters: Record<string, Intl.NumberFormat> = {};
@@ -67,7 +81,7 @@ const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 const WEEK = DAY * 7;
 
-export const formatRelativeTime = (date: string | number): string => {
+export const formatRelativeTime = (date: Date | string | number): string => {
 	const time = new Date(date).getTime();
 
 	const now = Date.now();
@@ -88,10 +102,10 @@ export const formatRelativeTime = (date: string | number): string => {
 
 		// if it happened this year, don't show the year.
 		if (time >= startOfYear && time <= endOfYear) {
-			return fmtAbsShort.format(time);
+			return fmtShortDate.format(time);
 		}
 
-		return fmtAbsShortWithYear.format(time);
+		return fmtShortDateWithYear.format(time);
 	}
 
 	if (delta < NOW) {

@@ -24,8 +24,11 @@ importers:
         specifier: ^0.4.2
         version: 0.4.2
       '@mary/array-fns':
-        specifier: npm:@jsr/mary__array-fns@^0.1.2
-        version: '@jsr/mary__array-fns@0.1.2'
+        specifier: npm:@jsr/mary__array-fns@^0.1.4
+        version: '@jsr/mary__array-fns@0.1.4'
+      '@mary/date-fns':
+        specifier: npm:@jsr/mary__date-fns@^0.1.2
+        version: '@jsr/mary__date-fns@0.1.2'
       hls.js:
         specifier: ^1.5.20
         version: 1.5.20
@@ -557,8 +560,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@jsr/mary__array-fns@0.1.2':
-    resolution: {integrity: sha512-g1fq3dvBEmM/Mb14Ic3W++GoIO6bUlkB3Uz8JqyVcwQfz4vUzmT1erO2+DKjw+ux25RJCsd0EC9FjuicQ7E3+Q==, tarball: https://npm.jsr.io/~/11/@jsr/mary__array-fns/0.1.2.tgz}
+  '@jsr/mary__array-fns@0.1.4':
+    resolution: {integrity: sha512-+HbGYR9Ll5blEmAvVAoPejyGj01YeBbVmJ59qxaMDKt5i3F90ohYLA5a78y6AULDlet1IxYB+a/cMN+A0vGnDg==, tarball: https://npm.jsr.io/~/11/@jsr/mary__array-fns/0.1.4.tgz}
+
+  '@jsr/mary__date-fns@0.1.2':
+    resolution: {integrity: sha512-tRBbtJfgESGkP3p2qLG1IexQT2u0gdsB4o346Uu9fGpiqmG9Tte5tldEBLaAo8IdFnOsA44Pi2P6iSDTgsVCMg==, tarball: https://npm.jsr.io/~/11/@jsr/mary__date-fns/0.1.2.tgz}
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
@@ -1434,7 +1440,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@jsr/mary__array-fns@0.1.2': {}
+  '@jsr/mary__array-fns@0.1.4': {}
+
+  '@jsr/mary__date-fns@0.1.2': {}
 
   '@polka/url@1.0.0-next.28': {}
 
