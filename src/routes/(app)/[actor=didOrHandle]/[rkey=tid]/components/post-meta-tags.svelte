@@ -92,7 +92,7 @@
 
 	{#if media?.$type === 'app.bsky.embed.images#view'}
 		{#each media.images as image}
-			<meta property="og:image" content={image.fullsize} />
+			<meta property="og:image" content={image.fullsize.replace('@jpeg', '@png')} />
 		{/each}
 	{/if}
 </svelte:head>
