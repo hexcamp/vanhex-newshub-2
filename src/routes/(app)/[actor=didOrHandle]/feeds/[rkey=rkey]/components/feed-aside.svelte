@@ -18,8 +18,10 @@
 
 	const { feed }: Props = $props();
 
+	const uri = $derived(parseAtUri(feed.uri));
+
 	const creatorUrl = $derived(`${base}/${feed.creator.did}`);
-	const feedUrl = $derived(`${creatorUrl}/feeds/${parseAtUri(feed.uri).rkey}`);
+	const feedUrl = $derived(`${creatorUrl}/feeds/${uri.rkey}`);
 </script>
 
 <div class="feed-aside">
@@ -30,7 +32,7 @@
 		items={[
 			{
 				label: `Open in Bluesky app`,
-				href: `https://bsky.app/profile/${feed.creator.did}/feed/${parseAtUri(feed.uri).rkey}`,
+				href: `https://bsky.app/profile/${feed.creator.did}/feed/${uri.rkey}`,
 				external: true,
 				icon: SquareArrowTopRightOutlined,
 			},

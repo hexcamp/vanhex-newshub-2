@@ -24,12 +24,15 @@
 
 	const { post, prev = false }: Props = $props();
 
+	const uri = $derived(parseAtUri(post.uri));
+
 	const author = $derived(post.author);
-	const authorUrl = $derived(`/${author.did}`);
 	const authorName = $derived(author.displayName?.trim());
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
-	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+
+	const authorUrl = $derived(`${base}/${author.did}`);
+	const postUrl = $derived(`${base}/${author.did}/${uri.rkey}#main`);
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
@@ -60,7 +63,7 @@
 			items={[
 				{
 					label: `Open in Bluesky app`,
-					href: `https://bsky.app/profile/${author.did}/post/${parseAtUri(post.uri).rkey}`,
+					href: `https://bsky.app/profile/${author.did}/post/${uri.rkey}`,
 					external: true,
 					icon: SquareArrowTopRightOutlined,
 				},
