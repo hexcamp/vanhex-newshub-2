@@ -27,9 +27,7 @@
 			</a>
 		</div>
 
-		{#if 'description' in profile && profile.description?.trim()}
-			<p class="bio">{profile.description}</p>
-		{/if}
+		<p class="bio">{'description' in profile ? profile.description?.trim() : undefined}</p>
 	</div>
 </div>
 
@@ -105,5 +103,9 @@
 		overflow: hidden;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
+
+		&:empty {
+			display: none;
+		}
 	}
 </style>
