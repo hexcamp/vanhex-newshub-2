@@ -4,10 +4,9 @@
 	import type { PageProps } from './$types';
 
 	import ArrowRightOutlined from '$lib/components/central-icons/arrow-right-outlined.svelte';
-	import CompassRoundOutlined from '$lib/components/central-icons/compass-round-outlined.svelte';
+	import HashtagOutlined from '$lib/components/central-icons/hashtag-outlined.svelte';
 	import MagnifyingGlassOutlined from '$lib/components/central-icons/magnifying-glass-outlined.svelte';
 	import Trending_2Outlined from '$lib/components/central-icons/trending-2-outlined.svelte';
-	import HashtagOutlined from '$lib/components/central-icons/hashtag-outlined.svelte';
 
 	const { form }: PageProps = $props();
 </script>
