@@ -28,6 +28,7 @@
 
 <svelte:head>
 	<title>{title}</title>
+	<link rel="alternate" href="{base}/{uri.repo}/lists/{uri.rkey}/posts/rss" type="application/rss+xml" />
 </svelte:head>
 
 <PageListing subject="timeline" {rootUrl} {nextUrl}>
