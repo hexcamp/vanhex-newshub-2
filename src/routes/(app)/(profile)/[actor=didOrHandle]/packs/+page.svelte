@@ -18,12 +18,12 @@
 </script>
 
 <svelte:head>
-	<title>Feeds by @{data.profile.handle} — {PUBLIC_APP_NAME}</title>
+	<title>Starter packs by @{data.profile.handle} — {PUBLIC_APP_NAME}</title>
 </svelte:head>
 
-<PageHeader title="Lists" />
+<PageHeader title="Starter packs" />
 
-<PageListing subject="lists" {rootUrl} {nextUrl}>
+<PageListing subject="packs" {rootUrl} {nextUrl}>
 	{#each data.packs.items as pack (pack.uri)}
 		<StarterpackItem item={pack} />
 	{/each}

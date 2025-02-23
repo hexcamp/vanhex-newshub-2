@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>Feeds by @{data.profile.handle} — {PUBLIC_APP_NAME}</title>
+	<title>Lists by @{data.profile.handle} — {PUBLIC_APP_NAME}</title>
 </svelte:head>
 
 <PageHeader title="Lists" />
