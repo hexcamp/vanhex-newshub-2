@@ -1,15 +1,9 @@
 <script lang="ts">
-	import type {
-		AppBskyEmbedExternal,
-		AppBskyEmbedImages,
-		AppBskyEmbedRecord,
-		AppBskyEmbedVideo,
-		AppBskyFeedDefs,
-		Brand,
-	} from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
 	import { parseAtUri } from '$lib/types/at-uri';
+	import { unwrapEmbedView, type MediaEmbed, type RecordEmbed } from '$lib/utils/bluesky/embeds';
 	import { collectionToLabel } from '$lib/utils/bluesky/records';
 
 	import ContentHider from '../content-hider.svelte';
@@ -24,8 +18,6 @@
 	import VideoStandaloneEmbed from './video-standalone-embed.svelte';
 
 	type Embed = NonNullable<AppBskyFeedDefs.PostView['embed']>;
-	type MediaEmbed = Brand.Union<AppBskyEmbedExternal.View | AppBskyEmbedImages.View | AppBskyEmbedVideo.View>;
-	type RecordEmbed = AppBskyEmbedRecord.View;
 
 	interface Props {
 		embed: Embed;
@@ -34,16 +26,16 @@
 	}
 
 	const { embed, large = false, post }: Props = $props();
+
+	const { media, record } = $derived(unwrapEmbedView(embed));
 </script>
 
 <div class="embeds">
-	{#if embed.$type === 'app.bsky.embed.recordWithMedia#view'}
-		{@render Media(embed.media)}
-		{@render Record(embed.record)}
-	{:else if embed.$type === 'app.bsky.embed.record#view'}
-		{@render Record(embed)}
-	{:else}
-		{@render Media(embed)}
+	{#if media}
+		{@render Media(media)}
+	{/if}
+	{#if record}
+		{@render Record(record)}
 	{/if}
 </div>
 

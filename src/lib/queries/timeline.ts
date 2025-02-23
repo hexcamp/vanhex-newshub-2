@@ -1,7 +1,6 @@
 import type { XRPC } from '@atcute/client';
 import type {
 	AppBskyActorDefs,
-	AppBskyEmbedRecord,
 	AppBskyFeedDefs,
 	AppBskyFeedGetTimeline,
 	AppBskyFeedPost,
@@ -226,28 +225,4 @@ const getReplyAuthors = ({ root, grandparentAuthor, parent }: AppBskyFeedDefs.Re
 	}
 
 	return authors;
-};
-
-const getRecordEmbed = (embed: PostRecord['embed']): AppBskyEmbedRecord.Main | undefined => {
-	if (embed) {
-		if (embed.$type === 'app.bsky.embed.record') {
-			return embed;
-		}
-
-		if (embed.$type === 'app.bsky.embed.recordWithMedia') {
-			return embed.record;
-		}
-	}
-};
-
-const getRecordEmbedView = (embed: AppBskyFeedDefs.PostView['embed']) => {
-	if (embed) {
-		if (embed.$type === 'app.bsky.embed.record#view') {
-			return embed.record;
-		}
-
-		if (embed.$type === 'app.bsky.embed.recordWithMedia#view') {
-			return embed.record.record;
-		}
-	}
 };

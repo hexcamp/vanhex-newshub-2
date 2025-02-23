@@ -3,9 +3,9 @@ import type { AppBskyFeedDefs, AppBskyFeedPost, AppBskyRichtextFacet } from '@at
 
 import { PUBLIC_APP_URL } from '$env/static/public';
 
-import type { UiTimelineItem } from './models/timeline';
 import { findLabel, FlagsBlurMedia } from './moderation';
 import { parseAtUri } from './types/at-uri';
+import { getQuoteEmbedView, unwrapEmbedView } from './utils/bluesky/embeds';
 import { assertNever } from './utils/invariant';
 import type { UnwrapArray } from './utils/types';
 
@@ -182,8 +182,9 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 	const author = post.author;
 
 	const record = post.record as AppBskyFeedPost.Record;
-	const media = extractMediaEmbed(post.embed);
-	const quote = extractQuoteEmbed(post.embed);
+
+	const { media, record: recordEmbed } = unwrapEmbedView(post.embed);
+	const quote = getQuoteEmbedView(recordEmbed);
 
 	const shouldBlurMedia = !!findLabel(post.labels, author.did, FlagsBlurMedia);
 
@@ -246,45 +247,6 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 					}
 				: undefined,
 	};
-};
-
-const extractMediaEmbed = (embed: AppBskyFeedDefs.PostView['embed']) => {
-	switch (embed?.$type) {
-		case 'app.bsky.embed.images#view':
-		case 'app.bsky.embed.video#view': {
-			return embed;
-		}
-		case 'app.bsky.embed.recordWithMedia#view': {
-			return extractMediaEmbed(embed.media);
-		}
-	}
-};
-
-const extractQuoteEmbed = (embed: AppBskyFeedDefs.PostView['embed']) => {
-	switch (embed?.$type) {
-		case 'app.bsky.embed.record#view': {
-			const record = embed.record;
-
-			switch (record.$type) {
-				case 'app.bsky.embed.record#viewRecord': {
-					return record;
-				}
-				case 'app.bsky.embed.record#viewNotFound':
-				case 'app.bsky.embed.record#viewDetached':
-				case 'app.bsky.embed.record#viewBlocked': {
-					const uri = parseAtUri(embed.record.uri);
-					if (uri.collection === 'app.bsky.feed.post') {
-						return record;
-					}
-				}
-			}
-
-			break;
-		}
-		case 'app.bsky.embed.recordWithMedia#view': {
-			return extractQuoteEmbed({ $type: 'app.bsky.embed.record#view', record: embed.record.record });
-		}
-	}
 };
 
 const getVideoUrl = (playlistUrl: string) => {

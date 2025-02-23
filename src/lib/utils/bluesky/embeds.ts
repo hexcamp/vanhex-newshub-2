@@ -1,9 +1,14 @@
 import type { AppBskyEmbedRecordWithMedia, AppBskyFeedDefs } from '@atcute/client/lexicons';
 
+import { parseAtUri } from '$lib/types/at-uri';
+
 export interface Embed {
 	media?: AppBskyEmbedRecordWithMedia.View['media'];
 	record?: AppBskyEmbedRecordWithMedia.View['record'];
 }
+
+export type MediaEmbed = NonNullable<Embed['media']>;
+export type RecordEmbed = NonNullable<Embed['record']>;
 
 export const unwrapMediaEmbedView = (embed: AppBskyFeedDefs.PostView['embed']): Embed['media'] => {
 	switch (embed?.$type) {
@@ -34,4 +39,23 @@ export const unwrapEmbedView = (embed: AppBskyFeedDefs.PostView['embed']): Embed
 		media: unwrapMediaEmbedView(embed),
 		record: unwrapRecordEmbedView(embed),
 	};
+};
+
+export const getQuoteEmbedView = (embed: RecordEmbed | undefined) => {
+	const record = embed?.record;
+
+	switch (record?.$type) {
+		case 'app.bsky.embed.record#viewRecord': {
+			return record;
+		}
+
+		case 'app.bsky.embed.record#viewNotFound':
+		case 'app.bsky.embed.record#viewDetached':
+		case 'app.bsky.embed.record#viewBlocked': {
+			const uri = parseAtUri(record.uri);
+			if (uri.collection === 'app.bsky.feed.post') {
+				return record;
+			}
+		}
+	}
 };

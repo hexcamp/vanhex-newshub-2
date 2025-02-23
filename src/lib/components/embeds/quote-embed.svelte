@@ -1,37 +1,5 @@
-<script lang="ts" module>
-	const getPostImage = (embed: AppBskyFeedDefs.PostView['embed']): AppBskyEmbedImages.View | undefined => {
-		if (embed) {
-			if (embed.$type === 'app.bsky.embed.images#view') {
-				return embed;
-			}
-
-			if (embed.$type === 'app.bsky.embed.recordWithMedia#view') {
-				return getPostImage(embed.media);
-			}
-		}
-	};
-
-	const getPostVideo = (embed: AppBskyFeedDefs.PostView['embed']): AppBskyEmbedVideo.View | undefined => {
-		if (embed) {
-			if (embed.$type === 'app.bsky.embed.video#view') {
-				return embed;
-			}
-
-			if (embed.$type === 'app.bsky.embed.recordWithMedia#view') {
-				return getPostVideo(embed.media);
-			}
-		}
-	};
-</script>
-
 <script lang="ts">
-	import type {
-		AppBskyEmbedImages,
-		AppBskyEmbedRecord,
-		AppBskyEmbedVideo,
-		AppBskyFeedDefs,
-		AppBskyFeedPost,
-	} from '@atcute/client/lexicons';
+	import type { AppBskyEmbedRecord, AppBskyFeedPost } from '@atcute/client/lexicons';
 
 	import { base } from '$app/paths';
 
@@ -40,6 +8,7 @@
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import Time from '$lib/components/islands/time.svelte';
+	import { unwrapMediaEmbedView } from '$lib/utils/bluesky/embeds';
 
 	import ContentHider from '../content-hider.svelte';
 
@@ -60,8 +29,7 @@
 	const authorName = $derived(author.displayName?.trim());
 
 	const embed = $derived(quote.embeds?.[0]);
-	const image = $derived(getPostImage(embed));
-	const video = $derived(getPostVideo(embed));
+	const media = $derived(unwrapMediaEmbedView(embed));
 
 	const blurAvi = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blurContent = $derived(findLabel(quote.labels, author.did, FlagsBlurContent));
@@ -92,14 +60,14 @@
 
 		{#if text}
 			<div class="body">
-				{#if !large}
-					{#if image}
+				{#if !large && media}
+					{#if media.$type === 'app.bsky.embed.images#view'}
 						<div class="aside">
-							<ImageEmbed embed={image} blur={blurMedia} />
+							<ImageEmbed embed={media} blur={blurMedia} />
 						</div>
-					{:else if video}
+					{:else if media.$type === 'app.bsky.embed.video#view'}
 						<div class="aside">
-							<VideoThumbnailEmbed embed={video} blur={blurMedia} />
+							<VideoThumbnailEmbed embed={media} blur={blurMedia} />
 						</div>
 					{/if}
 				{/if}
@@ -110,11 +78,11 @@
 			<div class="divide"></div>
 		{/if}
 
-		{#if large || !text}
-			{#if image}
-				<ImageEmbed embed={image} borderless blur={blurMedia} />
-			{:else if video}
-				<VideoThumbnailEmbed embed={video} borderless blur={blurMedia} />
+		{#if (large || !text) && media}
+			{#if media.$type === 'app.bsky.embed.images#view'}
+				<ImageEmbed embed={media} borderless blur={blurMedia} />
+			{:else if media.$type === 'app.bsky.embed.video#view'}
+				<VideoThumbnailEmbed embed={media} borderless blur={blurMedia} />
 			{/if}
 		{/if}
 	</a>
