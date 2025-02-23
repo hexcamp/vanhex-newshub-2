@@ -83,6 +83,10 @@
 			opacity: 0.5;
 		}
 
+		&::-webkit-details-marker {
+			display: none;
+		}
+
 		&:focus-visible {
 			outline-offset: -2px;
 		}
