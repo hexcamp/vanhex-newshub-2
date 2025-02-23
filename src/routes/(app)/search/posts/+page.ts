@@ -1,4 +1,4 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
 
 import { asString, asStringUnion, useSearchParams } from '$lib/utils/search-params';
 
@@ -19,20 +19,30 @@ export const load: PageLoad = async ({ url }) => {
 		return { query, posts: { cursor: undefined, items: [] } };
 	}
 
-	const { data } = await rpc.get('app.bsky.feed.searchPosts', {
-		params: {
-			q: query,
-			limit: 50,
-			sort: sort,
-			cursor: cursor || undefined,
-		},
-	});
+	try {
+		const { data } = await rpc.get('app.bsky.feed.searchPosts', {
+			params: {
+				q: query,
+				limit: 50,
+				sort: sort,
+				cursor: cursor || undefined,
+			},
+		});
 
-	return {
-		query,
-		posts: {
-			cursor: data.cursor,
-			items: data.posts,
-		},
-	};
+		return {
+			query,
+			posts: {
+				cursor: data.cursor,
+				items: data.posts,
+			},
+		};
+	} catch (err) {
+		if (err instanceof XRPCError) {
+			if (err.status === 403) {
+				return { query, posts: { cursor: undefined, items: [] } };
+			}
+		}
+
+		throw err;
+	}
 };
