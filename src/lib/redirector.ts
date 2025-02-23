@@ -44,7 +44,7 @@ export const redirectBskyUrl = (rawUrl: string): string | null | undefined => {
 				return null;
 			}
 
-			return `${base}/${actor}/${rkey}`;
+			return `${base}/${actor}/${rkey}#main`;
 		}
 
 		if ((match = BSKY_FEED_LINK_RE.exec(pathname))) {
@@ -117,7 +117,7 @@ export const redirectAtUri = (raw: string): string | null | undefined => {
 				return null;
 			}
 
-			return `${base}/${repo}/${rkey}`;
+			return `${base}/${repo}/${rkey}#main`;
 		}
 		case 'app.bsky.feed.generator': {
 			return `${base}/${repo}/feeds/${rkey}`;
