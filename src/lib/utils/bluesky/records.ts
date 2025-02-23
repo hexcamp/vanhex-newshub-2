@@ -1,4 +1,4 @@
-export const collectionToLabel = (collection: string | undefined): string | null => {
+export const collectionToLabel = (collection: string): string | null => {
 	switch (collection) {
 		case 'app.bsky.feed.post':
 			return 'post';
