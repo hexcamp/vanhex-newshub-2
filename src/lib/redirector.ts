@@ -98,8 +98,12 @@ export const redirectBskyUrl = (rawUrl: string): string | null | undefined => {
 	}
 
 	if (host === 'blue.mackuba.eu' && pathname === '/skythread/') {
-		const author = url.searchParams.get('author') ?? '';
-		const post = url.searchParams.get('post') ?? '';
+		const author = url.searchParams.get('author');
+		const post = url.searchParams.get('post');
+
+		if (author === null || post === null) {
+			return null;
+		}
 
 		if (!isHandle(author) && !isDid(author)) {
 			return null;
