@@ -4,6 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
+	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { formatCompactNumber, formatLongNumber } from '$lib/utils/intl/number';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -18,6 +19,8 @@
 	const { profile }: Props = $props();
 
 	const did = $derived(profile.did);
+
+	const description = trimRichText(profile.description ?? '');
 
 	const blur = $derived(!!findLabel(profile.labels, profile.did, FlagsBlurMedia));
 </script>
@@ -62,8 +65,8 @@
 		<p class="handle">@{profile.handle}</p>
 	</div>
 
-	{#if profile.description?.trim()}
-		<RichtextRawRenderer text={profile.description} />
+	{#if description}
+		<RichtextRawRenderer text={description} />
 	{/if}
 
 	<div class="stats">
