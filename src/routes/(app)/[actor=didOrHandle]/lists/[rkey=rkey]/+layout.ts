@@ -7,7 +7,7 @@ import { resolveHandle } from '$lib/queries/handle';
 import { makeAtUri } from '$lib/types/at-uri';
 import { isDid, type Did } from '$lib/types/identity';
 
-export const load: LayoutLoad = async ({ params, fetch }) => {
+export const load: LayoutLoad = async ({ url, route, params, fetch }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let did: Did;
@@ -17,14 +17,17 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
 		did = await resolveHandle({ rpc, handle: params.actor });
 	}
 
+	const isListing = route.id === '/(app)/[actor=didOrHandle]/lists/[rkey=rkey]/members';
+	const cursor = url.searchParams.get('cursor') || undefined;
 	const { data } = await rpc.get('app.bsky.graph.getList', {
 		params: {
 			list: makeAtUri(did, 'app.bsky.graph.list', params.rkey),
-			limit: 1,
+			limit: isListing ? 50 : 1,
+			cursor: isListing ? cursor : undefined,
 		},
 	});
 
 	const view = data.list;
 
-	return { list: view };
+	return { list: view, members: { cursor: data.cursor, items: data.items } };
 };
