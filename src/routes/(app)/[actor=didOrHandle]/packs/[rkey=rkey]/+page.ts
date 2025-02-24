@@ -13,6 +13,12 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 		return { members: { cursor: undefined, items: [] } };
 	}
 
+	if (pack.listItemsSample) {
+		if ((pack.list.listItemCount ?? 0) <= pack.listItemsSample.length) {
+			return { members: { cursor: undefined, items: pack.listItemsSample } };
+		}
+	}
+
 	const { data } = await rpc.get('app.bsky.graph.getList', {
 		params: {
 			list: pack.list.uri,
