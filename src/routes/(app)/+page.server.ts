@@ -2,7 +2,7 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 import { base } from '$app/paths';
 
-import { redirectAtUri, redirectBskyUrl } from '$lib/redirector';
+import { redirectAtUri, redirectBskyUrl, redirectOtherUrl } from '$lib/redirector';
 
 const MAYBE_HANDLE_RE = /^@[a-zA-Z0-9-. ]+$/;
 
@@ -33,7 +33,7 @@ export const actions = {
 
 		query = query.trim();
 
-		const redirectUrl = redirectBskyUrl(query) || redirectAtUri(query);
+		const redirectUrl = redirectBskyUrl(query) || redirectOtherUrl(query) || redirectAtUri(query);
 		if (redirectUrl) {
 			redirect(302, redirectUrl);
 		}

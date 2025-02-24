@@ -97,6 +97,22 @@ export const redirectBskyUrl = (rawUrl: string): string | null | undefined => {
 		}
 	}
 
+	return;
+};
+
+// https://skywriter.blue/pages/georgemonbiot.bsky.social/post/3livzzfqc4c2c
+const SKYWRITER_UNROLL_RE = /^\/pages\/([^/]+)\/post\/([^/]+)\/?$/;
+
+export const redirectOtherUrl = (rawUrl: string): string | null | undefined => {
+	const url = safeUrlParse(rawUrl);
+	if (!url) {
+		return;
+	}
+
+	const host = url.host;
+	const pathname = url.pathname;
+	let match: RegExpExecArray | null | undefined;
+
 	if (host === 'blue.mackuba.eu' && pathname === '/skythread/') {
 		const author = url.searchParams.get('author');
 		const post = url.searchParams.get('post');
@@ -113,6 +129,42 @@ export const redirectBskyUrl = (rawUrl: string): string | null | undefined => {
 		}
 
 		return `${base}/${author}/${post}#main`;
+	}
+
+	if (host === 'skywriter.blue') {
+		if ((match = SKYWRITER_UNROLL_RE.exec(pathname))) {
+			const [, actor, rkey] = match;
+
+			if (!isHandle(actor) && !isDid(actor)) {
+				return null;
+			}
+			if (!isTid(rkey)) {
+				return null;
+			}
+
+			return `${base}/${actor}/${rkey}/unroll`;
+		}
+	}
+
+	// https://skyview.social/?url=https://bsky.app/profile/did:plc:tyt7lpgpfbn3c37tylht7ksy/post/3lithx22epk2l&viewtype=unroll
+	if (host === 'skyview.social') {
+		const uri = url.searchParams.get('url');
+
+		if (uri === null) {
+			return null;
+		}
+
+		const redirect = redirectBskyUrl(uri);
+		if (redirect == null) {
+			return null;
+		}
+
+		const viewtype = url.searchParams.get('viewtype');
+		if (viewtype === 'unroll') {
+			return redirect.replace(/#main$/, '/unroll');
+		}
+
+		return redirect;
 	}
 
 	return;
