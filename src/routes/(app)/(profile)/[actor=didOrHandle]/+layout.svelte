@@ -133,6 +133,7 @@
 		background: var(--bg-primary);
 	}
 	.association {
+		outline-offset: -2px;
 		padding: 10px 16px;
 		color: var(--text-blurb);
 
