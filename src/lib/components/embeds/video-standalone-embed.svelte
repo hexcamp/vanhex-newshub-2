@@ -86,6 +86,11 @@
 			width: 100%;
 			height: 100%;
 		}
+
+		&:has(.link:focus-visible) {
+			outline: 2px solid var(--accent);
+			outline-offset: -1px;
+		}
 	}
 	.has-ratio {
 		align-self: start;
@@ -104,13 +109,9 @@
 	}
 	.link {
 		display: block;
-		border-radius: 5px;
+		outline: none;
 		width: 100%;
 		height: 100%;
-
-		&:focus-visible {
-			outline-offset: -2px;
-		}
 	}
 
 	.thumbnail {
