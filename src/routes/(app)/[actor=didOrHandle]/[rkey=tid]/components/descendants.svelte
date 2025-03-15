@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	import { createReplyCollator } from '../utils';
 
@@ -59,7 +59,7 @@
 				</div>
 			{/if}
 
-			<OverflowDescendantItem postUrl="{base}/{post.author.did}/{parseAtUri(post.uri).rkey}#main" />
+			<OverflowDescendantItem postUrl="{base}/{post.author.did}/{parseAddressedAtUri(post.uri).rkey}#main" />
 		{/if}
 	{/each}
 {/snippet}

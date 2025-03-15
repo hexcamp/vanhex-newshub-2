@@ -6,7 +6,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import ContentHider from '$lib/components/content-hider.svelte';
@@ -29,7 +29,7 @@
 	const authorUrl = $derived(`${base}/${author.did}`);
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
-	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+	const postUrl = $derived(`${base}/${author.did}/${parseAddressedAtUri(post.uri).rkey}#main`);
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));

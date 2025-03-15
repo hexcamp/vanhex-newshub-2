@@ -1,6 +1,6 @@
 import type { AppBskyEmbedRecordWithMedia, AppBskyFeedDefs } from '@atcute/client/lexicons';
 
-import { parseAtUri } from '$lib/types/at-uri';
+import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 export interface Embed {
 	media?: AppBskyEmbedRecordWithMedia.View['media'];
@@ -49,7 +49,7 @@ export const getQuoteEmbedView = (embed: RecordEmbed | undefined) => {
 		case 'app.bsky.embed.record#viewNotFound':
 		case 'app.bsky.embed.record#viewDetached':
 		case 'app.bsky.embed.record#viewBlocked': {
-			const uri = parseAtUri(record.uri);
+			const uri = parseAddressedAtUri(record.uri);
 			if (uri.collection === 'app.bsky.feed.post') {
 				return record;
 			}

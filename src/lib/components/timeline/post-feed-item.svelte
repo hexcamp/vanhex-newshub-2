@@ -5,7 +5,7 @@
 
 	import type { UiTimelineItem } from '$lib/models/timeline';
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 
 	import ArrowsRepeatRightLeftOutlined from '$lib/components/central-icons/arrows-repeat-right-left-outlined.svelte';
@@ -30,7 +30,7 @@
 	const authorUrl = $derived(`${base}/${author.did}`);
 
 	const record = $derived(post.record as AppBskyFeedPost.Record);
-	const postUrl = $derived(`${base}/${author.did}/${parseAtUri(post.uri).rkey}#main`);
+	const postUrl = $derived(`${base}/${author.did}/${parseAddressedAtUri(post.uri).rkey}#main`);
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));

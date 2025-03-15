@@ -4,7 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { purposeToLabel } from '$lib/utils/bluesky/lists';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
@@ -23,7 +23,7 @@
 	const blurAvi = $derived(!!findLabel(list.labels, creator.did, FlagsBlurMedia));
 </script>
 
-<a href="{base}/{creator.did}/lists/{parseAtUri(list.uri).rkey}" class="list-embed">
+<a href="{base}/{creator.did}/lists/{parseAddressedAtUri(list.uri).rkey}" class="list-embed">
 	<div class="main">
 		<Avatar type="list" src={list.avatar} blur={blurAvi} />
 

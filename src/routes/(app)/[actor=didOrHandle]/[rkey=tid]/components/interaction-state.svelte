@@ -7,7 +7,7 @@
 	import Group_2Outlined from '$lib/components/central-icons/group-2-outlined.svelte';
 	import CircleBanSignOutlined from '$lib/components/central-icons/circle-ban-sign-outlined.svelte';
 	import { base } from '$app/paths';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	interface Props {
 		threadgate: AppBskyFeedDefs.ThreadgateView | undefined;
@@ -99,7 +99,7 @@
 					{@const hydrated = threadgate!.lists?.find((list) => list.uri === rule.list)}
 
 					{#if hydrated}
-						{@const uri = parseAtUri(rule.list)}
+						{@const uri = parseAddressedAtUri(rule.list)}
 
 						<li>
 							Users in <a class="link" href="{base}/{uri.repo}/lists/{uri.rkey}">{hydrated.name}</a> list

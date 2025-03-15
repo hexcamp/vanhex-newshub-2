@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { formatLongNumber } from '$lib/utils/intl/number';
@@ -20,7 +20,7 @@
 
 	const { feed }: Props = $props();
 
-	const uri = $derived(parseAtUri(feed.uri));
+	const uri = $derived(parseAddressedAtUri(feed.uri));
 
 	const creatorUrl = $derived(`${base}/${feed.creator.did}`);
 	const feedUrl = $derived(`${creatorUrl}/feeds/${uri.rkey}`);

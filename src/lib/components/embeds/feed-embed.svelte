@@ -4,7 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateRight } from '$lib/utils/strings';
@@ -22,7 +22,7 @@
 	const blurAvi = $derived(!!findLabel(feed.labels, creator.did, FlagsBlurMedia));
 </script>
 
-<a href="{base}/{creator.did}/feeds/{parseAtUri(feed.uri).rkey}" class="feed-embed">
+<a href="{base}/{creator.did}/feeds/{parseAddressedAtUri(feed.uri).rkey}" class="feed-embed">
 	<div class="main">
 		<Avatar type="generator" src={feed.avatar} blur={blurAvi} />
 

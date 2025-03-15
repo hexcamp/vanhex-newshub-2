@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	interface Props {
 		count: number;
@@ -15,7 +15,7 @@
 
 <div class="missing-descendant-item">
 	<span class="label">{count === 1 ? `${count} missing reply` : `${count} missing replies`}</span>
-	<a href="{base}/{post.author.did}/{parseAtUri(post.uri).rkey}/all-replies" class="link">View</a>
+	<a href="{base}/{post.author.did}/{parseAddressedAtUri(post.uri).rkey}/all-replies" class="link">View</a>
 </div>
 
 <style>

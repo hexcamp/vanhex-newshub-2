@@ -2,7 +2,7 @@
 	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { unwrapEmbedView, type MediaEmbed, type RecordEmbed } from '$lib/utils/bluesky/embeds';
 	import { collectionToLabel } from '$lib/utils/bluesky/records';
 
@@ -67,7 +67,7 @@
 	{:else if record.$type === 'app.bsky.graph.defs#starterPackViewBasic'}
 		<StarterpackEmbed embed={record} {large} />
 	{:else}
-		{@const uri = parseAtUri(record.uri)}
+		{@const uri = parseAddressedAtUri(record.uri)}
 
 		{#if uri.collection === 'app.bsky.feed.post' && (record.$type === 'app.bsky.embed.record#viewBlocked' || record.$type === 'app.bsky.embed.record#viewDetached')}
 			<QuoteBlockedEmbed embed={record} {uri} />

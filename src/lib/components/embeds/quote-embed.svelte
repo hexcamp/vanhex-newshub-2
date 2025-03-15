@@ -4,7 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { unwrapMediaEmbedView } from '$lib/utils/bluesky/embeds';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
@@ -39,7 +39,7 @@
 </script>
 
 <ContentHider blur={blurContent}>
-	<a href="{base}/{author.did}/{parseAtUri(quote.uri).rkey}#main" class="quote-embed">
+	<a href="{base}/{author.did}/{parseAddressedAtUri(quote.uri).rkey}#main" class="quote-embed">
 		<div class="meta">
 			<Avatar profile={author} src={author.avatar} size="xs" blur={blurAvi} />
 

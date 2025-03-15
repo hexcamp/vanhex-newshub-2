@@ -2,30 +2,58 @@ import type { Records } from '@atcute/client/lexicons';
 
 import { assert } from '$lib/utils/invariant';
 
-import type { Did, Handle } from './identity';
-import type { Nsid } from './nsid';
+import { isDid, isHandle, type Did, type Handle } from './identity';
+import { isNsid, type Nsid } from './nsid';
+import { isRecordKey, type RecordKey } from './rkey';
 
-export type AtUri = `at://${Did | Handle}/${Nsid}/${string}`;
+export type AtUri = `at://${Did | Handle}/${Nsid}/${RecordKey}`;
 
-export const ATURI_RE =
-	/^at:\/\/(did:[a-z]+:[a-zA-Z0-9._:%\-]*[a-zA-Z0-9._\-]|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z])\/([a-zA-Z0-9-.]+)\/((?!\.{1,2}$)[a-zA-Z0-9_~.:-]{1,512})(?:#(\/[a-zA-Z0-9._~:@!$&%')(*+,;=\-[\]/\\]*))?$/;
+const ATURI_RE =
+	/^at:\/\/([a-zA-Z0-9._:%-]+)(?:\/([a-zA-Z0-9-.]+)(?:\/([a-zA-Z0-9._~:@!$&%')(*+,;=-]+))?)?(?:#(\/[a-zA-Z0-9._~:@!$&%')(*+,;=\-[\]/\\]*))?$/;
 
-export interface ParsedAtUri {
-	repo: string;
-	collection: string;
-	rkey: string;
+export type AddressedAtUri = {
+	repo: Did;
+	collection: Nsid;
+	rkey: RecordKey;
 	fragment: string | undefined;
-}
+};
 
-export const parseAtUri = (str: string): ParsedAtUri => {
+export const parseAddressedAtUri = (str: string): AddressedAtUri => {
 	const match = ATURI_RE.exec(str);
-	assert(match !== null, `failed to parse at-uri for ${str}`);
+	assert(match !== null, `invalid addressed-at-uri: ${str}`);
+
+	const [, r, c, k, f] = match;
+	assert(isDid(r), `invalid repo in addressed-at-uri: ${r}`);
+	assert(isNsid(c), `invalid collection in addressed-at-uri: ${c}`);
+	assert(isRecordKey(k), `invalid rkey in addressed-at-uri: ${k}`);
 
 	return {
-		repo: match[1] as Did,
-		collection: match[2],
-		rkey: match[3],
-		fragment: match[4],
+		repo: r,
+		collection: c,
+		rkey: k,
+		fragment: f,
+	};
+};
+
+export type PartialAtUri =
+	| { repo: Did | Handle; collection: undefined; rkey: undefined; fragment: string | undefined }
+	| { repo: Did | Handle; collection: Nsid; rkey: undefined; fragment: string | undefined }
+	| { repo: Did | Handle; collection: Nsid; rkey: RecordKey; fragment: string | undefined };
+
+export const parsePartialAtUri = (str: string): PartialAtUri => {
+	const match = ATURI_RE.exec(str);
+	assert(match !== null, `invalid partial-at-uri: ${str}`);
+
+	const [, r, c, k, f] = match;
+	assert(isDid(r) || isHandle(r), `invalid repo in partial-at-uri: ${r}`);
+	assert(c === undefined || isNsid(c), `invalid collection in partial-at-uri: ${c}`);
+	assert(k === undefined || isRecordKey(k), `invalid rkey in partial-at-uri: ${k}`);
+
+	return {
+		repo: r,
+		collection: c,
+		rkey: k,
+		fragment: f,
 	};
 };
 

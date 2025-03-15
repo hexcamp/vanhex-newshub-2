@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateRight } from '$lib/utils/strings';
@@ -21,7 +21,7 @@
 
 	const creator = $derived(pack.creator);
 
-	const rkey = $derived(parseAtUri(pack.uri).rkey);
+	const rkey = $derived(parseAddressedAtUri(pack.uri).rkey);
 </script>
 
 <a href="{base}/{creator.did}/packs/{rkey}" class="starterpack-embed">

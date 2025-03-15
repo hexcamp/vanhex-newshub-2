@@ -3,7 +3,7 @@
 
 	import { PUBLIC_APP_NAME, PUBLIC_APP_URL } from '$env/static/public';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { purposeToLabel } from '$lib/utils/bluesky/lists';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
@@ -15,7 +15,7 @@
 
 	const { list }: Props = $props();
 
-	const uri = $derived(parseAtUri(list.uri));
+	const uri = $derived(parseAddressedAtUri(list.uri));
 
 	const description = $derived.by(() => {
 		const desc = trimRichText(list.description ?? '');

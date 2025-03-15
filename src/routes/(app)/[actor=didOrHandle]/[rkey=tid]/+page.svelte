@@ -5,7 +5,7 @@
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { PageProps } from './$types';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { truncateMiddle, truncateRight } from '$lib/utils/strings';
 
 	import BlockedAscendantItem from './components/blocked-ascendant-item.svelte';
@@ -22,7 +22,7 @@
 	const { data }: PageProps = $props();
 
 	const main = $derived(data.thread.post);
-	const uri = $derived(parseAtUri(main.uri));
+	const uri = $derived(parseAddressedAtUri(main.uri));
 
 	const title = $derived.by(() => {
 		const author = `@${truncateMiddle(main.author.handle, 29)}`;
@@ -52,15 +52,15 @@
 			{#if item.type === 'post'}
 				<PostAscendantItem {item} />
 			{:else if item.type === 'overflow'}
-				{@const uri = parseAtUri(item.uri)}
+				{@const uri = parseAddressedAtUri(item.uri)}
 
 				<OverflowAscendantItem postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{:else if item.type === 'blocked'}
-				{@const uri = parseAtUri(item.uri)}
+				{@const uri = parseAddressedAtUri(item.uri)}
 
 				<BlockedAscendantItem postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{:else if item.type === 'nonexistent'}
-				{@const uri = parseAtUri(item.uri)}
+				{@const uri = parseAddressedAtUri(item.uri)}
 
 				<NonexistentAscendantPost postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{/if}

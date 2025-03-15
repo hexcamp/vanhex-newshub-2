@@ -7,11 +7,11 @@
 
 	import PageListing from '$lib/components/page/page-listing.svelte';
 	import PostFeedItem from '$lib/components/timeline/post-feed-item.svelte';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	const { data }: PageProps = $props();
 
-	const uri = $derived(parseAtUri(data.pack.uri));
+	const uri = $derived(parseAddressedAtUri(data.pack.uri));
 
 	const { rootUrl, nextUrl } = $derived(
 		paginate(page.url, data.timeline.cursor, `${base}/${uri.repo}/packs/${uri.rkey}/posts`),

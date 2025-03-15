@@ -4,7 +4,7 @@ import type { AppBskyFeedDefs, AppBskyFeedPost, AppBskyRichtextFacet } from '@at
 import { PUBLIC_APP_URL } from '$env/static/public';
 
 import { findLabel, FlagsBlurMedia } from './moderation';
-import { parseAtUri } from './types/at-uri';
+import { parseAddressedAtUri } from './types/at-uri';
 import { getQuoteEmbedView, unwrapEmbedView } from './utils/bluesky/embeds';
 import { assertNever } from './utils/invariant';
 import type { UnwrapArray } from './utils/types';
@@ -197,7 +197,7 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 				const author = quote.author;
 				const record = quote.value as AppBskyFeedPost.Record;
 
-				const postUrl = `${PUBLIC_APP_URL}/${author.did}/${parseAtUri(quote.uri).rkey}`;
+				const postUrl = `${PUBLIC_APP_URL}/${author.did}/${parseAddressedAtUri(quote.uri).rkey}`;
 
 				html += `<blockquote>`;
 				html += `<b><a href="${escapeAttribute(postUrl)}">`;
@@ -225,7 +225,7 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 
 	return {
 		id: `${post.uri}|${post.cid}`,
-		url: `${PUBLIC_APP_URL}/${author.did}/${parseAtUri(post.uri).rkey}`,
+		url: `${PUBLIC_APP_URL}/${author.did}/${parseAddressedAtUri(post.uri).rkey}`,
 		date: new Date(post.indexedAt),
 		description: { html },
 		images:

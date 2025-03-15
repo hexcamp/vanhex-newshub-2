@@ -5,7 +5,7 @@
 	import { page } from '$app/state';
 	import type { LayoutProps } from './$types';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	import ListAside from './components/list-aside.svelte';
 	import ListMetaTags from './components/list-meta-tags.svelte';
@@ -14,7 +14,7 @@
 
 	const currentRouteId = $derived(page.route.id);
 
-	const uri = $derived(parseAtUri(data.list.uri));
+	const uri = $derived(parseAddressedAtUri(data.list.uri));
 	const listUrl = $derived.by(() => {
 		return `${base}/${uri.repo}/lists/${uri.rkey}`;
 	});

@@ -1,17 +1,17 @@
 import { base } from '$app/paths';
-import { ATURI_RE } from './types/at-uri';
+import { parsePartialAtUri, type PartialAtUri } from './types/at-uri';
 
 import { isDid, isHandle } from './types/identity';
 import { isRecordKey, isTid } from './types/rkey';
 import {
 	BSKY_FEED_LINK_RE,
+	BSKY_GO_SHORTLINK_RE,
+	BSKY_HASHTAG_LINK_RE,
 	BSKY_LIST_LINK_RE,
 	BSKY_POST_LINK_RE,
 	BSKY_PROFILE_LINK_RE,
-	BSKY_STARTERPACK_LINK_RE,
-	BSKY_GO_SHORTLINK_RE,
 	BSKY_SEARCH_LINK_RE,
-	BSKY_HASHTAG_LINK_RE,
+	BSKY_STARTERPACK_LINK_RE,
 } from './utils/bluesky/urls';
 import { safeUrlParse } from './utils/url';
 
@@ -183,33 +183,39 @@ export const redirectOtherUrl = (rawUrl: string): string | null | undefined => {
 };
 
 export const redirectAtUri = (raw: string): string | null | undefined => {
-	const match = ATURI_RE.exec(raw);
-	if (!match) {
+	let uri: PartialAtUri;
+	try {
+		uri = parsePartialAtUri(raw);
+	} catch (e) {
 		return;
 	}
 
-	const [, repo, collection, rkey] = match;
-
-	switch (collection) {
-		case 'app.bsky.actor.profile': {
-			return `${base}/${repo}`;
-		}
-		case 'app.bsky.feed.post': {
-			if (!isTid(rkey)) {
-				return null;
+	if (uri.rkey) {
+		switch (uri.collection) {
+			case 'app.bsky.actor.profile': {
+				return `${base}/${uri.repo}`;
 			}
+			case 'app.bsky.feed.post': {
+				if (!isTid(uri.rkey)) {
+					return null;
+				}
 
-			return `${base}/${repo}/${rkey}#main`;
+				return `${base}/${uri.repo}/${uri.rkey}#main`;
+			}
+			case 'app.bsky.feed.generator': {
+				return `${base}/${uri.repo}/feeds/${uri.rkey}`;
+			}
+			case 'app.bsky.graph.list': {
+				return `${base}/${uri.repo}/lists/${uri.rkey}`;
+			}
+			case 'app.bsky.graph.starterpack': {
+				return `${base}/${uri.repo}/packs/${uri.rkey}`;
+			}
 		}
-		case 'app.bsky.feed.generator': {
-			return `${base}/${repo}/feeds/${rkey}`;
-		}
-		case 'app.bsky.graph.list': {
-			return `${base}/${repo}/lists/${rkey}`;
-		}
-		case 'app.bsky.graph.starterpack': {
-			return `${base}/${repo}/packs/${rkey}`;
-		}
+	}
+
+	if (uri.collection === undefined) {
+		return `${base}/${uri.repo}`;
 	}
 
 	return null;

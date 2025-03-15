@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 
@@ -19,7 +19,7 @@
 
 	const { pack }: Props = $props();
 
-	const uri = $derived(parseAtUri(pack.uri));
+	const uri = $derived(parseAddressedAtUri(pack.uri));
 	const record = $derived(pack.record as AppBskyGraphStarterpack.Record);
 
 	const creatorUrl = $derived(`${base}/${pack.creator.did}`);

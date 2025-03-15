@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { formatCompactNumber } from '$lib/utils/intl/number';
 
 	interface Props {
@@ -12,7 +12,7 @@
 
 	const { post }: Props = $props();
 
-	const baseUrl = $derived(`${base}/${post.author.did}/${parseAtUri(post.uri).rkey}`);
+	const baseUrl = $derived(`${base}/${post.author.did}/${parseAddressedAtUri(post.uri).rkey}`);
 </script>
 
 {#snippet Stat(count: number | undefined, one: string, many: string, href: string)}

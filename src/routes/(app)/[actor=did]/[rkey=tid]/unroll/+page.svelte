@@ -7,7 +7,7 @@
 	import type { PageProps } from './$types';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { truncateMiddle, truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -25,7 +25,7 @@
 	const author = $derived(main.author);
 	const authorName = $derived(author.displayName?.trim());
 
-	const uri = $derived(parseAtUri(main.uri));
+	const uri = $derived(parseAddressedAtUri(main.uri));
 	const postUrl = $derived(`${base}/${uri.repo}/${uri.rkey}#main`);
 	const authorUrl = $derived(`${base}/${uri.repo}`);
 

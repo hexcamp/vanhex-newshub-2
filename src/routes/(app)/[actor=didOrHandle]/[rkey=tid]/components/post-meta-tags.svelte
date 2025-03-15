@@ -3,7 +3,7 @@
 
 	import { PUBLIC_APP_NAME, PUBLIC_APP_URL } from '$env/static/public';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { unwrapEmbedView } from '$lib/utils/bluesky/embeds';
 	import { collectionToLabel } from '$lib/utils/bluesky/records';
@@ -16,7 +16,7 @@
 
 	const { post }: Props = $props();
 
-	const uri = $derived(parseAtUri(post.uri));
+	const uri = $derived(parseAddressedAtUri(post.uri));
 
 	const author = $derived(post.author);
 	const displayName = $derived(normalizeDisplayName(author.displayName ?? ''));
@@ -65,7 +65,7 @@
 					break;
 				}
 				default: {
-					const uri = parseAtUri(view.uri);
+					const uri = parseAddressedAtUri(view.uri);
 					const resource = collectionToLabel(uri.collection);
 
 					const isUnavailable =

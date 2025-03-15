@@ -8,7 +8,7 @@
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { LayoutProps } from './$types';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 
 	import PackAside from './components/pack-aside.svelte';
 	import PackMetaTags from './components/pack-meta-tags.svelte';
@@ -18,7 +18,7 @@
 	const currentRouteId = $derived(page.route.id);
 
 	const record = $derived(data.pack.record as AppBskyGraphStarterpack.Record);
-	const uri = $derived(parseAtUri(data.pack.uri));
+	const uri = $derived(parseAddressedAtUri(data.pack.uri));
 
 	const listUrl = $derived.by(() => {
 		return `${base}/${uri.repo}/packs/${uri.rkey}`;

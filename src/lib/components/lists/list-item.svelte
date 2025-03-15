@@ -3,7 +3,7 @@
 
 	import { base } from '$app/paths';
 
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { purposeToLabel } from '$lib/utils/bluesky/lists';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
@@ -19,7 +19,7 @@
 
 	const creator = $derived(list.creator);
 
-	const href = $derived(`${base}/${creator.did}/lists/${parseAtUri(list.uri).rkey}`);
+	const href = $derived(`${base}/${creator.did}/lists/${parseAddressedAtUri(list.uri).rkey}`);
 </script>
 
 <div class="list-item">

@@ -4,7 +4,7 @@
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAtUri } from '$lib/types/at-uri';
+	import { parseAddressedAtUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -27,7 +27,7 @@
 
 	const { post, threadgate, prev = false }: Props = $props();
 
-	const uri = $derived(parseAtUri(post.uri));
+	const uri = $derived(parseAddressedAtUri(post.uri));
 
 	const author = $derived(post.author);
 	const authorName = $derived(normalizeDisplayName(author.displayName ?? ''));
