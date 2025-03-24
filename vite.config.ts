@@ -20,7 +20,7 @@ export default defineConfig(({ command }) => {
 						code = code
 							.replace(/<!--.*?-->/g, '')
 							.replace(/\$\$slots: {.+?},?/g, '')
-							.replace(/\$\$payload\.out \+= ["`]{2};|\$\.(push|pop)\(\);/g, '')
+							.replace(/\$\$payload\.out \+= ["'`]{2};|\$\.(push|pop)\(\);/g, '')
 							.replace(/(?<=\$\$payload\.out \+= )`\${([a-zA-Z0-9_$.,()[\]\s]+?)}`(?=;)/, '$1');
 
 						return code;
