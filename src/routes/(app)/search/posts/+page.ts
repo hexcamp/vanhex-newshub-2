@@ -20,7 +20,7 @@ export const load: PageLoad = async ({ url }) => {
 	}
 
 	try {
-		const { data } = await rpc.get('app.bsky.feed.searchPosts', {
+		const { data } = await rpc.get(randomCase('app.bsky.feed.searchPosts', !!cursor), {
 			params: {
 				q: query,
 				limit: 50,
@@ -45,4 +45,21 @@ export const load: PageLoad = async ({ url }) => {
 
 		throw err;
 	}
+};
+
+const randomCase = <T extends string>(str: T, enabled: boolean): T => {
+	if (!enabled) {
+		return str;
+	}
+
+	let result: string;
+
+	do {
+		result = str
+			.split('')
+			.map((char) => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
+			.join('');
+	} while (result === str);
+
+	return result as T;
 };
