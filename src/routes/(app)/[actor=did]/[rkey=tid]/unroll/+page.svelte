@@ -209,10 +209,10 @@
 	}
 
 	.subitem {
-		margin: 6px 0 0 0;
+		margin: 0.25lh 0 0 0;
 
 		& + & {
-			margin: 18px 0 0 0;
+			margin: 1lh 0 0 0;
 		}
 	}
 </style>
