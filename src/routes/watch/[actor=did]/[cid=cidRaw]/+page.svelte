@@ -16,6 +16,18 @@
 		const hls = new Hls({
 			capLevelToPlayerSize: true,
 			startLevel: 1,
+			xhrSetup(xhr, urlString) {
+				if (!urlString.endsWith('/playlist.m3u8')) {
+					urlString = urlString.replace('https://video.bsky.app/watch/', 'https://video.cdn.bsky.app/hls/');
+				}
+
+				const url = new URL(urlString);
+
+				// Remove `session_id` everywhere
+				url.searchParams.delete('session_id');
+
+				xhr.open('get', url.toString());
+			},
 		});
 
 		hls.loadSource(data.playlistUrl);
