@@ -15,13 +15,15 @@
 
 	const external = $derived(embed.external);
 
-	const domain = $derived(safeUrlParse(external.uri)?.host.replace(/^www\./, ''));
-	const redirectUrl = $derived(redirectBskyUrl(external.uri));
+	const parsed = $derived(safeUrlParse(external.uri));
+
+	const domain = $derived(parsed?.host.replace(/^www\./, ''));
+	const redir = $derived(parsed && redirectBskyUrl(parsed));
 </script>
 
 <a
-	target={!redirectUrl ? '_blank' : undefined}
-	href={redirectUrl || (domain ? external.uri : '')}
+	target={!redir || redir.type === 'external' ? '_blank' : undefined}
+	href={redir ? redir.url : domain ? external.uri : ''}
 	rel="noopener noreferrer nofollow"
 	class="external-embed"
 >

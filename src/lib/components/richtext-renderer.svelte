@@ -15,6 +15,7 @@
 	import { base } from '$app/paths';
 
 	import { redirectBskyUrl } from '$lib/redirector';
+	import { safeUrlParse } from '$lib/utils/url';
 
 	interface Props {
 		text: string;
@@ -32,12 +33,20 @@
 		{#if !feature}
 			{segment.text}
 		{:else if feature.$type === 'app.bsky.richtext.facet#link'}
-			{@const redirectUrl = redirectBskyUrl(feature.uri)}
+			{@const parsed = safeUrlParse(feature.uri)}
 
-			{#if redirectUrl}
-				<a href={redirectUrl} class="link">{segment.text}</a>
+			{#if parsed === null}
+				{segment.text}
 			{:else}
-				<a target="_blank" href={feature.uri} rel="noopener nofollow" class="link">{segment.text}</a>
+				{@const redir = redirectBskyUrl(parsed)}
+
+				{#if redir && redir.type === 'internal'}
+					<a href={redir.url} class="link">{segment.text}</a>
+				{:else}
+					<a target="_blank" href={redir ? redir.url : parsed.href} rel="noopener nofollow" class="link"
+						>{segment.text}</a
+					>
+				{/if}
 			{/if}
 		{:else if feature.$type === 'app.bsky.richtext.facet#mention'}
 			<a href="{base}/{feature.did}" class="mention">{segment.text}</a>

@@ -6,6 +6,7 @@ import { PUBLIC_GO_BSKY_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
 import { redirectBskyUrl } from '$lib/redirector';
+import { safeUrlParse } from '$lib/utils/url';
 
 const jsonSchema = v.object({
 	url: v.string(),
@@ -26,18 +27,22 @@ export const load: PageLoad = async ({ params }) => {
 	}
 
 	const raw = await response.json();
-	const result = jsonSchema.try(raw);
 
+	const result = jsonSchema.try(raw);
 	if (!result.ok) {
 		error(500, `Invalid response from upstream server`);
 	}
 
-	const url = result.value.url;
-	const redirectUrl = redirectBskyUrl(url);
+	const url = safeUrlParse(result.value.url);
+	if (!url) {
+		error(500, `Invalid URL from upstream server; got ${result.value.url}`);
+	}
 
-	if (!redirectUrl) {
+	const redir = redirectBskyUrl(url);
+
+	if (!redir || redir.type !== 'internal') {
 		error(500, `Invalid URL from upstream server; got ${url}`);
 	}
 
-	redirect(301, redirectUrl);
+	redirect(301, redir.url);
 };

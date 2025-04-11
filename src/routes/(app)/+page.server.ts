@@ -2,7 +2,8 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 import { base } from '$app/paths';
 
-import { redirectAtUri, redirectBskyUrl, redirectOtherUrl } from '$lib/redirector';
+import { redirectAtUri, redirectBskyUrl, redirectOtherUrl, type RedirectResult } from '$lib/redirector';
+import { safeUrlParse } from '$lib/utils/url';
 
 const MAYBE_HANDLE_RE = /^@[a-zA-Z0-9-. ]+$/;
 
@@ -33,9 +34,18 @@ export const actions = {
 
 		query = query.trim();
 
-		const redirectUrl = redirectBskyUrl(query) || redirectOtherUrl(query) || redirectAtUri(query);
-		if (redirectUrl) {
-			redirect(302, redirectUrl);
+		let redir: RedirectResult | undefined;
+		if (query.startsWith('at://')) {
+			redir = redirectAtUri(query);
+		} else {
+			const url = safeUrlParse(query);
+			if (url) {
+				redir = redirectBskyUrl(url) || redirectOtherUrl(url);
+			}
+		}
+
+		if (redir && redir.type === 'internal') {
+			redirect(302, redir.url);
 		}
 
 		return fail(400, { place: 'redirect', error: `Invalid link provided` });
