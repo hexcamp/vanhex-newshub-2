@@ -1,7 +1,7 @@
 import { simpleFetchHandler, XRPC } from '@atcute/client';
+import type { At } from '@atcute/client/lexicons';
 
 import { AUTHENTICATED_FEEDS } from '$lib/constants';
-import type { AtUri } from '$lib/types/at-uri';
 import { asString, useSearchParams } from '$lib/utils/search-params';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
@@ -26,7 +26,7 @@ export const load: PageLoad = async ({ url }) => {
 
 	let feeds = data.feeds;
 	if (query.length === 0) {
-		feeds = feeds.filter((feed) => !AUTHENTICATED_FEEDS.includes(feed.uri as AtUri));
+		feeds = feeds.filter((feed) => !AUTHENTICATED_FEEDS.includes(feed.uri as At.CanonicalResourceUri));
 	}
 
 	return {

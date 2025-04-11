@@ -1,12 +1,10 @@
-import type { Records } from '@atcute/client/lexicons';
+import type { At, Records } from '@atcute/client/lexicons';
 
 import { assert } from '$lib/utils/invariant';
 
 import { isDid, isHandle, type Did, type Handle } from './identity';
 import { isNsid, type Nsid } from './nsid';
 import { isRecordKey, type RecordKey } from './rkey';
-
-export type AtUri = `at://${Did | Handle}/${Nsid}/${RecordKey}`;
 
 const ATURI_RE =
 	/^at:\/\/([a-zA-Z0-9._:%-]+)(?:\/([a-zA-Z0-9-.]+)(?:\/([a-zA-Z0-9._~:@!$&%')(*+,;=-]+))?)?(?:#(\/[a-zA-Z0-9._~:@!$&%')(*+,;=\-[\]/\\]*))?$/;
@@ -61,6 +59,6 @@ export const makeAtUri = (
 	repo: Did | Handle,
 	collection: keyof Records | (Nsid & {}),
 	rkey: string,
-): AtUri => {
+): At.ResourceUri => {
 	return `at://${repo}/${collection as Nsid}/${rkey}`;
 };

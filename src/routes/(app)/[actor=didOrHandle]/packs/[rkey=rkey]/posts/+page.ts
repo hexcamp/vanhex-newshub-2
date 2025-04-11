@@ -4,7 +4,6 @@ import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
 import { fetchTimeline, TimelineType } from '$lib/queries/timeline';
-import { type AtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ url, fetch, parent }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
@@ -19,7 +18,7 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 		rpc,
 		params: {
 			type: TimelineType.USER_LIST,
-			list: pack.list.uri as AtUri,
+			list: pack.list.uri,
 			cursor: url.searchParams.get('cursor') || undefined,
 		},
 	});

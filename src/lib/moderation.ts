@@ -123,7 +123,7 @@ export const LABEL_MAPPING: Record<string, LabelDefinition> = {
 
 export const findLabel = (
 	labels: Label[] | undefined,
-	authorDid: At.DID,
+	authorDid: At.Did,
 	mask: number,
 ): LabelDefinition | undefined => {
 	if (labels?.length) {

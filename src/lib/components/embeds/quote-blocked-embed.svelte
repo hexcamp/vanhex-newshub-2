@@ -3,13 +3,13 @@
 
 	import { base } from '$app/paths';
 
-	import type { ParsedAtUri } from '$lib/types/at-uri';
+	import type { AddressedAtUri } from '$lib/types/at-uri';
 
 	import CircleBanSignOutlined from '$lib/components/central-icons/circle-ban-sign-outlined.svelte';
 
 	interface Props {
 		embed: Brand.Union<AppBskyEmbedRecord.ViewBlocked | AppBskyEmbedRecord.ViewDetached>;
-		uri: ParsedAtUri;
+		uri: AddressedAtUri;
 	}
 
 	const { embed, uri }: Props = $props();

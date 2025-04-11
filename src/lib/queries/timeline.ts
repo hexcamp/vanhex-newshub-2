@@ -1,10 +1,5 @@
 import type { XRPC } from '@atcute/client';
-import type {
-	AppBskyActorDefs,
-	AppBskyFeedDefs,
-	AppBskyFeedGetTimeline,
-	AppBskyFeedPost,
-} from '@atcute/client/lexicons';
+import type { AppBskyActorDefs, AppBskyFeedDefs, AppBskyFeedGetTimeline, At } from '@atcute/client/lexicons';
 
 import {
 	buildTimelineSlices,
@@ -15,11 +10,8 @@ import {
 	type TimelineSlice,
 	type UiTimelineItem,
 } from '$lib/models/timeline';
-import type { AtUri } from '$lib/types/at-uri';
 import type { Did } from '$lib/types/identity';
 import { assertNever } from '$lib/utils/invariant';
-
-type PostRecord = AppBskyFeedPost.Record;
 
 export const enum TimelineType {
 	PROFILE,
@@ -43,13 +35,13 @@ export interface ProfileTimelineParams {
 
 export interface CustomFeedTimelineParams {
 	type: TimelineType.CUSTOM_FEED;
-	feed: AtUri;
+	feed: At.ResourceUri;
 	cursor?: string;
 }
 
 export interface UserListTimelineParams {
 	type: TimelineType.USER_LIST;
-	list: AtUri;
+	list: At.ResourceUri;
 	cursor?: string;
 }
 

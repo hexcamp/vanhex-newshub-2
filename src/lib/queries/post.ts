@@ -1,14 +1,12 @@
 import { XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
-
-import type { AtUri } from '$lib/types/at-uri';
+import type { AppBskyFeedDefs, At } from '@atcute/client/lexicons';
 
 export interface GetPostReturn {
 	post: AppBskyFeedDefs.PostView;
 	threadgate?: AppBskyFeedDefs.ThreadgateView;
 }
 
-export const getPost = async ({ rpc, uri }: { rpc: XRPC; uri: AtUri }): Promise<GetPostReturn> => {
+export const getPost = async ({ rpc, uri }: { rpc: XRPC; uri: At.ResourceUri }): Promise<GetPostReturn> => {
 	const { data } = await rpc.get('app.bsky.feed.getPostThread', {
 		params: {
 			uri: uri,

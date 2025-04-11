@@ -6,7 +6,7 @@ import type { AppBskyFeedDefs, Brand } from '@atcute/client/lexicons';
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
-import { makeAtUri, type AtUri } from '$lib/types/at-uri';
+import { makeAtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ params }) => {
 	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
@@ -81,7 +81,7 @@ export const load: PageLoad = async ({ params }) => {
 
 			items.push(replies[0]);
 
-			currentUri = replies[0].post.uri as AtUri;
+			currentUri = replies[0].post.uri;
 			foundReply = true;
 		}
 

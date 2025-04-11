@@ -1,7 +1,7 @@
-import type { AtUri } from './types/at-uri';
+import type { At } from '@atcute/client/lexicons';
 
 // Popular feeds that requires authentication to view
-export const AUTHENTICATED_FEEDS: AtUri[] = [
+export const AUTHENTICATED_FEEDS: At.CanonicalResourceUri[] = [
 	// "Popular With Friends" by @bsky.app
 	`at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/with-friends`,
 	// "Mutuals" by @skyfeed.xyz
