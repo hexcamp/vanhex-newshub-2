@@ -9,8 +9,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"format": "prettier --cache --write .",
-		"lint": "prettier --cache --check ."
+		"format": "PRETTIER_EXPERIMENTAL_CLI=1 prettier --cache --write .",
+		"lint": "PRETTIER_EXPERIMENTAL_CLI=1 prettier --cache --check ."
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^7.0.4",
