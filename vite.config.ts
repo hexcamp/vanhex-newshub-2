@@ -25,7 +25,7 @@ export default defineConfig(({ command }) => {
 
 						return code;
 					} else if (id.includes('node_modules/svelte/') && code.includes('<!--')) {
-						// code = code.replace(/<!--.*?-->/g, '');
+						code = code.replace(/(['`])<!--.*?-->\1/g, '$1$1');
 
 						return code;
 					}
