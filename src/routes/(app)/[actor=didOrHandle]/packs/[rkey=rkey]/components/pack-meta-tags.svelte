@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/client/lexicons';
+	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/bluesky';
 
 	import { PUBLIC_APP_NAME, PUBLIC_APP_URL } from '$env/static/public';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateMiddle } from '$lib/utils/strings';
@@ -14,8 +14,8 @@
 
 	const { pack }: Props = $props();
 
-	const uri = $derived(parseAddressedAtUri(pack.uri));
-	const record = $derived(pack.record as AppBskyGraphStarterpack.Record);
+	const uri = $derived(assertCanonicalResourceUri(pack.uri));
+	const record = $derived(pack.record as AppBskyGraphStarterpack.Main);
 
 	const description = $derived.by(() => {
 		const desc = trimRichText(record.description ?? '');

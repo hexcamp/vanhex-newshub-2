@@ -1,8 +1,6 @@
-import * as v from '@badrap/valita';
+import { isDid, isNsid, isRecordKey } from '@atcute/lexicons/syntax';
 
-import { isDid } from './identity';
-import { isNsid } from './nsid';
-import { isRecordKey } from './rkey';
+import * as v from '@badrap/valita';
 
 export const didString = v.string().assert(isDid);
 

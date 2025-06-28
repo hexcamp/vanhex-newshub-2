@@ -1,4 +1,4 @@
-import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs } from '@atcute/bluesky';
 import { mapDefined } from '@mary/array-fns';
 
 export type TimelineItem = AppBskyFeedDefs.FeedViewPost;

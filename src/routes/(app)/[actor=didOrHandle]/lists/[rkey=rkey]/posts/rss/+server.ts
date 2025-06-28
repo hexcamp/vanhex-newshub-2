@@ -1,4 +1,7 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
+
+import type { Did } from '@atcute/lexicons';
+import { isDid } from '@atcute/lexicons/syntax';
 
 import { PUBLIC_APP_URL, PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { RequestHandler } from './$types';
@@ -7,39 +10,42 @@ import { buildTimelineSlices } from '$lib/models/timeline';
 import { resolveHandle } from '$lib/queries/handle';
 import { createRssFeed, feedPostToFeedItem } from '$lib/rss';
 import { makeAtUri } from '$lib/types/at-uri';
-import { isDid, type Did } from '$lib/types/identity';
 
 export const GET: RequestHandler = async ({ params, fetch }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let did: Did;
 	if (isDid(params.actor)) {
 		did = params.actor;
 	} else {
-		did = await resolveHandle({ rpc, handle: params.actor });
+		did = await resolveHandle({ client: client, handle: params.actor });
 	}
 
 	const uri = makeAtUri(did, 'app.bsky.graph.list', params.rkey);
 
 	const [list, timeline] = await Promise.all([
 		(async () => {
-			const { data } = await rpc.get('app.bsky.graph.getList', {
-				params: {
-					list: uri,
-					limit: 1,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.graph.getList', {
+					params: {
+						list: uri,
+						limit: 1,
+					},
+				}),
+			);
 
 			return data.list;
 		})(),
 
 		(async () => {
-			const { data } = await rpc.get('app.bsky.feed.getListFeed', {
-				params: {
-					list: uri,
-					limit: 100,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.feed.getListFeed', {
+					params: {
+						list: uri,
+						limit: 100,
+					},
+				}),
+			);
 
 			const slices = buildTimelineSlices(data.feed);
 

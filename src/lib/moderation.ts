@@ -1,4 +1,5 @@
-import type { At, ComAtprotoLabelDefs } from '@atcute/client/lexicons';
+import type { ComAtprotoLabelDefs } from '@atcute/atproto';
+import type { Did } from '@atcute/lexicons';
 
 export const FlagsNone = 0;
 
@@ -123,7 +124,7 @@ export const LABEL_MAPPING: Record<string, LabelDefinition> = {
 
 export const findLabel = (
 	labels: Label[] | undefined,
-	authorDid: At.Did,
+	authorDid: Did,
 	mask: number,
 ): LabelDefinition | undefined => {
 	if (labels?.length) {

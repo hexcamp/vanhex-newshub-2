@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedThreadgate } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs, AppBskyFeedThreadgate } from '@atcute/bluesky';
 
 	import type { UnwrapArray } from '$lib/utils/types';
 
@@ -7,20 +7,20 @@
 	import Group_2Outlined from '$lib/components/central-icons/group-2-outlined.svelte';
 	import CircleBanSignOutlined from '$lib/components/central-icons/circle-ban-sign-outlined.svelte';
 	import { base } from '$app/paths';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 
 	interface Props {
 		threadgate: AppBskyFeedDefs.ThreadgateView | undefined;
 	}
 
-	type GateRecord = AppBskyFeedThreadgate.Record;
+	type GateRecord = AppBskyFeedThreadgate.Main;
 	type Allow = UnwrapArray<GateRecord['allow']>;
 
 	const { threadgate }: Props = $props();
 
 	const id = $props.id();
 
-	const record = $derived(threadgate?.record as AppBskyFeedThreadgate.Record | undefined);
+	const record = $derived(threadgate?.record as AppBskyFeedThreadgate.Main | undefined);
 
 	const allow = $derived.by(() => {
 		const order: Record<Allow['$type'], number> = {
@@ -99,7 +99,7 @@
 					{@const hydrated = threadgate!.lists?.find((list) => list.uri === rule.list)}
 
 					{#if hydrated}
-						{@const uri = parseAddressedAtUri(rule.list)}
+						{@const uri = assertCanonicalResourceUri(rule.list)}
 
 						<li>
 							Users in <a class="link" href="{base}/{uri.repo}/lists/{uri.rkey}">{hydrated.name}</a> list

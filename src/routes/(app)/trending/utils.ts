@@ -1,7 +1,5 @@
-import type { AppBskyUnspeccedDefs } from '@atcute/client/lexicons';
-
-import { isDid, isHandle } from '$lib/types/identity';
-import { isRecordKey } from '$lib/types/rkey';
+import type { AppBskyUnspeccedDefs } from '@atcute/bluesky';
+import { isDid, isHandle, isRecordKey } from '@atcute/lexicons/syntax';
 
 // /profile/jaz.bsky.social/feed/cv:cat
 // /profile/bossett.social/feed/for-science

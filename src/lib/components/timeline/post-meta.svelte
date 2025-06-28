@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 
@@ -17,7 +17,7 @@
 	const author = $derived(post.author);
 	const authorName = $derived(normalizeDisplayName(author.displayName ?? ''));
 
-	const createdAt = $derived((post.record as AppBskyFeedPost.Record).createdAt);
+	const createdAt = $derived((post.record as AppBskyFeedPost.Main).createdAt);
 </script>
 
 <div class={['post-meta', gutterBottom && 'has-bottom-gutter']}>

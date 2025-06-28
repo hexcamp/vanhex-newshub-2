@@ -4,7 +4,7 @@
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { PageProps } from './$types';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { paginate } from '$lib/utils/pagination';
 
 	import PageListing from '$lib/components/page/page-listing.svelte';
@@ -14,7 +14,7 @@
 
 	const { data }: PageProps = $props();
 
-	const rkey = $derived(parseAddressedAtUri(data.feed.uri).rkey);
+	const rkey = $derived(assertCanonicalResourceUri(data.feed.uri).rkey);
 
 	const { rootUrl, nextUrl } = $derived(
 		paginate(page.url, data.timeline.cursor, `${base}/${data.feed.creator.did}/feeds/${rkey}`),

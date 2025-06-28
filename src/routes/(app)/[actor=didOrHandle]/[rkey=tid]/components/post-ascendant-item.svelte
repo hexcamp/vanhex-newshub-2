@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { AppBskyFeedPost } from '@atcute/client/lexicons';
+	import type { AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 
 	import Avatar from '$lib/components/avatar.svelte';
 	import RichtextRenderer from '$lib/components/richtext-renderer.svelte';
@@ -27,8 +27,8 @@
 	const author = $derived(post.author);
 	const authorUrl = $derived(`${base}/${author.did}`);
 
-	const record = $derived(post.record as AppBskyFeedPost.Record);
-	const postUrl = $derived(`${base}/${author.did}/${parseAddressedAtUri(post.uri).rkey}#main`);
+	const record = $derived(post.record as AppBskyFeedPost.Main);
+	const postUrl = $derived(`${base}/${author.did}/${assertCanonicalResourceUri(post.uri).rkey}#main`);
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));

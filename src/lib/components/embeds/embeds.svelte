@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+	import { unwrapEmbed, type AppBskyFeedDefs, type MediaEmbed, type RecordEmbed } from '@atcute/bluesky';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
-	import { unwrapEmbedView, type MediaEmbed, type RecordEmbed } from '$lib/utils/bluesky/embeds';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { collectionToLabel } from '$lib/utils/bluesky/records';
 
 	import ContentHider from '../content-hider.svelte';
@@ -27,7 +26,7 @@
 
 	const { embed, large = false, post }: Props = $props();
 
-	const { media, record } = $derived(unwrapEmbedView(embed));
+	const { media, record } = $derived(unwrapEmbed(embed));
 </script>
 
 <div class="embeds">
@@ -56,27 +55,25 @@
 {/snippet}
 
 {#snippet Record(embed: RecordEmbed)}
-	{@const record = embed.record}
-
-	{#if record.$type === 'app.bsky.embed.record#viewRecord'}
-		<QuoteEmbed embed={record} {large} />
-	{:else if record.$type === 'app.bsky.feed.defs#generatorView'}
-		<FeedEmbed embed={record} />
-	{:else if record.$type === 'app.bsky.graph.defs#listView'}
-		<ListEmbed embed={record} />
-	{:else if record.$type === 'app.bsky.graph.defs#starterPackViewBasic'}
-		<StarterpackEmbed embed={record} {large} />
+	{#if embed.$type === 'app.bsky.embed.record#viewRecord'}
+		<QuoteEmbed {embed} {large} />
+	{:else if embed.$type === 'app.bsky.feed.defs#generatorView'}
+		<FeedEmbed {embed} />
+	{:else if embed.$type === 'app.bsky.graph.defs#listView'}
+		<ListEmbed {embed} />
+	{:else if embed.$type === 'app.bsky.graph.defs#starterPackViewBasic'}
+		<StarterpackEmbed {embed} {large} />
 	{:else}
-		{@const uri = parseAddressedAtUri(record.uri)}
+		{@const uri = assertCanonicalResourceUri(embed.uri)}
 
-		{#if uri.collection === 'app.bsky.feed.post' && (record.$type === 'app.bsky.embed.record#viewBlocked' || record.$type === 'app.bsky.embed.record#viewDetached')}
-			<QuoteBlockedEmbed embed={record} {uri} />
+		{#if uri.collection === 'app.bsky.feed.post' && (embed.$type === 'app.bsky.embed.record#viewBlocked' || embed.$type === 'app.bsky.embed.record#viewDetached')}
+			<QuoteBlockedEmbed {embed} {uri} />
 		{:else}
 			{@const resource = collectionToLabel(uri.collection)}
 			{@const isUnavailable =
 				resource &&
-				(record.$type === 'app.bsky.embed.record#viewNotFound' ||
-					record.$type === 'app.bsky.embed.record#viewBlocked')}
+				(embed.$type === 'app.bsky.embed.record#viewNotFound' ||
+					embed.$type === 'app.bsky.embed.record#viewBlocked')}
 
 			{@render Message(isUnavailable ? `This ${resource} is unavailable` : `Unsupported record embed`)}
 		{/if}

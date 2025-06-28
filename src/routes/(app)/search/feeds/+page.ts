@@ -1,10 +1,10 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
-import type { At } from '@atcute/client/lexicons';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
 import { AUTHENTICATED_FEEDS } from '$lib/constants';
 import { asString, useSearchParams } from '$lib/utils/search-params';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
+import type { CanonicalResourceUri } from '@atcute/lexicons';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ url }) => {
@@ -13,20 +13,22 @@ export const load: PageLoad = async ({ url }) => {
 		cursor: asString,
 	});
 
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const query = q.trim();
-	const { data } = await rpc.get('app.bsky.unspecced.getPopularFeedGenerators', {
-		params: {
-			query: query,
-			limit: 50,
-			cursor: cursor || undefined,
-		},
-	});
+	const data = await ok(
+		client.get('app.bsky.unspecced.getPopularFeedGenerators', {
+			params: {
+				query: query,
+				limit: 50,
+				cursor: cursor || undefined,
+			},
+		}),
+	);
 
 	let feeds = data.feeds;
 	if (query.length === 0) {
-		feeds = feeds.filter((feed) => !AUTHENTICATED_FEEDS.includes(feed.uri as At.CanonicalResourceUri));
+		feeds = feeds.filter((feed) => !AUTHENTICATED_FEEDS.includes(feed.uri as CanonicalResourceUri));
 	}
 
 	return {

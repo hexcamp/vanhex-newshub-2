@@ -1,4 +1,4 @@
-import type { AppBskyFeedDefs, AppBskyFeedPost, AppBskyFeedThreadgate } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs, AppBskyFeedPost, AppBskyFeedThreadgate } from '@atcute/bluesky';
 
 import type { UnwrapArray } from '$lib/utils/types';
 
@@ -45,7 +45,7 @@ export const createReplyCollator = (threadgateView: AppBskyFeedDefs.ThreadgateVi
 		return likeOrder / timePenalty;
 	};
 
-	const gate = threadgateView?.record as AppBskyFeedThreadgate.Record | undefined;
+	const gate = threadgateView?.record as AppBskyFeedThreadgate.Main | undefined;
 
 	return (parent: AppBskyFeedDefs.PostView, a: ReplyItem, b: ReplyItem) => {
 		if (a.$type !== 'app.bsky.feed.defs#threadViewPost') {
@@ -132,7 +132,7 @@ export const getAncestors = (thread: AppBskyFeedDefs.ThreadViewPost) => {
 
 		if (last && last.type === 'post') {
 			const post = last.post;
-			const reply = (post.record as AppBskyFeedPost.Record).reply;
+			const reply = (post.record as AppBskyFeedPost.Main).reply;
 
 			if (reply) {
 				const uri = reply.parent.uri;

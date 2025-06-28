@@ -1,4 +1,4 @@
-import type { AppBskyGraphDefs } from '@atcute/client/lexicons';
+import type { AppBskyGraphDefs } from '@atcute/bluesky';
 
 export const purposeToLabel = (purpose: AppBskyGraphDefs.ListView['purpose']): string => {
 	switch (purpose) {

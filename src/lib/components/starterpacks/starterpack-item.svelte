@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/client/lexicons';
+	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateMiddle } from '$lib/utils/strings';
@@ -18,8 +18,8 @@
 
 	const creator = $derived(pack.creator);
 
-	const record = $derived(pack.record as AppBskyGraphStarterpack.Record);
-	const href = $derived(`${base}/${creator.did}/packs/${parseAddressedAtUri(pack.uri).rkey}`);
+	const record = $derived(pack.record as AppBskyGraphStarterpack.Main);
+	const href = $derived(`${base}/${creator.did}/packs/${assertCanonicalResourceUri(pack.uri).rkey}`);
 </script>
 
 <div class="starterpack-item">

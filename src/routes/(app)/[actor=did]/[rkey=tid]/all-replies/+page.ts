@@ -1,5 +1,5 @@
-import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedDefs, AppBskyFeedGetPostThread } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs } from '@atcute/bluesky';
+import { Client, ClientResponseError, simpleFetchHandler } from '@atcute/client';
 import { definite } from '@mary/array-fns';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
@@ -10,12 +10,12 @@ import { getPost } from '$lib/queries/post';
 import { makeAtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const parentUri = makeAtUri(params.actor, 'app.bsky.feed.post', params.rkey);
 
 	// Fetch the parent post, but don't block.
-	const postPromise = getPost({ rpc, uri: parentUri });
+	const postPromise = getPost({ client, uri: parentUri });
 	void postPromise.catch(() => {});
 
 	// Get links from Constellation
@@ -29,29 +29,24 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
 	// Hydrate the links
 	const resolvedReplies = await Promise.all(
 		linking_records.map(async (link) => {
-			let data: AppBskyFeedGetPostThread.Output;
-			try {
-				const response = await rpc.get('app.bsky.feed.getPostThread', {
-					params: {
-						uri: makeAtUri(link.did, 'app.bsky.feed.post', link.rkey),
-						depth: 3,
-						parentHeight: 0,
-					},
-				});
+			const response = await client.get('app.bsky.feed.getPostThread', {
+				params: {
+					uri: makeAtUri(link.did, 'app.bsky.feed.post', link.rkey),
+					depth: 3,
+					parentHeight: 0,
+				},
+			});
 
-				data = response.data;
-			} catch (err) {
-				if (err instanceof XRPCError) {
-					// ignore if AppView says it's not found
-					if (err.kind === 'NotFound') {
-						return null;
-					}
+			if (!response.ok) {
+				// AppView says not found, carry on
+				if (response.data.error === 'NotFound') {
+					return null;
 				}
 
-				throw err;
+				throw new ClientResponseError(response);
 			}
 
-			const thread = data.thread;
+			const thread = response.data.thread;
 			switch (thread.$type) {
 				// same goes for this union
 				case 'app.bsky.feed.defs#notFoundPost':

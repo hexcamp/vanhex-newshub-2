@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts">
-	import type { AppBskyActorDefs } from '@atcute/client/lexicons';
+	import type { AppBskyActorDefs } from '@atcute/bluesky';
 
 	interface Props {
 		profile?:

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AppBskyFeedPost } from '@atcute/client/lexicons';
+	import type { AppBskyFeedPost } from '@atcute/bluesky';
 	import { cluster } from '@mary/array-fns';
 
 	import { base } from '$app/paths';
@@ -7,7 +7,7 @@
 	import type { PageProps } from './$types';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { truncateMiddle, truncateRight } from '$lib/utils/strings';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -25,7 +25,7 @@
 	const author = $derived(main.author);
 	const authorName = $derived(author.displayName?.trim());
 
-	const uri = $derived(parseAddressedAtUri(main.uri));
+	const uri = $derived(assertCanonicalResourceUri(main.uri));
 	const postUrl = $derived(`${base}/${uri.repo}/${uri.rkey}#main`);
 	const authorUrl = $derived(`${base}/${uri.repo}`);
 
@@ -33,7 +33,7 @@
 
 	const title = $derived.by(() => {
 		const author = `@${truncateMiddle(main.author.handle, 29)}`;
-		const content = truncateRight((main.record as AppBskyFeedPost.Record).text.trim(), 70);
+		const content = truncateRight((main.record as AppBskyFeedPost.Main).text.trim(), 70);
 
 		return `${author}: "${content}" — ${PUBLIC_APP_NAME}`;
 	});
@@ -104,7 +104,7 @@
 						</p>
 
 						{#each cluster as post}
-							{@const record = post.record as AppBskyFeedPost.Record}
+							{@const record = post.record as AppBskyFeedPost.Main}
 
 							<div class="subitem">
 								<RichtextRenderer text={record.text} facets={record.facets} />

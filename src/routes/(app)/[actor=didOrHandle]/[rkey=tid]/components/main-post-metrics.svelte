@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { formatCompactNumber } from '$lib/utils/intl/number';
 
 	interface Props {
@@ -12,7 +12,7 @@
 
 	const { post }: Props = $props();
 
-	const baseUrl = $derived(`${base}/${post.author.did}/${parseAddressedAtUri(post.uri).rkey}`);
+	const baseUrl = $derived(`${base}/${post.author.did}/${assertCanonicalResourceUri(post.uri).rkey}`);
 </script>
 
 {#snippet Stat(count: number | undefined, one: string, many: string, href: string)}

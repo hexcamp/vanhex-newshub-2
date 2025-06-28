@@ -1,5 +1,7 @@
-import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedGetPostThread } from '@atcute/client/lexicons';
+import type { AppBskyFeedGetPostThread } from '@atcute/bluesky';
+import { Client, ClientResponseError, ok, simpleFetchHandler } from '@atcute/client';
+import { isDid, type Did } from '@atcute/lexicons/syntax';
+
 import { error } from '@sveltejs/kit';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
@@ -7,18 +9,17 @@ import type { PageLoad } from './$types';
 
 import { resolveHandle } from '$lib/queries/handle';
 import { makeAtUri } from '$lib/types/at-uri';
-import { isDid, type Did } from '$lib/types/identity';
 
 export const load: PageLoad = async ({ params }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let did: Did;
 	if (!isDid(params.actor)) {
 		try {
-			did = await resolveHandle({ rpc, handle: params.actor });
+			did = await resolveHandle({ client: client, handle: params.actor });
 		} catch (err) {
-			if (err instanceof XRPCError) {
-				switch (err.kind) {
+			if (err instanceof ClientResponseError) {
+				switch (err.error) {
 					case 'InvalidRequest': {
 						error(404, `Account doesn't exist`);
 					}
@@ -33,21 +34,21 @@ export const load: PageLoad = async ({ params }) => {
 
 	const uri = makeAtUri(did, 'app.bsky.feed.post', params.rkey);
 
-	let data: AppBskyFeedGetPostThread.Output;
+	let data: AppBskyFeedGetPostThread.$output;
 
 	try {
-		const response = await rpc.get('app.bsky.feed.getPostThread', {
-			params: {
-				uri: uri,
-				depth: 4,
-				parentHeight: 10,
-			},
-		});
-
-		data = response.data;
+		data = await ok(
+			client.get('app.bsky.feed.getPostThread', {
+				params: {
+					uri: uri,
+					depth: 4,
+					parentHeight: 10,
+				},
+			}),
+		);
 	} catch (err) {
-		if (err instanceof XRPCError) {
-			switch (err.kind) {
+		if (err instanceof ClientResponseError) {
+			switch (err.error) {
 				case 'NotFound': {
 					error(404, `Post not found`);
 				}

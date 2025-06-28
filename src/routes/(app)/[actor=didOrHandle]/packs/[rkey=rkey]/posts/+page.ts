@@ -1,4 +1,4 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { simpleFetchHandler, Client } from '@atcute/client';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
@@ -6,7 +6,7 @@ import type { PageLoad } from './$types';
 import { fetchTimeline, TimelineType } from '$lib/queries/timeline';
 
 export const load: PageLoad = async ({ url, fetch, parent }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const { pack } = await parent();
 
@@ -15,7 +15,7 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 	}
 
 	const timeline = await fetchTimeline({
-		rpc,
+		client: client,
 		params: {
 			type: TimelineType.USER_LIST,
 			list: pack.list.uri,

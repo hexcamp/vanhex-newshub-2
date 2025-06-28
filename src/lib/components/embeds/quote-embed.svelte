@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { AppBskyEmbedRecord, AppBskyFeedPost } from '@atcute/client/lexicons';
+	import { unwrapMediaEmbed, type AppBskyEmbedRecord, type AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
-	import { unwrapMediaEmbedView } from '$lib/utils/bluesky/embeds';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -24,14 +23,14 @@
 
 	const { embed: quote, large = false }: Props = $props();
 
-	const record = $derived(quote.value as AppBskyFeedPost.Record);
+	const record = $derived(quote.value as AppBskyFeedPost.Main);
 	const text = $derived(trimRichText(record.text));
 
 	const author = $derived(quote.author);
 	const authorName = $derived(normalizeDisplayName(author.displayName ?? ''));
 
 	const embed = $derived(quote.embeds?.[0]);
-	const media = $derived(unwrapMediaEmbedView(embed));
+	const media = $derived(unwrapMediaEmbed(embed));
 
 	const blurAvi = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blurContent = $derived(findLabel(quote.labels, author.did, FlagsBlurContent));
@@ -39,7 +38,7 @@
 </script>
 
 <ContentHider blur={blurContent}>
-	<a href="{base}/{author.did}/{parseAddressedAtUri(quote.uri).rkey}#main" class="quote-embed">
+	<a href="{base}/{author.did}/{assertCanonicalResourceUri(quote.uri).rkey}#main" class="quote-embed">
 		<div class="meta">
 			<Avatar profile={author} src={author.avatar} size="xs" blur={blurAvi} />
 

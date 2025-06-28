@@ -1,4 +1,4 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
 import { asString, useSearchParams } from '$lib/utils/search-params';
 
@@ -11,20 +11,22 @@ export const load: PageLoad = async ({ url }) => {
 		cursor: asString,
 	});
 
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const query = q.trim();
 	if (query.length === 0) {
 		return { query, profiles: { cursor: undefined, items: [] } };
 	}
 
-	const { data } = await rpc.get('app.bsky.actor.searchActors', {
-		params: {
-			q: query,
-			limit: 50,
-			cursor: cursor || undefined,
-		},
-	});
+	const data = await ok(
+		client.get('app.bsky.actor.searchActors', {
+			params: {
+				q: query,
+				limit: 50,
+				cursor: cursor || undefined,
+			},
+		}),
+	);
 
 	return {
 		query,

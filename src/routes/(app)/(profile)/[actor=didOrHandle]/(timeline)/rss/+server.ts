@@ -1,5 +1,5 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
-import type { AppBskyActorDefs } from '@atcute/client/lexicons';
+import type { AppBskyActorDefs } from '@atcute/bluesky';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
 import { PUBLIC_APP_URL, PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { RequestHandler } from './$types';
@@ -9,28 +9,32 @@ import { createRssFeed, feedPostToFeedItem } from '$lib/rss';
 import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 
 export const GET: RequestHandler = async ({ params, fetch }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const [profile, timeline] = await Promise.all([
 		(async () => {
-			const { data } = await rpc.get('app.bsky.actor.getProfile', {
-				params: {
-					actor: params.actor,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.actor.getProfile', {
+					params: {
+						actor: params.actor,
+					},
+				}),
+			);
 
 			return data;
 		})(),
 
 		(async () => {
-			const { data } = await rpc.get('app.bsky.feed.getAuthorFeed', {
-				params: {
-					actor: params.actor,
-					limit: 100,
-					filter: 'posts_and_author_threads',
-					includePins: false,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.feed.getAuthorFeed', {
+					params: {
+						actor: params.actor,
+						limit: 100,
+						filter: 'posts_and_author_threads',
+						includePins: false,
+					},
+				}),
+			);
 
 			// Build into slices so we can filter out non-self threads
 			const slices = buildTimelineSlices(

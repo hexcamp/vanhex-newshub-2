@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedThreadgate } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs, AppBskyFeedThreadgate } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 
 	import { createReplyCollator } from '../utils';
 
@@ -17,7 +17,7 @@
 
 	const { thread: root, threadgate }: Props = $props();
 
-	const gate = $derived(threadgate?.record as AppBskyFeedThreadgate.Record | undefined);
+	const gate = $derived(threadgate?.record as AppBskyFeedThreadgate.Main | undefined);
 	const sort = $derived(createReplyCollator(threadgate));
 </script>
 
@@ -59,7 +59,9 @@
 				</div>
 			{/if}
 
-			<OverflowDescendantItem postUrl="{base}/{post.author.did}/{parseAddressedAtUri(post.uri).rkey}#main" />
+			<OverflowDescendantItem
+				postUrl="{base}/{post.author.did}/{assertCanonicalResourceUri(post.uri).rkey}#main"
+			/>
 		{/if}
 	{/each}
 {/snippet}

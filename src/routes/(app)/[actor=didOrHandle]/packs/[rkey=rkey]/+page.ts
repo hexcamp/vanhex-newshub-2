@@ -1,10 +1,10 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ url, fetch, parent }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const { pack } = await parent();
 
@@ -19,13 +19,15 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 		}
 	}
 
-	const { data } = await rpc.get('app.bsky.graph.getList', {
-		params: {
-			list: pack.list.uri,
-			limit: 50,
-			cursor: url.searchParams.get('cursor') || undefined,
-		},
-	});
+	const data = await ok(
+		client.get('app.bsky.graph.getList', {
+			params: {
+				list: pack.list.uri,
+				limit: 50,
+				cursor: url.searchParams.get('cursor') || undefined,
+			},
+		}),
+	);
 
 	return { members: { cursor: data.cursor, items: data.items } };
 };

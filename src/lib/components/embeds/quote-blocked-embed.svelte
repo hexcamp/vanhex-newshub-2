@@ -1,15 +1,14 @@
 <script lang="ts">
-	import type { AppBskyEmbedRecord, Brand } from '@atcute/client/lexicons';
+	import type { AppBskyEmbedRecord } from '@atcute/bluesky';
+	import type { $type, ParsedCanonicalResourceUri } from '@atcute/lexicons';
 
 	import { base } from '$app/paths';
-
-	import type { AddressedAtUri } from '$lib/types/at-uri';
 
 	import CircleBanSignOutlined from '$lib/components/central-icons/circle-ban-sign-outlined.svelte';
 
 	interface Props {
-		embed: Brand.Union<AppBskyEmbedRecord.ViewBlocked | AppBskyEmbedRecord.ViewDetached>;
-		uri: AddressedAtUri;
+		embed: $type.enforce<AppBskyEmbedRecord.ViewBlocked | AppBskyEmbedRecord.ViewDetached>;
+		uri: ParsedCanonicalResourceUri;
 	}
 
 	const { embed, uri }: Props = $props();

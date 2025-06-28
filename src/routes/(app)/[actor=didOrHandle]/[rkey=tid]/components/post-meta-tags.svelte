@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/client/lexicons';
+	import { unwrapEmbed, type AppBskyFeedDefs, type AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { PUBLIC_APP_NAME, PUBLIC_APP_URL } from '$env/static/public';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
-	import { unwrapEmbedView } from '$lib/utils/bluesky/embeds';
 	import { collectionToLabel } from '$lib/utils/bluesky/records';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateMiddle } from '$lib/utils/strings';
@@ -16,16 +15,16 @@
 
 	const { post }: Props = $props();
 
-	const uri = $derived(parseAddressedAtUri(post.uri));
+	const uri = $derived(assertCanonicalResourceUri(post.uri));
 
 	const author = $derived(post.author);
 	const displayName = $derived(normalizeDisplayName(author.displayName ?? ''));
 	const handle = $derived(truncateMiddle(author.handle, 29));
 
-	const { media, record } = $derived(unwrapEmbedView(post.embed));
+	const { media, record } = $derived(unwrapEmbed(post.embed));
 
 	const description = $derived.by(() => {
-		const content = trimRichText((post.record as AppBskyFeedPost.Record).text);
+		const content = trimRichText((post.record as AppBskyFeedPost.Main).text);
 		let footer = '';
 
 		switch (media?.$type) {
@@ -42,11 +41,10 @@
 		}
 
 		if (record) {
-			const view = record.record;
-			switch (view.$type) {
+			switch (record.$type) {
 				case 'app.bsky.embed.record#viewRecord': {
 					footer && (footer += '\n');
-					footer += `[quoting @${truncateMiddle(view.author.handle, 29)}]`;
+					footer += `[quoting @${truncateMiddle(record.author.handle, 29)}]`;
 					break;
 				}
 				case 'app.bsky.feed.defs#generatorView': {
@@ -65,14 +63,14 @@
 					break;
 				}
 				default: {
-					const uri = parseAddressedAtUri(view.uri);
+					const uri = assertCanonicalResourceUri(record.uri);
 					const resource = collectionToLabel(uri.collection);
 
 					const isUnavailable =
 						resource &&
-						(view.$type === 'app.bsky.embed.record#viewNotFound' ||
-							view.$type === 'app.bsky.embed.record#viewBlocked' ||
-							view.$type === 'app.bsky.embed.record#viewDetached');
+						(record.$type === 'app.bsky.embed.record#viewNotFound' ||
+							record.$type === 'app.bsky.embed.record#viewBlocked' ||
+							record.$type === 'app.bsky.embed.record#viewDetached');
 
 					footer && (footer += '\n');
 					footer += isUnavailable ? `[contains unavailable ${resource} embed]` : `[contains unknown embed]`;

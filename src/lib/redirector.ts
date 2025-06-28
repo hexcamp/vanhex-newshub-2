@@ -1,8 +1,7 @@
 import { base } from '$app/paths';
-import { type PartialAtUri, parsePartialAtUri } from './types/at-uri';
 
-import { isDid, isHandle } from './types/identity';
-import { isRecordKey, isTid } from './types/rkey';
+import { isDid, isHandle, isRecordKey, isTid, parseResourceUri } from '@atcute/lexicons/syntax';
+
 import {
 	BSKY_FEED_LINK_RE,
 	BSKY_GO_SHORTLINK_RE,
@@ -206,12 +205,12 @@ export const redirectOtherUrl = (url: URL): RedirectResult => {
 };
 
 export const redirectAtUri = (raw: string): RedirectResult => {
-	let uri: PartialAtUri;
-	try {
-		uri = parsePartialAtUri(raw);
-	} catch (e) {
+	const result = parseResourceUri(raw);
+	if (!result.ok) {
 		return;
 	}
+
+	const uri = result.value;
 
 	if (uri.rkey) {
 		switch (uri.collection) {

@@ -8,11 +8,11 @@
 
 	import PageListing from '$lib/components/page/page-listing.svelte';
 	import PostFeedItem from '$lib/components/timeline/post-feed-item.svelte';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 
 	const { data }: PageProps = $props();
 
-	const uri = $derived(parseAddressedAtUri(data.list.uri));
+	const uri = $derived(assertCanonicalResourceUri(data.list.uri));
 
 	const { rootUrl, nextUrl } = $derived(
 		paginate(page.url, data.timeline.cursor, `${base}/${uri.repo}/lists/${uri.rkey}/posts`),

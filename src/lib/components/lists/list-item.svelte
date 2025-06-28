@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyGraphDefs } from '@atcute/client/lexicons';
+	import type { AppBskyGraphDefs } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { purposeToLabel } from '$lib/utils/bluesky/lists';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
@@ -19,7 +19,7 @@
 
 	const creator = $derived(list.creator);
 
-	const href = $derived(`${base}/${creator.did}/lists/${parseAddressedAtUri(list.uri).rkey}`);
+	const href = $derived(`${base}/${creator.did}/lists/${assertCanonicalResourceUri(list.uri).rkey}`);
 </script>
 
 <div class="list-item">

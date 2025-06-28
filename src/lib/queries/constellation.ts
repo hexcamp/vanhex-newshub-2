@@ -1,12 +1,12 @@
 import { error } from '@sveltejs/kit';
 
-import type { Records } from '@atcute/client/lexicons';
+import type { Did } from '@atcute/lexicons';
+import type { Records } from '@atcute/lexicons/ambient';
 
 import * as v from '@badrap/valita';
 
 import { PUBLIC_APP_USER_AGENT, PUBLIC_CONSTELLATION_URL } from '$env/static/public';
 
-import type { Did } from '$lib/types/identity';
 import { didString, integer, nsidString, recordKeyString } from '$lib/types/valita';
 
 const linkResponse = v.object({

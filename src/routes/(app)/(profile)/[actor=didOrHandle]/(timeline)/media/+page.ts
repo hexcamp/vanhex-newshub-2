@@ -1,13 +1,13 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, simpleFetchHandler } from '@atcute/client';
+import { isDid, type Did } from '@atcute/lexicons/syntax';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
-import { fetchTimeline, ProfileFilter, TimelineType } from '$lib/queries/timeline';
-import { isDid, type Did } from '$lib/types/identity';
-
 import type { PageLoad } from './$types';
 
+import { fetchTimeline, ProfileFilter, TimelineType } from '$lib/queries/timeline';
+
 export const load: PageLoad = async ({ url, params, fetch, parent }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let did: Did;
 	if (isDid(params.actor)) {
@@ -18,7 +18,7 @@ export const load: PageLoad = async ({ url, params, fetch, parent }) => {
 	}
 
 	const timeline = await fetchTimeline({
-		rpc,
+		client,
 		params: {
 			type: TimelineType.PROFILE,
 			actor: did,

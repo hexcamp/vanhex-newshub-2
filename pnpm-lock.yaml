@@ -8,9 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@atcute/atproto':
+        specifier: ^3.1.0
+        version: 3.1.0
       '@atcute/bluesky':
-        specifier: ^2.1.1
-        version: 2.1.1(@atcute/client@3.1.0)
+        specifier: ^3.1.4
+        version: 3.1.4
       '@atcute/bluesky-richtext-parser':
         specifier: ^1.0.7
         version: 1.0.7
@@ -18,8 +21,11 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3
       '@atcute/client':
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^4.0.3
+        version: 4.0.3
+      '@atcute/lexicons':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@badrap/valita':
         specifier: ^0.4.5
         version: 0.4.5
@@ -85,16 +91,14 @@ packages:
   '@atcute/bluesky-richtext-segmenter@2.0.3':
     resolution: {integrity: sha512-8Jy2EHdqx0mKI0k8l4h2cnaBN1pGgSzSazO0Gp85ttIQmgynZsQX6l4OWgaQx0aNZFmqZRXJ7N0rj/b2dlO1eQ==}
 
-  '@atcute/bluesky@2.1.1':
-    resolution: {integrity: sha512-wEZfFW58J6yC1SqHcVJOn4qbHENTTzjeCEWthRT5HvKovADLqk54HSMSAuXDMBUbintSTBr0khQNZQ3ZdgzDdQ==}
-    peerDependencies:
-      '@atcute/client': ^3.0.0
-
   '@atcute/bluesky@3.1.4':
     resolution: {integrity: sha512-iSdZGk/UktgKpT/lI0/YxRjM3E5dkd6/vIa2mgH82lgRjI0jH5LJAfLXPyr2mPeZ/qku1gf2/KrkqJ9dfiNxVw==}
 
-  '@atcute/client@3.1.0':
-    resolution: {integrity: sha512-+rQPsHXSf0DUm8XoHoaH7Y2E8tIpbsW84djyPj7dqAyrFIjvGuJ1X1DvMufwbTIcmLerdy+dzl34iZcz/h3Vhg==}
+  '@atcute/client@4.0.3':
+    resolution: {integrity: sha512-RIOZWFVLca/HiPAAUDqQPOdOreCxTbL5cb+WUf5yqQOKIu5yEAP3eksinmlLmgIrlr5qVOE7brazUUzaskFCfw==}
+
+  '@atcute/identity@1.0.3':
+    resolution: {integrity: sha512-mNMxbKHFGys03A8JXKk0KfMBzdd0vrYMzZZWjpw1nYTs0+ea6bo5S1hwqVUZxHdo1gFHSe/t63jxQIF4yL9aKw==}
 
   '@atcute/lexicons@1.1.0':
     resolution: {integrity: sha512-LFqwnria78xLYb62Ri/+WwQpUTgZp2DuyolNGIIOV1dpiKhFFFh//nscHMA6IExFLQRqWDs3tTjy7zv0h3sf1Q==}
@@ -1164,16 +1168,20 @@ snapshots:
       '@atcute/bluesky': 3.1.4
       '@atcute/lexicons': 1.1.0
 
-  '@atcute/bluesky@2.1.1(@atcute/client@3.1.0)':
-    dependencies:
-      '@atcute/client': 3.1.0
-
   '@atcute/bluesky@3.1.4':
     dependencies:
       '@atcute/atproto': 3.1.0
       '@atcute/lexicons': 1.1.0
 
-  '@atcute/client@3.1.0': {}
+  '@atcute/client@4.0.3':
+    dependencies:
+      '@atcute/identity': 1.0.3
+      '@atcute/lexicons': 1.1.0
+
+  '@atcute/identity@1.0.3':
+    dependencies:
+      '@atcute/lexicons': 1.1.0
+      '@badrap/valita': 0.4.5
 
   '@atcute/lexicons@1.1.0':
     dependencies:

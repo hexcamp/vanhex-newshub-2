@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyGraphDefs } from '@atcute/client/lexicons';
+	import type { AppBskyGraphDefs } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { formatLongNumber } from '$lib/utils/intl/number';
@@ -20,7 +20,7 @@
 
 	const { list }: Props = $props();
 
-	const uri = $derived(parseAddressedAtUri(list.uri));
+	const uri = $derived(assertCanonicalResourceUri(list.uri));
 
 	const creatorUrl = $derived(`${base}/${list.creator.did}`);
 </script>

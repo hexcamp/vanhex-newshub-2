@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/client/lexicons';
+	import type { AppBskyGraphDefs, AppBskyGraphStarterpack } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateRight } from '$lib/utils/strings';
@@ -17,11 +17,11 @@
 
 	const { embed: pack, large = false }: Props = $props();
 
-	const record = pack.record as AppBskyGraphStarterpack.Record;
+	const record = pack.record as AppBskyGraphStarterpack.Main;
 
 	const creator = $derived(pack.creator);
 
-	const rkey = $derived(parseAddressedAtUri(pack.uri).rkey);
+	const rkey = $derived(assertCanonicalResourceUri(pack.uri).rkey);
 </script>
 
 <a href="{base}/{creator.did}/packs/{rkey}" class="starterpack-embed">

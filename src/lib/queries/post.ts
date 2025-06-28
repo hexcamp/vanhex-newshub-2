@@ -1,25 +1,37 @@
-import { XRPC, XRPCError } from '@atcute/client';
-import type { AppBskyFeedDefs, At } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs } from '@atcute/bluesky';
+import { type Client, ClientResponseError, ok } from '@atcute/client';
+import type { ResourceUri } from '@atcute/lexicons';
 
 export interface GetPostReturn {
 	post: AppBskyFeedDefs.PostView;
 	threadgate?: AppBskyFeedDefs.ThreadgateView;
 }
 
-export const getPost = async ({ rpc, uri }: { rpc: XRPC; uri: At.ResourceUri }): Promise<GetPostReturn> => {
-	const { data } = await rpc.get('app.bsky.feed.getPostThread', {
-		params: {
-			uri: uri,
-			depth: 0,
-			parentHeight: 0,
-		},
-	});
+export const getPost = async ({
+	client,
+	uri,
+}: {
+	client: Client;
+	uri: ResourceUri;
+}): Promise<GetPostReturn> => {
+	const data = await ok(
+		client.get('app.bsky.feed.getPostThread', {
+			params: {
+				uri: uri,
+				depth: 0,
+				parentHeight: 0,
+			},
+		}),
+	);
 
 	const { thread, threadgate } = data;
 	switch (thread.$type) {
 		case 'app.bsky.feed.defs#notFoundPost':
 		case 'app.bsky.feed.defs#blockedPost': {
-			throw new XRPCError(400, { kind: 'NotFound', description: 'Post not found' });
+			throw new ClientResponseError({
+				status: 400,
+				data: { error: 'NotFound', message: `Post not found` },
+			});
 		}
 	}
 

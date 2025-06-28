@@ -1,6 +1,7 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
+		"types": ["@atcute/bluesky"],
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,

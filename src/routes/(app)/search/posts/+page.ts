@@ -1,4 +1,4 @@
-import { simpleFetchHandler, XRPC, XRPCError } from '@atcute/client';
+import { Client, ClientResponseError, simpleFetchHandler } from '@atcute/client';
 
 import { asString, asStringUnion, useSearchParams } from '$lib/utils/search-params';
 
@@ -12,54 +12,31 @@ export const load: PageLoad = async ({ url }) => {
 		cursor: asString,
 	});
 
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const query = q.trim();
 	if (query.length === 0) {
 		return { query, posts: { cursor: undefined, items: [] } };
 	}
 
-	try {
-		const { data } = await rpc.get(randomCase('app.bsky.feed.searchPosts', !!cursor), {
-			params: {
-				q: query,
-				limit: 50,
-				sort: sort,
-				cursor: cursor || undefined,
-			},
-		});
+	const response = await client.get('app.bsky.feed.searchPosts', {
+		params: {
+			q: query,
+			limit: 50,
+			sort: sort,
+			cursor: cursor || undefined,
+		},
+	});
 
-		return {
-			query,
-			posts: {
-				cursor: data.cursor,
-				items: data.posts,
-			},
-		};
-	} catch (err) {
-		if (err instanceof XRPCError) {
-			if (err.status === 403) {
-				return { query, posts: { cursor: undefined, items: [] } };
-			}
+	if (!response.ok) {
+		if (response.status === 403) {
+			return { query, posts: { cursor: undefined, items: [] } };
 		}
 
-		throw err;
-	}
-};
-
-const randomCase = <T extends string>(str: T, enabled: boolean): T => {
-	if (!enabled) {
-		return str;
+		throw new ClientResponseError(response);
 	}
 
-	let result: string;
+	const data = response.data;
 
-	do {
-		result = str
-			.split('')
-			.map((char) => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
-			.join('');
-	} while (result === str);
-
-	return result as T;
+	return { query, posts: { cursor: data.cursor, items: data.posts } };
 };

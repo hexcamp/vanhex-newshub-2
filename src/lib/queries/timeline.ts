@@ -1,5 +1,5 @@
-import type { XRPC } from '@atcute/client';
-import type { AppBskyActorDefs, AppBskyFeedDefs, AppBskyFeedGetTimeline, At } from '@atcute/client/lexicons';
+import type { AppBskyActorDefs, AppBskyFeedDefs, AppBskyFeedGetTimeline } from '@atcute/bluesky';
+import { type Client, ok } from '@atcute/client';
 
 import {
 	buildTimelineSlices,
@@ -10,8 +10,8 @@ import {
 	type TimelineSlice,
 	type UiTimelineItem,
 } from '$lib/models/timeline';
-import type { Did } from '$lib/types/identity';
 import { assertNever } from '$lib/utils/invariant';
+import type { Did, ResourceUri } from '@atcute/lexicons';
 
 export const enum TimelineType {
 	PROFILE,
@@ -35,13 +35,13 @@ export interface ProfileTimelineParams {
 
 export interface CustomFeedTimelineParams {
 	type: TimelineType.CUSTOM_FEED;
-	feed: At.ResourceUri;
+	feed: ResourceUri;
 	cursor?: string;
 }
 
 export interface UserListTimelineParams {
 	type: TimelineType.USER_LIST;
-	list: At.ResourceUri;
+	list: ResourceUri;
 	cursor?: string;
 }
 
@@ -55,33 +55,35 @@ export interface TimelinePage {
 const PAGE_LIMIT = 50;
 
 export const fetchTimeline = async ({
-	rpc,
+	client,
 	params,
 }: {
-	rpc: XRPC;
+	client: Client;
 	params: TimelineParams;
 }): Promise<TimelinePage> => {
 	let sliceFilter: SliceFilter | undefined;
 	let postFilter: PostFilter | undefined;
 
-	let timeline: AppBskyFeedGetTimeline.Output;
+	let timeline: AppBskyFeedGetTimeline.$output;
 
 	switch (params.type) {
 		case TimelineType.PROFILE: {
-			const { data } = await rpc.get('app.bsky.feed.getAuthorFeed', {
-				params: {
-					actor: params.actor,
-					cursor: params.cursor,
-					limit: PAGE_LIMIT,
-					includePins: params.pinned ?? params.filter !== ProfileFilter.MEDIA,
-					filter:
-						params.filter === ProfileFilter.MEDIA
-							? 'posts_with_media'
-							: params.filter === ProfileFilter.POSTS_WITH_REPLIES
-								? 'posts_with_replies'
-								: 'posts_and_author_threads',
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.feed.getAuthorFeed', {
+					params: {
+						actor: params.actor,
+						cursor: params.cursor,
+						limit: PAGE_LIMIT,
+						includePins: params.pinned ?? params.filter !== ProfileFilter.MEDIA,
+						filter:
+							params.filter === ProfileFilter.MEDIA
+								? 'posts_with_media'
+								: params.filter === ProfileFilter.POSTS_WITH_REPLIES
+									? 'posts_with_replies'
+									: 'posts_and_author_threads',
+					},
+				}),
+			);
 
 			timeline = data;
 
@@ -92,13 +94,15 @@ export const fetchTimeline = async ({
 			break;
 		}
 		case TimelineType.CUSTOM_FEED: {
-			const { data } = await rpc.get('app.bsky.feed.getFeed', {
-				params: {
-					feed: params.feed,
-					cursor: params.cursor,
-					limit: PAGE_LIMIT,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.feed.getFeed', {
+					params: {
+						feed: params.feed,
+						cursor: params.cursor,
+						limit: PAGE_LIMIT,
+					},
+				}),
+			);
 
 			timeline = {
 				// Discover feed, wooo.
@@ -110,13 +114,15 @@ export const fetchTimeline = async ({
 			break;
 		}
 		case TimelineType.USER_LIST: {
-			const { data } = await rpc.get('app.bsky.feed.getListFeed', {
-				params: {
-					list: params.list,
-					cursor: params.cursor,
-					limit: PAGE_LIMIT,
-				},
-			});
+			const data = await ok(
+				client.get('app.bsky.feed.getListFeed', {
+					params: {
+						list: params.list,
+						cursor: params.cursor,
+						limit: PAGE_LIMIT,
+					},
+				}),
+			);
 
 			timeline = data;
 			break;

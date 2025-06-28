@@ -1,4 +1,4 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
@@ -7,7 +7,7 @@ import { getLinksMultiPath } from '$lib/queries/constellation';
 import { makeAtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ url, params, fetch }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	const parentUri = makeAtUri(params.actor, 'app.bsky.feed.post', params.rkey);
 
@@ -20,11 +20,13 @@ export const load: PageLoad = async ({ url, params, fetch }) => {
 	});
 
 	const items = await (async () => {
-		const { data } = await rpc.get('app.bsky.feed.getPosts', {
-			params: {
-				uris: linking_records.map((link) => makeAtUri(link.did, 'app.bsky.feed.post', link.rkey)),
-			},
-		});
+		const data = await ok(
+			client.get('app.bsky.feed.getPosts', {
+				params: {
+					uris: linking_records.map((link) => makeAtUri(link.did, 'app.bsky.feed.post', link.rkey)),
+				},
+			}),
+		);
 
 		return data.posts;
 	})();

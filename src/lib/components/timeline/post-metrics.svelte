@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
 
-	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs } from '@atcute/bluesky';
 
 	import { formatCompactNumber, formatLongNumber } from '$lib/utils/intl/number';
 

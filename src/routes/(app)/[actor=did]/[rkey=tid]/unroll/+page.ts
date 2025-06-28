@@ -1,7 +1,8 @@
 import { error } from '@sveltejs/kit';
 
-import { simpleFetchHandler, XRPC } from '@atcute/client';
-import type { AppBskyFeedDefs, Brand } from '@atcute/client/lexicons';
+import type { AppBskyFeedDefs } from '@atcute/bluesky';
+import { Client, ok, simpleFetchHandler } from '@atcute/client';
+import type { $type } from '@atcute/lexicons';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
@@ -9,20 +10,22 @@ import type { PageLoad } from './$types';
 import { makeAtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ params }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let currentUri = makeAtUri(params.actor, 'app.bsky.feed.post', params.rkey);
 	const items: AppBskyFeedDefs.ThreadViewPost[] = [];
 
 	while (true) {
-		const { data } = await rpc.get('app.bsky.feed.getPostThread', {
-			params: {
-				uri: currentUri,
-				// The max is 1000, but the AppView only returns 10.
-				depth: 1000,
-				parentHeight: 0,
-			},
-		});
+		const data = await ok(
+			client.get('app.bsky.feed.getPostThread', {
+				params: {
+					uri: currentUri,
+					// The max is 1000, but the AppView only returns 10.
+					depth: 1000,
+					parentHeight: 0,
+				},
+			}),
+		);
 
 		switch (data.thread.$type) {
 			case 'app.bsky.feed.defs#notFoundPost': {
@@ -48,7 +51,7 @@ export const load: PageLoad = async ({ params }) => {
 				break;
 			}
 
-			const replies = tail.replies.filter((reply): reply is Brand.Union<AppBskyFeedDefs.ThreadViewPost> => {
+			const replies = tail.replies.filter((reply): reply is $type.enforce<AppBskyFeedDefs.ThreadViewPost> => {
 				if (reply.$type !== 'app.bsky.feed.defs#threadViewPost') {
 					return false;
 				}

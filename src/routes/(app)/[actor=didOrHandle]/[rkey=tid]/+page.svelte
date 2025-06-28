@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { AppBskyFeedPost } from '@atcute/client/lexicons';
+	import type { AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { PageProps } from './$types';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { truncateMiddle, truncateRight } from '$lib/utils/strings';
 
 	import BlockedAscendantItem from './components/blocked-ascendant-item.svelte';
@@ -22,11 +22,11 @@
 	const { data }: PageProps = $props();
 
 	const main = $derived(data.thread.post);
-	const uri = $derived(parseAddressedAtUri(main.uri));
+	const uri = $derived(assertCanonicalResourceUri(main.uri));
 
 	const title = $derived.by(() => {
 		const author = `@${truncateMiddle(main.author.handle, 29)}`;
-		const content = truncateRight((main.record as AppBskyFeedPost.Record).text.trim(), 70);
+		const content = truncateRight((main.record as AppBskyFeedPost.Main).text.trim(), 70);
 
 		return `${author}: "${content}" — ${PUBLIC_APP_NAME}`;
 	});
@@ -52,15 +52,15 @@
 			{#if item.type === 'post'}
 				<PostAscendantItem {item} />
 			{:else if item.type === 'overflow'}
-				{@const uri = parseAddressedAtUri(item.uri)}
+				{@const uri = assertCanonicalResourceUri(item.uri)}
 
 				<OverflowAscendantItem postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{:else if item.type === 'blocked'}
-				{@const uri = parseAddressedAtUri(item.uri)}
+				{@const uri = assertCanonicalResourceUri(item.uri)}
 
 				<BlockedAscendantItem postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{:else if item.type === 'nonexistent'}
-				{@const uri = parseAddressedAtUri(item.uri)}
+				{@const uri = assertCanonicalResourceUri(item.uri)}
 
 				<NonexistentAscendantPost postUrl="{base}/{uri.repo}/{uri.rkey}#main" />
 			{/if}

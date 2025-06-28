@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import type { AppBskyEmbedVideo } from '@atcute/client/lexicons';
+	import type { AppBskyEmbedVideo } from '@atcute/bluesky';
 
 	import { dev } from '$app/environment';
 	import { base } from '$app/paths';

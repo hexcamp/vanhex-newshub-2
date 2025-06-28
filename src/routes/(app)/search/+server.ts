@@ -1,7 +1,7 @@
 import { redirect, type RequestHandler } from '@sveltejs/kit';
 
-import { isDid, isHandle } from '$lib/types/identity';
-import { isRecordKey, isTid } from '$lib/types/rkey';
+import { isDid, isHandle, isRecordKey, isTid } from '@atcute/lexicons/syntax';
+
 import {
 	BSKY_FEED_LINK_RE,
 	BSKY_LIST_LINK_RE,

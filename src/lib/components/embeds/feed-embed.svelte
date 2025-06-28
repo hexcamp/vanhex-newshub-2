@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { truncateRight } from '$lib/utils/strings';
@@ -22,7 +22,7 @@
 	const blurAvi = $derived(!!findLabel(feed.labels, creator.did, FlagsBlurMedia));
 </script>
 
-<a href="{base}/{creator.did}/feeds/{parseAddressedAtUri(feed.uri).rkey}" class="feed-embed">
+<a href="{base}/{creator.did}/feeds/{assertCanonicalResourceUri(feed.uri).rkey}" class="feed-embed">
 	<div class="main">
 		<Avatar type="generator" src={feed.avatar} blur={blurAvi} />
 

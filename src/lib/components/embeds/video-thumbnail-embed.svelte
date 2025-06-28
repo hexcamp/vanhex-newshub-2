@@ -1,7 +1,7 @@
 <script lang="ts">
 	// This is meant to be used inside quote embeds, so it's non-standalone.
 
-	import type { AppBskyEmbedVideo } from '@atcute/client/lexicons';
+	import type { AppBskyEmbedVideo } from '@atcute/bluesky';
 
 	import { replaceVideoCdnUrl } from '$lib/utils/bluesky/videos';
 

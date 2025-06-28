@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
 	import { findLabel, FlagsBlurContent, FlagsBlurMedia } from '$lib/moderation';
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 
 	import Avatar from '$lib/components/avatar.svelte';
@@ -27,12 +27,12 @@
 
 	const { post, threadgate, prev = false }: Props = $props();
 
-	const uri = $derived(parseAddressedAtUri(post.uri));
+	const uri = $derived(assertCanonicalResourceUri(post.uri));
 
 	const author = $derived(post.author);
 	const authorName = $derived(normalizeDisplayName(author.displayName ?? ''));
 
-	const record = $derived(post.record as AppBskyFeedPost.Record);
+	const record = $derived(post.record as AppBskyFeedPost.Main);
 
 	const authorUrl = $derived(`${base}/${author.did}`);
 	const postUrl = $derived(`${base}/${author.did}/${uri.rkey}#main`);

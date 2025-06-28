@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs } from '@atcute/client/lexicons';
+	import type { AppBskyFeedDefs } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 	import { normalizeDisplayName } from '$lib/utils/bluesky/display';
 	import { trimRichText } from '$lib/utils/bluesky/richtext';
 	import { formatLongNumber } from '$lib/utils/intl/number';
@@ -19,7 +19,7 @@
 
 	const creator = $derived(feed.creator);
 
-	const href = $derived(`${base}/${creator.did}/feeds/${parseAddressedAtUri(feed.uri).rkey}`);
+	const href = $derived(`${base}/${creator.did}/feeds/${assertCanonicalResourceUri(feed.uri).rkey}`);
 </script>
 
 <div class="feed-item">

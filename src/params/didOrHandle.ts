@@ -1,7 +1,5 @@
 import type { ParamMatcher } from '@sveltejs/kit';
 
-import { isDid, isHandle, type Did, type Handle } from '$lib/types/identity';
+import { isActorIdentifier } from '@atcute/lexicons/syntax';
 
-export const match = ((param: string): param is Did | Handle => {
-	return isDid(param) || isHandle(param);
-}) satisfies ParamMatcher;
+export const match = isActorIdentifier satisfies ParamMatcher;

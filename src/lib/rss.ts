@@ -1,11 +1,16 @@
+import {
+	unwrapEmbed,
+	type AppBskyFeedDefs,
+	type AppBskyFeedPost,
+	type AppBskyRichtextFacet,
+} from '@atcute/bluesky';
 import { segmentize } from '@atcute/bluesky-richtext-segmenter';
-import type { AppBskyFeedDefs, AppBskyFeedPost, AppBskyRichtextFacet } from '@atcute/client/lexicons';
 
 import { PUBLIC_APP_URL } from '$env/static/public';
 
 import { findLabel, FlagsBlurMedia } from './moderation';
-import { parseAddressedAtUri } from './types/at-uri';
-import { getQuoteEmbedView, unwrapEmbedView } from './utils/bluesky/embeds';
+import { assertCanonicalResourceUri } from './types/at-uri';
+import { getQuoteEmbed } from './utils/bluesky/embeds';
 import { assertNever } from './utils/invariant';
 import type { UnwrapArray } from './utils/types';
 
@@ -181,10 +186,10 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 	const post = item.post;
 	const author = post.author;
 
-	const record = post.record as AppBskyFeedPost.Record;
+	const record = post.record as AppBskyFeedPost.Main;
 
-	const { media, record: recordEmbed } = unwrapEmbedView(post.embed);
-	const quote = getQuoteEmbedView(recordEmbed);
+	const { media, record: recordEmbed } = unwrapEmbed(post.embed);
+	const quote = getQuoteEmbed(recordEmbed);
 
 	const shouldBlurMedia = !!findLabel(post.labels, author.did, FlagsBlurMedia);
 
@@ -195,9 +200,11 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 		switch (quote.$type) {
 			case 'app.bsky.embed.record#viewRecord': {
 				const author = quote.author;
-				const record = quote.value as AppBskyFeedPost.Record;
+				const record = quote.value as AppBskyFeedPost.Main;
 
-				const postUrl = `${PUBLIC_APP_URL}/${author.did}/${parseAddressedAtUri(quote.uri).rkey}`;
+				const uri = assertCanonicalResourceUri(quote.uri);
+
+				const postUrl = `${PUBLIC_APP_URL}/${author.did}/${uri.rkey}`;
 
 				html += `<blockquote>`;
 				html += `<b><a href="${escapeAttribute(postUrl)}">`;
@@ -225,7 +232,7 @@ export const feedPostToFeedItem = (item: AppBskyFeedDefs.FeedViewPost): FeedItem
 
 	return {
 		id: `${post.uri}|${post.cid}`,
-		url: `${PUBLIC_APP_URL}/${author.did}/${parseAddressedAtUri(post.uri).rkey}`,
+		url: `${PUBLIC_APP_URL}/${author.did}/${assertCanonicalResourceUri(post.uri).rkey}`,
 		date: new Date(post.indexedAt),
 		description: { html },
 		images:

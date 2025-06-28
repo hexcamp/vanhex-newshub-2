@@ -1,14 +1,14 @@
-import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { Client, simpleFetchHandler } from '@atcute/client';
+import { isDid, type Did } from '@atcute/lexicons/syntax';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
-import { isDid, type Did } from '$lib/types/identity';
-import { makeAtUri } from '$lib/types/at-uri';
 import { fetchTimeline, TimelineType } from '$lib/queries/timeline';
+import { makeAtUri } from '$lib/types/at-uri';
 
 export const load: PageLoad = async ({ url, params, fetch, parent }) => {
-	const rpc = new XRPC({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
+	const client = new Client({ handler: simpleFetchHandler({ service: PUBLIC_APPVIEW_URL }) });
 
 	let did: Did;
 	if (isDid(params.actor)) {
@@ -19,7 +19,7 @@ export const load: PageLoad = async ({ url, params, fetch, parent }) => {
 	}
 
 	const timeline = await fetchTimeline({
-		rpc,
+		client: client,
 		params: {
 			type: TimelineType.USER_LIST,
 			list: makeAtUri(did, 'app.bsky.graph.list', params.rkey),

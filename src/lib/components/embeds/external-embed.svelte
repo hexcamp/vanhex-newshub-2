@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AppBskyEmbedExternal } from '@atcute/client/lexicons';
+	import type { AppBskyEmbedExternal } from '@atcute/bluesky';
 
 	import { redirectBskyUrl } from '$lib/redirector';
 	import { truncateRight } from '$lib/utils/strings';

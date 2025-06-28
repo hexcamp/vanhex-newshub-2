@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { ClassValue } from 'svelte/elements';
 
-	import type { AppBskyGraphStarterpack } from '@atcute/client/lexicons';
+	import type { AppBskyGraphStarterpack } from '@atcute/bluesky';
 
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	import type { LayoutProps } from './$types';
 
-	import { parseAddressedAtUri } from '$lib/types/at-uri';
+	import { assertCanonicalResourceUri } from '$lib/types/at-uri';
 
 	import PackAside from './components/pack-aside.svelte';
 	import PackMetaTags from './components/pack-meta-tags.svelte';
@@ -17,8 +17,8 @@
 
 	const currentRouteId = $derived(page.route.id);
 
-	const record = $derived(data.pack.record as AppBskyGraphStarterpack.Record);
-	const uri = $derived(parseAddressedAtUri(data.pack.uri));
+	const record = $derived(data.pack.record as AppBskyGraphStarterpack.Main);
+	const uri = $derived(assertCanonicalResourceUri(data.pack.uri));
 
 	const listUrl = $derived.by(() => {
 		return `${base}/${uri.repo}/packs/${uri.rkey}`;
