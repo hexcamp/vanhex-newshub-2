@@ -15,6 +15,9 @@
 	import PostMeta from '$lib/components/timeline/post-meta.svelte';
 	import PostMetrics from '$lib/components/timeline/post-metrics.svelte';
 
+	import CircleMinusOutlined from '$lib/components/central-icons/circle-minus-outlined.svelte';
+	import CirclePlusOutlined from '$lib/components/central-icons/circle-plus-outlined.svelte';
+
 	interface Props {
 		post: AppBskyFeedDefs.PostView;
 		defaultCollapsed?: boolean;
@@ -58,9 +61,23 @@
 	</div>
 
 	{#if hasDescendant}
-		<div class={['descendant', isNested && 'has-multiple']}>
-			{@render children?.()}
-		</div>
+		<details open class="descendants">
+			<summary aria-label="Show/hide replies" class="descendant-summary">
+				<div class="descendant-summary-button">
+					<div class="descendant-summary-icon is-opened">
+						<CircleMinusOutlined />
+					</div>
+
+					<div class="descendant-summary-icon is-closed">
+						<CirclePlusOutlined />
+					</div>
+				</div>
+			</summary>
+
+			<div class={['descendant-items', isNested && 'has-multiple']}>
+				{@render children?.()}
+			</div>
+		</details>
 	{/if}
 </details>
 
@@ -110,10 +127,68 @@
 		bottom: -10px;
 		left: calc(16px + (20px / 2) - 1px);
 		border-left: 2px solid var(--divider-md);
+
+		.post-descendant-item:has(> .descendants:not([open])) & {
+			bottom: 16px;
+		}
 	}
 
-	.has-multiple {
+	.descendants {
+		position: relative;
+	}
+
+	.descendant-summary {
+		list-style: none;
+	}
+
+	.descendant-summary-button {
+		position: absolute;
+		top: -32px;
+		z-index: 1;
+		margin-left: 16px;
+		border-radius: 9999px;
+		background: var(--bg-primary);
+		width: 20px;
+		height: 20px;
+		color: var(--text-blurb);
+
+		@media (hover: hover) {
+			&:hover {
+				background: color-mix(in srgb, var(--bg-primary), var(--tap) 10%);
+			}
+		}
+	}
+
+	.descendant-summary-icon {
 		display: grid;
-		grid-template-columns: 20px minmax(0, 1fr);
+		place-items: center;
+		width: 20px;
+		height: 20px;
+		/* font-size: 16px; */
+
+		&.is-opened {
+			display: none;
+		}
+
+		&.is-closed {
+			display: grid;
+		}
+
+		.descendants[open] > .descendant-summary & {
+			&.is-opened {
+				display: grid;
+			}
+
+			&.is-closed {
+				display: none;
+			}
+		}
+	}
+
+	.descendant-items {
+		&.has-multiple {
+			display: grid;
+			grid-template-columns: 20px minmax(0, 1fr);
+		}
 	}
 </style>

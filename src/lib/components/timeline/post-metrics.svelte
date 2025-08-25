@@ -25,7 +25,9 @@
 		title={count === 1 ? `${formatLongNumber(count)} ${one}` : `${formatLongNumber(count)} ${many}`}
 		class="stat"
 	>
-		<Icon />
+		<div class="icon">
+			<Icon />
+		</div>
 
 		<span class="count">
 			{formatCompactNumber(count)}
@@ -46,6 +48,12 @@
 		gap: 16px;
 		margin-top: 12px;
 		color: var(--text-blurb);
+	}
+
+	.icon {
+		display: grid;
+		place-items: center;
+		/* font-size: 16px; */
 	}
 
 	.stat {
