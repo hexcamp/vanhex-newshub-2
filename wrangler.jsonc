@@ -1,7 +1,9 @@
 {
+	"$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
 	"name": "anartia",
 	"main": ".svelte-kit/cloudflare/_worker.js",
-	"compatibility_date": "2025-01-01",
+	"compatibility_flags": ["nodejs_als"],
+	"compatibility_date": "2025-08-16",
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare",
