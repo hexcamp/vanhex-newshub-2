@@ -1,6 +1,6 @@
-import { base } from '$app/paths';
+import { resolve } from '$app/paths';
 
-import { isDid, isHandle, isRecordKey, isTid, parseResourceUri } from '@atcute/lexicons/syntax';
+import { isActorIdentifier, isRecordKey, isTid, parseResourceUri } from '@atcute/lexicons/syntax';
 
 import {
 	BSKY_FEED_LINK_RE,
@@ -38,63 +38,78 @@ export const redirectBskyUrl = (url: URL): RedirectResult => {
 		if ((match = BSKY_PROFILE_LINK_RE.exec(pathname))) {
 			const [, actor] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${match[1]}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/(profile)/[actor=didOrHandle]/(timeline)', { actor: match[1] }),
+			};
 		}
 
 		if ((match = BSKY_POST_LINK_RE.exec(pathname))) {
 			const [, actor, rkey] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 			if (!isTid(rkey)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${actor}/${rkey}#main` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/[actor=did]/[rkey=tid]', { actor, rkey }) + `#main`,
+			};
 		}
 
 		if ((match = BSKY_FEED_LINK_RE.exec(pathname))) {
 			const [, actor, rkey] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 			if (!isRecordKey(rkey)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${actor}/feeds/${rkey}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/[actor=didOrHandle]/feeds/[rkey=rkey]', { actor, rkey }),
+			};
 		}
 
 		if ((match = BSKY_LIST_LINK_RE.exec(pathname))) {
 			const [, actor, rkey] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 			if (!isRecordKey(rkey)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${actor}/lists/${rkey}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/[actor=didOrHandle]/lists/[rkey=rkey]', { actor, rkey }),
+			};
 		}
 
 		if ((match = BSKY_STARTERPACK_LINK_RE.exec(pathname))) {
 			const [, _page, actor, rkey] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 			if (!isRecordKey(rkey)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${actor}/packs/${rkey}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/[actor=didOrHandle]/packs/[rkey=rkey]', { actor, rkey }),
+			};
 		}
 
 		if ((match = BSKY_SEARCH_LINK_RE.exec(pathname))) {
@@ -103,13 +118,19 @@ export const redirectBskyUrl = (url: URL): RedirectResult => {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/search/posts?q=${encodeURIComponent(query)}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/search/posts') + `?q=${encodeURIComponent(query)}`,
+			};
 		}
 
 		if ((match = BSKY_HASHTAG_LINK_RE.exec(pathname))) {
 			const [, tag] = match;
 
-			return { type: 'internal', url: `${base}/search/posts?q=${encodeURIComponent('#' + tag)}` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/search/posts') + `?q=${encodeURIComponent('#' + tag)}`,
+			};
 		}
 
 		return null;
@@ -133,7 +154,10 @@ export const redirectBskyUrl = (url: URL): RedirectResult => {
 		if ((match = BSKY_GO_SHORTLINK_RE.exec(pathname))) {
 			const [, id] = match;
 
-			return { type: 'internal', url: `${base}/go/${id}` };
+			return {
+				type: 'internal',
+				url: resolve('/go/[shortid]', { shortid: id }),
+			};
 		}
 	}
 
@@ -149,35 +173,41 @@ export const redirectOtherUrl = (url: URL): RedirectResult => {
 	let match: RegExpExecArray | null | undefined;
 
 	if (host === 'blue.mackuba.eu' && pathname === '/skythread/') {
-		const author = url.searchParams.get('author');
-		const post = url.searchParams.get('post');
+		const actor = url.searchParams.get('author');
+		const rkey = url.searchParams.get('post');
 
-		if (author === null || post === null) {
+		if (actor === null || rkey === null) {
 			return null;
 		}
 
-		if (!isHandle(author) && !isDid(author)) {
+		if (!isActorIdentifier(actor)) {
 			return null;
 		}
-		if (!isTid(post)) {
+		if (!isTid(rkey)) {
 			return null;
 		}
 
-		return { type: 'internal', url: `${base}/${author}/${post}#main` };
+		return {
+			type: 'internal',
+			url: resolve('/(app)/[actor=did]/[rkey=tid]', { actor, rkey }) + `#main`,
+		};
 	}
 
 	if (host === 'skywriter.blue') {
 		if ((match = SKYWRITER_UNROLL_RE.exec(pathname))) {
 			const [, actor, rkey] = match;
 
-			if (!isHandle(actor) && !isDid(actor)) {
+			if (!isActorIdentifier(actor)) {
 				return null;
 			}
 			if (!isTid(rkey)) {
 				return null;
 			}
 
-			return { type: 'internal', url: `${base}/${actor}/${rkey}/unroll` };
+			return {
+				type: 'internal',
+				url: resolve('/(app)/[actor=did]/[rkey=tid]/unroll', { actor, rkey }),
+			};
 		}
 	}
 
@@ -215,29 +245,47 @@ export const redirectAtUri = (raw: string): RedirectResult => {
 	if (uri.rkey) {
 		switch (uri.collection) {
 			case 'app.bsky.actor.profile': {
-				return { type: 'internal', url: `${base}/${uri.repo}` };
+				return {
+					type: 'internal',
+					url: resolve('/(app)/(profile)/[actor=didOrHandle]/(timeline)', { actor: uri.repo }),
+				};
 			}
 			case 'app.bsky.feed.post': {
 				if (!isTid(uri.rkey)) {
 					return null;
 				}
 
-				return { type: 'internal', url: `${base}/${uri.repo}/${uri.rkey}#main` };
+				return {
+					type: 'internal',
+					url: resolve('/(app)/[actor=did]/[rkey=tid]', { actor: uri.repo, rkey: uri.rkey }) + `#main`,
+				};
 			}
 			case 'app.bsky.feed.generator': {
-				return { type: 'internal', url: `${base}/${uri.repo}/feeds/${uri.rkey}` };
+				return {
+					type: 'internal',
+					url: resolve('/(app)/[actor=didOrHandle]/feeds/[rkey=rkey]', { actor: uri.repo, rkey: uri.rkey }),
+				};
 			}
 			case 'app.bsky.graph.list': {
-				return { type: 'internal', url: `${base}/${uri.repo}/lists/${uri.rkey}` };
+				return {
+					type: 'internal',
+					url: resolve('/(app)/[actor=didOrHandle]/lists/[rkey=rkey]', { actor: uri.repo, rkey: uri.rkey }),
+				};
 			}
 			case 'app.bsky.graph.starterpack': {
-				return { type: 'internal', url: `${base}/${uri.repo}/packs/${uri.rkey}` };
+				return {
+					type: 'internal',
+					url: resolve('/(app)/[actor=didOrHandle]/packs/[rkey=rkey]', { actor: uri.repo, rkey: uri.rkey }),
+				};
 			}
 		}
 	}
 
 	if (uri.collection === undefined) {
-		return { type: 'internal', url: `${base}/${uri.repo}` };
+		return {
+			type: 'internal',
+			url: resolve('/(app)/(profile)/[actor=didOrHandle]/(timeline)', { actor: uri.repo }),
+		};
 	}
 
 	return null;
