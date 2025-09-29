@@ -14,21 +14,21 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^7.2.3",
-		"@sveltejs/kit": "^2.43.2",
-		"@sveltejs/vite-plugin-svelte": "^6.2.0",
+		"@sveltejs/kit": "^2.43.5",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"postcss": "^8.5.6",
 		"prettier": "^3.6.2",
 		"prettier-plugin-css-order": "^2.1.2",
 		"prettier-plugin-svelte": "^3.4.0",
-		"svelte": "^5.39.5",
+		"svelte": "^5.39.6",
 		"svelte-check": "^4.3.2",
 		"typescript": "~5.8.3",
 		"vite": "^7.1.7",
-		"wrangler": "^4.39.0"
+		"wrangler": "^4.40.2"
 	},
 	"dependencies": {
 		"@atcute/atproto": "^3.1.4",
-		"@atcute/bluesky": "^3.2.2",
+		"@atcute/bluesky": "^3.2.3",
 		"@atcute/bluesky-richtext-parser": "^1.0.7",
 		"@atcute/bluesky-richtext-segmenter": "^2.0.3",
 		"@atcute/client": "^4.0.3",
