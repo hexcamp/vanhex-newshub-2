@@ -1,9 +1,9 @@
 <svg class="sv-icon" fill="none" viewBox="0 0 24 24">
 	<path
+		d="M16 11.9999L8 12.0001M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
 		stroke="currentColor"
+		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		stroke-width="2"
-		d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM16 12H8"
 	/>
 </svg>

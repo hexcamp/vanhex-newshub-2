@@ -1,15 +1,16 @@
-<svg class="sv-icon" fill="none" viewBox="0 0 24 24"
-	><path
+<svg class="sv-icon" fill="none" viewBox="0 0 24 24">
+	<path
+		d="M4.00195 8H16.002C16.5542 8 17.002 8.44772 17.002 9V17C17.002 17.5523 16.5542 18 16.002 18H10.502L6.00195 20.5V18H4.00195C3.44967 18 3.00195 17.5523 3.00195 17V9C3.00195 8.44772 3.44967 8 4.00195 8Z"
 		stroke="currentColor"
+		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		stroke-width="2"
-		d="M3.002 8h14v10h-6.5l-4.5 2.5V18h-3V8Z"
-	/><path
+	/>
+	<path
+		d="M16.9998 14H18.5009H20.002C20.5542 14 21.002 13.5523 21.002 13V5C21.002 4.44772 20.5542 4 20.002 4H8.00195C7.44967 4 7.00195 4.44772 7.00195 5V8"
 		stroke="currentColor"
+		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		stroke-width="2"
-		d="M17 14h4.002V4h-14v4"
-	/></svg
->
+	/>
+</svg>

@@ -3,7 +3,7 @@
 
 	import type { LabelDefinition } from '$lib/moderation';
 
-	import InfoOutlined from '$lib/components/central-icons/info-outlined.svelte';
+	import InfoOutlined from '$lib/components/central-icons/circle-info-outlined.svelte';
 
 	interface Props {
 		blur: LabelDefinition | undefined;
