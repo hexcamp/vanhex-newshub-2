@@ -33,3 +33,16 @@ export const AUTHENTICATED_FEEDS: CanonicalResourceUri[] = [
 	// "Re+Posts" by @skyfeed.xyz
 	`at://did:plc:tenurhgjptubkk5zf5qhi3og/app.bsky.feed.generator/re-plus-posts`,
 ];
+
+export const DECOMISSIONED_FEEDS: CanonicalResourceUri[] = [
+	// "Japanese Cluster" by @jaz.bsky.social
+	`at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/cl-japanese`,
+	// "Brazil Supercluster" by @jaz.bsky.social
+	`at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/cl-brasil`,
+	// "Cat Pics" by @jaz.bsky.social
+	`at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/cv:cat`,
+	// "Trans+Queer Shitposters" by @jaz.bsky.social
+	`at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/cl-tqsp`,
+	// "Dog Pics" by @jaz.bsky.social
+	`at://did:plc:q6gjnaw2blty4crticxkmujt/app.bsky.feed.generator/cv:dog`,
+];

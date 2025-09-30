@@ -1,6 +1,6 @@
 import { Client, ok, simpleFetchHandler } from '@atcute/client';
 
-import { AUTHENTICATED_FEEDS } from '$lib/constants';
+import { AUTHENTICATED_FEEDS, DECOMISSIONED_FEEDS } from '$lib/constants';
 import { asString, useSearchParams } from '$lib/utils/search-params';
 
 import { PUBLIC_APPVIEW_URL } from '$env/static/public';
@@ -28,7 +28,10 @@ export const load: PageLoad = async ({ url }) => {
 
 	let feeds = data.feeds;
 	if (query.length === 0) {
-		feeds = feeds.filter((feed) => !AUTHENTICATED_FEEDS.includes(feed.uri as CanonicalResourceUri));
+		feeds = feeds.filter((feed) => {
+			const uri = feed.uri as CanonicalResourceUri;
+			return !AUTHENTICATED_FEEDS.includes(uri) && !DECOMISSIONED_FEEDS.includes(uri);
+		});
 	}
 
 	return {
