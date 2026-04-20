@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Hls, { type Fragment as HlsFragment } from 'hls.js';
+	import type { default as HlsCtor, Fragment as HlsFragment } from 'hls.js';
 
 	import type { PageProps } from './$types';
 
@@ -13,25 +13,35 @@
 			return;
 		}
 
-		const hls = new Hls({
-			capLevelToPlayerSize: true,
-			startLevel: 1,
-			xhrSetup(xhr, urlString) {
-				if (!urlString.endsWith('/playlist.m3u8')) {
-					urlString = urlString.replace('https://video.bsky.app/watch/', 'https://video.cdn.bsky.app/hls/');
+		const el = video;
+		// Safari, iOS, and Chromium desktop 142+ play HLS natively. Everywhere
+		// else we fall back to hls.js, loaded on demand.
+		const canPlayNative = el.canPlayType('application/vnd.apple.mpegurl') !== '';
+
+		let teardown: (() => void) | undefined;
+
+		if (canPlayNative) {
+			el.src = data.playlistUrl;
+			teardown = () => {
+				el.removeAttribute('src');
+				el.load();
+			};
+		} else {
+			let cancelled = false;
+			let destroy: (() => void) | undefined;
+
+			import('hls.js').then(({ default: Hls }) => {
+				if (cancelled || !Hls.isSupported()) {
+					return;
 				}
+				destroy = setupHls(Hls, el, data.playlistUrl);
+			});
 
-				const url = new URL(urlString);
-
-				// Remove `session_id` everywhere
-				url.searchParams.delete('session_id');
-
-				xhr.open('get', url.toString());
-			},
-		});
-
-		hls.loadSource(data.playlistUrl);
-		hls.attachMedia(video);
+			teardown = () => {
+				cancelled = true;
+				destroy?.();
+			};
+		}
 
 		$effect(() => {
 			if (!playing) {
@@ -43,18 +53,18 @@
 				(entries) => {
 					const entry = entries[0];
 					if (!entry.isIntersecting) {
-						video!.pause();
+						el.pause();
 					}
 				},
 				{ threshold: 0.5 },
 			);
 
-			observer.observe(video!);
+			observer.observe(el);
 
 			channel.postMessage('play');
 			channel.addEventListener('message', (event) => {
 				if (event.data === 'play') {
-					video!.pause();
+					el.pause();
 				}
 			});
 
@@ -64,41 +74,39 @@
 			};
 		});
 
-		// Low-quality fragment flushing
-		{
-			let lowQualityFragments: HlsFragment[] = [];
+		return () => {
+			playing = false;
+			teardown?.();
+		};
+	});
 
-			hls.on(Hls.Events.FRAG_BUFFERED, (_event, { frag }) => {
-				if (frag.level === 0) {
-					lowQualityFragments.push(frag);
-				}
-			});
+	const setupHls = (Hls: typeof HlsCtor, video: HTMLVideoElement, playlistUrl: string) => {
+		const hls = new Hls({
+			capLevelToPlayerSize: true,
+			startLevel: 1,
+		});
 
-			hls.on(Hls.Events.FRAG_CHANGED, (_event, { frag }) => {
-				if (hls.nextAutoLevel > 0) {
-					const flushed: HlsFragment[] = [];
+		hls.loadSource(playlistUrl);
+		hls.attachMedia(video);
 
-					for (const lowQualFrag of lowQualityFragments) {
-						if (Math.abs(frag.start - lowQualFrag.start) < 0.1) {
-							continue;
-						}
+		// drop buffered low-quality fragments once a higher level takes over, so
+		// seeking back doesn't reveal the level-0 frames
+		let lowQualityFragments: HlsFragment[] = [];
 
-						hls.trigger(Hls.Events.BUFFER_FLUSHING, {
-							startOffset: lowQualFrag.start,
-							endOffset: lowQualFrag.end,
-							type: 'video',
-						});
+		hls.on(Hls.Events.FRAG_BUFFERED, (_event, { frag }) => {
+			if (frag.level === 0) {
+				lowQualityFragments.push(frag);
+			}
+		});
 
-						flushed.push(lowQualFrag);
+		hls.on(Hls.Events.FRAG_CHANGED, (_event, { frag }) => {
+			if (hls.nextAutoLevel > 0) {
+				const flushed: HlsFragment[] = [];
+
+				for (const lowQualFrag of lowQualityFragments) {
+					if (Math.abs(frag.start - lowQualFrag.start) < 0.1) {
+						continue;
 					}
-
-					lowQualityFragments = lowQualityFragments.filter((f) => !flushed.includes(f));
-				}
-			});
-
-			video.addEventListener('ended', () => {
-				if (hls.nextAutoLevel > 0 && lowQualityFragments.length === 1 && lowQualityFragments[0].start === 0) {
-					const lowQualFrag = lowQualityFragments[0];
 
 					hls.trigger(Hls.Events.BUFFER_FLUSHING, {
 						startOffset: lowQualFrag.start,
@@ -106,16 +114,29 @@
 						type: 'video',
 					});
 
-					lowQualityFragments = [];
+					flushed.push(lowQualFrag);
 				}
-			});
-		}
 
-		return () => {
-			playing = false;
-			hls.destroy();
-		};
-	});
+				lowQualityFragments = lowQualityFragments.filter((f) => !flushed.includes(f));
+			}
+		});
+
+		video.addEventListener('ended', () => {
+			if (hls.nextAutoLevel > 0 && lowQualityFragments.length === 1 && lowQualityFragments[0].start === 0) {
+				const lowQualFrag = lowQualityFragments[0];
+
+				hls.trigger(Hls.Events.BUFFER_FLUSHING, {
+					startOffset: lowQualFrag.start,
+					endOffset: lowQualFrag.end,
+					type: 'video',
+				});
+
+				lowQualityFragments = [];
+			}
+		});
+
+		return () => hls.destroy();
+	};
 </script>
 
 {#key data.playlistUrl}
