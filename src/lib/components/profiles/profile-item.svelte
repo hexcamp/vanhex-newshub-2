@@ -103,8 +103,8 @@
 
 	.bio {
 		display: -webkit-box;
-		overflow: hidden;
 		-webkit-line-clamp: 2;
+		overflow: hidden;
 		-webkit-box-orient: vertical;
 
 		&:empty {

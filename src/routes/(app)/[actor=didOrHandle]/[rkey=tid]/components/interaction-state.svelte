@@ -153,10 +153,10 @@
 			transform: translate(-50%, -50%);
 		}
 		@supports (position-anchor: auto) {
+			position-try: flip-block;
 			top: calc(anchor(bottom) - 12px);
 			bottom: unset;
 			justify-self: anchor-center;
-			position-try: flip-block;
 		}
 	}
 
