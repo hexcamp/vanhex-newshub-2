@@ -1,6 +1,6 @@
 # vanhex-newsroom-1
 
-A experimental HTML interface for the [Vancouver BC News Feed](https://6kg6rsaaaaaa.vanhex.ca/news/).
+An experimental HTML interface for the [Vancouver BC News Feed](https://6kg6rsaaaaaa.vanhex.ca/news/).
 
 Based on [Anartia](https://anartia.kelinci.net/), a JavaScript-optional public web frontend for Bluesky.
 
