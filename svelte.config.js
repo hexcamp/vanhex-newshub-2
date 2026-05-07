@@ -18,8 +18,8 @@ const config = {
 			// See: https://svelte.dev/docs/kit/adapter-static
 			// default options are shown. On some platforms
 			// these options are set automatically — see below
-			pages: 'build',
-			assets: 'build',
+			pages: 'site/6kg6rsiaaaaa-vanhex-newsroom-1',
+			// assets: 'build',
 			fallback: 'index.html',
 			precompress: false,
 			strict: true,
