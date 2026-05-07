@@ -14,9 +14,41 @@
 
 	const { data }: PageProps = $props();
 
+	let dedupe = $state(true);
+
 	const rkey = $derived(assertCanonicalResourceUri(data.feed.uri).rkey);
 
-	const { rootUrl, nextUrl } = $derived(paginate(page.url, data.timeline.cursor, base));
+	let filteredTimeline = $derived({
+		...data.timeline,
+		items: (() => {
+			const seen = new Set();
+			return data.timeline.items.slice(0, 100).filter((item) => {
+				const text = <string>item.post.record?.text;
+				if (dedupe && seen.has(text)) {
+					return false;
+				}
+				const embed = <Record<string, object>>item.post.record?.embed;
+				const external = <Record<string, string>>embed?.external;
+				if (dedupe && seen.has(external?.title)) {
+					return false;
+				}
+				seen.add(text);
+				if (external?.title) {
+					seen.add(external?.title);
+				}
+				return true;
+			});
+		})(),
+	});
+
+	(() => {
+		console.log('Jim Original Timeline', data.timeline);
+		for (const i in filteredTimeline.items) {
+			console.log('Jim Item', i, filteredTimeline.items[i].post.record);
+		}
+	})();
+
+	const { rootUrl, nextUrl } = $derived(paginate(page.url, filteredTimeline.cursor, base));
 </script>
 
 <svelte:head>
@@ -25,10 +57,16 @@
 	<link rel="alternate" href={data.feed.uri} />
 </svelte:head>
 
+<div style="margin-bottom: 0.8rem">
+	<label>
+		<input type="checkbox" bind:checked={dedupe} />
+		De-duplicate articles
+	</label>
+</div>
 <FeedMetaTags feed={data.feed} />
 
 <PageListing subject="timeline" {rootUrl} {nextUrl}>
-	{#each data.timeline.items as item (item.id)}
+	{#each filteredTimeline.items as item (item.id)}
 		<PostFeedItem {item} />
 	{/each}
 </PageListing>
