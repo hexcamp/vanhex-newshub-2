@@ -70,5 +70,6 @@
 
 	.header h1 {
 		margin-bottom: 0.5rem;
+		line-height: normal;
 	}
 </style>
