@@ -41,12 +41,14 @@
 		})(),
 	});
 
+	/*
 	(() => {
 		console.log('Jim Original Timeline', data.timeline);
 		for (const i in filteredTimeline.items) {
 			console.log('Jim Item', i, filteredTimeline.items[i].post.record);
 		}
 	})();
+	*/
 
 	const { rootUrl, nextUrl } = $derived(paginate(page.url, filteredTimeline.cursor, base));
 </script>

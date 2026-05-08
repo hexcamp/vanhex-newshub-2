@@ -25,6 +25,7 @@ export type RedirectResult =
 	| undefined;
 
 export const redirectBskyUrl = (url: URL): RedirectResult => {
+	/*
 	const host = url.host;
 	const pathname = url.pathname;
 	let match: RegExpExecArray | null | undefined;
@@ -161,6 +162,7 @@ export const redirectBskyUrl = (url: URL): RedirectResult => {
 			};
 		}
 	}
+	*/
 
 	return;
 };

@@ -27,10 +27,12 @@
 	const post = $derived(item.post);
 
 	const author = $derived(post.author);
-	const authorUrl = $derived(`${base}/${author.did}`);
+	const authorUrl = $derived(`https://bsky.app/profile/${author.did}`);
 
 	const record = $derived(post.record as AppBskyFeedPost.Main);
-	const postUrl = $derived(`${base}/${author.did}/${assertCanonicalResourceUri(post.uri).rkey}#main`);
+	const postUrl = $derived(
+		`https://bsky.app/profile/${author.did}/post/${assertCanonicalResourceUri(post.uri).rkey}#main`,
+	);
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));

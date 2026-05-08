@@ -6,6 +6,7 @@ import type { LayoutLoad } from './$types';
 
 import { resolveHandle } from '$lib/queries/handle';
 import { makeAtUri } from '$lib/types/at-uri';
+import { actor, rkey } from './config';
 
 // https://svelte.dev/docs/kit/page-options#csr
 export const csr = true;
@@ -23,8 +24,8 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
 
 	// const actor = params.actor;
 	// const rkey = params.rkey;
-	const actor = 'did:plc:jaa4ygmm55ban3yhsibc3n4m';
-	const rkey = 'van-bc-news';
+	// const actor = 'did:plc:jaa4ygmm55ban3yhsibc3n4m';
+	// const rkey = 'van-bc-news';
 
 	let did: Did;
 	if (isDid(actor)) {
