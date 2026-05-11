@@ -8,7 +8,9 @@
 	import { paginate } from '$lib/utils/pagination';
 
 	import PageListing from '$lib/components/page/page-listing.svelte';
-	import PostFeedItem from '$lib/components/timeline/post-feed-item.svelte';
+	import PostFeedItemSplash from '$lib/components/timeline/post-feed-item-splash.svelte';
+	import PostFeedItemNoImage from '$lib/components/timeline/post-feed-item-no-image.svelte';
+	import PostFeedItemWithImage from '$lib/components/timeline/post-feed-item-with-image.svelte';
 
 	import FeedMetaTags from './components/feed-meta-tags.svelte';
 
@@ -59,16 +61,135 @@
 	<link rel="alternate" href={data.feed.uri} />
 </svelte:head>
 
-<div style="margin: 10px">
-	<label>
-		<input type="checkbox" bind:checked={dedupe} />
-		De-duplicate articles
-	</label>
-</div>
 <FeedMetaTags feed={data.feed} />
 
 <PageListing subject="timeline" {rootUrl} {nextUrl}>
-	{#each filteredTimeline.items as item (item.id)}
-		<PostFeedItem {item} />
-	{/each}
+	<section class="grid-section">
+		<div class="grid1">
+			<div class="grid1-1">
+				{#if filteredTimeline.items[0]}
+					<PostFeedItemSplash item={filteredTimeline.items[0]} />
+				{/if}
+			</div>
+			<div class="grid1-2">
+				<div class="subgrid1-2">
+					<div class="subgrid1-2-1">
+						{#if filteredTimeline.items[1]}
+							<PostFeedItemWithImage item={filteredTimeline.items[1]} />
+						{/if}
+					</div>
+					<div class="subgrid1-2-2">
+						{#if filteredTimeline.items[2]}
+							<PostFeedItemNoImage item={filteredTimeline.items[2]} />
+						{/if}
+					</div>
+					<div class="subgrid1-2-3">
+						{#if filteredTimeline.items[3]}
+							<PostFeedItemNoImage item={filteredTimeline.items[3]} />
+						{/if}
+					</div>
+				</div>
+			</div>
+			<div class="grid1-3">
+				<div class="subgrid1-3">
+					<div class="subgrid1-3-1">
+						{#if filteredTimeline.items[4]}
+							<PostFeedItemWithImage item={filteredTimeline.items[4]} />
+						{/if}
+					</div>
+					<div class="subgrid1-3-2">
+						{#if filteredTimeline.items[5]}
+							<PostFeedItemWithImage item={filteredTimeline.items[5]} />
+						{/if}
+					</div>
+					<div class="subgrid1-3-3">
+						{#if filteredTimeline.items[6]}
+							<PostFeedItemWithImage item={filteredTimeline.items[6]} />
+						{/if}
+					</div>
+					<div class="subgrid1-3-4">
+						{#if filteredTimeline.items[7]}
+							<PostFeedItemWithImage item={filteredTimeline.items[7]} />
+						{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </PageListing>
+
+<style>
+	.grid-section {
+	}
+
+	.grid1 {
+		display: grid;
+		grid-template-rows: min-content minmax(0px, 1fr);
+		grid-template-columns: repeat(24, 1fr);
+		grid-auto-flow: row;
+		gap: 32px 16px;
+		margin-inline: 16px;
+		width: 100%;
+		max-width: calc(1248px);
+	}
+
+	.grid1-1 {
+		grid-column: 1 / span 18;
+	}
+
+	.grid1-2 {
+		grid-area: 1 / 19 / span 2 / span 6;
+	}
+
+	.grid1-3 {
+		grid-column: 1 / span 18;
+	}
+
+	.subgrid1-2 {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		grid-auto-flow: row;
+		gap: 16px;
+		width: 100%;
+		min-width: fit-content;
+		max-width: calc(1248px);
+	}
+
+	.subgrid1-2-1 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-2-2 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-2-3 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-3 {
+		display: grid;
+		grid-template-columns: repeat(20, 1fr);
+		grid-auto-flow: row;
+		column-gap: 16px;
+		width: 100%;
+		min-width: fit-content;
+		max-width: calc(1248px);
+	}
+
+	.subgrid1-3-1 {
+		grid-column: 1 / span 5;
+	}
+
+	.subgrid1-3-2 {
+		grid-column: 6 / span 5;
+	}
+
+	.subgrid1-3-3 {
+		grid-column: 11 / span 5;
+	}
+
+	.subgrid1-3-4 {
+		grid-column: 16 / span 5;
+	}
+</style>

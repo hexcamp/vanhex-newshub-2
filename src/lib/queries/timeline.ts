@@ -52,7 +52,7 @@ export interface TimelinePage {
 	items: UiTimelineItem[];
 }
 
-const PAGE_LIMIT = 50;
+const PAGE_LIMIT = 9;
 
 export const fetchTimeline = async ({
 	client,
