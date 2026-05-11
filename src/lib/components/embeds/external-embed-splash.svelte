@@ -1,0 +1,122 @@
+<script lang="ts">
+	import type { AppBskyEmbedExternal } from '@atcute/bluesky';
+
+	import { redirectBskyUrl } from '$lib/redirector';
+	import { truncateRight } from '$lib/utils/strings';
+	import { safeUrlParse } from '$lib/utils/url';
+
+	import EarthOutlined from '$lib/components/central-icons/earth-outlined.svelte';
+
+	interface Props {
+		embed: AppBskyEmbedExternal.View;
+	}
+
+	const { embed }: Props = $props();
+
+	const external = $derived(embed.external);
+
+	const parsed = $derived(safeUrlParse(external.uri));
+
+	const domain = $derived(parsed?.host.replace(/^www\./, ''));
+	const redir = $derived(parsed && redirectBskyUrl(parsed));
+</script>
+
+<a
+	target={!redir || redir.type === 'external' ? '_blank' : undefined}
+	href={redir ? redir.url : domain ? external.uri : ''}
+	rel="noopener noreferrer nofollow"
+	class="external-embed"
+>
+	{#if external.thumb}
+		<img loading="lazy" src={external.thumb} alt="" class="thumbnail" />
+	{/if}
+
+	<div class="meta">
+		{#if false}
+			<p class="title">{truncateRight(external.title.trim().replace(/\s+/g, ' '), 190)}</p>
+			<p class="description">{truncateRight(external.description.trim().replace(/\s+/g, ' '), 190)}</p>
+		{/if}
+
+		{#if false}
+			{#if domain}
+				<div class="domain">
+					<EarthOutlined />
+
+					<span class="domain-name">{domain}</span>
+				</div>
+			{/if}
+		{/if}
+	</div>
+</a>
+
+<style>
+	.external-embed {
+		display: block;
+		outline-offset: -1px;
+		border: 1px solid var(--divider-md);
+		border-radius: 6px;
+		overflow: hidden;
+		color: var(--text-primary);
+
+		&:hover {
+			background: var(--tap-sm);
+		}
+	}
+
+	.thumbnail {
+		display: block;
+		border-bottom: 1px solid var(--divider-md);
+		background: var(--bg-primary);
+		aspect-ratio: 1.91;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.meta {
+		padding: 12px;
+		min-width: 0;
+		overflow-wrap: break-word;
+	}
+
+	.title {
+		display: -webkit-box;
+		overflow: hidden;
+		font-weight: 700;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+
+		&:empty {
+			display: none;
+		}
+	}
+	.description {
+		display: -webkit-box;
+		overflow: hidden;
+		color: var(--text-blurb);
+		font-size: 0.8125rem;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		text-wrap: pretty;
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	.domain {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 6px 0 0 0;
+		color: var(--text-blurb);
+		font-weight: 500;
+		font-size: 0.75rem;
+	}
+	.domain-name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>

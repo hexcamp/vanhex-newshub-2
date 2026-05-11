@@ -85,16 +85,20 @@
 		width: 20px;
 	}
 	.is-sm {
-		width: 24px;
+		/* width: 24px; */
+		width: 20px;
 	}
 	.is-md {
-		width: 36px;
+		/* width: 36px; */
+		width: 20px;
 	}
 	.is-lg {
-		width: 40px;
+		/* width: 40px; */
+		width: 20px;
 	}
 	.is-xl {
-		width: 90px;
+		/* width: 90px; */
+		width: 20px;
 	}
 
 	.image {

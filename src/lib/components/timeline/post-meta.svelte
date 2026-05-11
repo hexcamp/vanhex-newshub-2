@@ -28,7 +28,9 @@
 			</bdi>
 		{/if}
 
-		<span class="handle">@{author.handle}</span>
+		{#if false}
+			<span class="handle">@{author.handle}</span>
+		{/if}
 	</a>
 
 	<span aria-hidden="true" class="dot"> · </span>
