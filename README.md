@@ -1,8 +1,8 @@
-# vanhex-newshub-1
+# vanhex-newshub-2
 
 An experimental HTML interface for the [Vancouver BC News Feed](https://6kg6rsaaaaaa.vanhex.ca/news/).
 
-Try it out at: https://6kg6rsiaaaaa.vanhex.ca/
+Try it out at: https://6kg6ruiaaaaa.vanhex.ca/
 
 Also try out [other VanHex News Hub experiments](https://6kg6rqiaaaaa.vanhex.ca/)
 

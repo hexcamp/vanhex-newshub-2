@@ -16,8 +16,8 @@
 
 		<div class="main">
 			<div class="header">
-				<h1>VanHex News Hub Experiment #1</h1>
-				<a href="https://github.com/hexcamp/vanhex-newshub-1">Source on GitHub</a>
+				<h1>VanHex News Hub Experiment #2</h1>
+				<a href="https://github.com/hexcamp/vanhex-newshub-2">Source on GitHub</a>
 				- <a href="https://6kg6rqiaaaaa.vanhex.ca/">Other Experiments</a>
 			</div>
 			{@render children()}
