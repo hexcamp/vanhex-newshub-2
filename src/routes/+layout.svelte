@@ -6,6 +6,29 @@
 	const { data, children }: LayoutProps = $props();
 </script>
 
+<section class="grid-section">
+	<div class="grid1">
+		<div class="grid1-1">grid1-1</div>
+		<div class="grid1-2">
+			grid1-2
+			<div class="subgrid1-2">
+				<div class="subgrid1-2-1">subgrid1-2-1</div>
+				<div class="subgrid1-2-2">subgrid1-2-2</div>
+				<div class="subgrid1-2-3">subgrid1-2-3</div>
+			</div>
+		</div>
+		<div class="grid1-3">
+			grid1-3
+			<div class="subgrid1-3">
+				<div class="subgrid1-3-1">subgrid1-3-1</div>
+				<div class="subgrid1-3-2">subgrid1-3-2</div>
+				<div class="subgrid1-3-3">subgrid1-3-3</div>
+				<div class="subgrid1-3-4">subgrid1-3-4</div>
+			</div>
+		</div>
+	</div>
+</section>
+
 {#key data.feed.uri}
 	<div class="custom-feed-layout">
 		{#if false}
@@ -72,5 +95,79 @@
 	.header h1 {
 		margin-bottom: 0.5rem;
 		line-height: normal;
+	}
+
+	.grid-section {
+	}
+
+	.grid1 {
+		display: grid;
+		grid-template-rows: min-content minmax(0px, 1fr);
+		grid-template-columns: repeat(24, 1fr);
+		grid-auto-flow: row;
+		gap: 32px 16px;
+		margin-inline: 16px;
+		width: 100%;
+		max-width: calc(1248px);
+	}
+
+	.grid1-1 {
+		grid-column: 1 / span 18;
+	}
+
+	.grid1-2 {
+		grid-area: 1 / 19 / span 2 / span 6;
+	}
+
+	.grid1-3 {
+		grid-column: 1 / span 18;
+	}
+
+	.subgrid1-2 {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		grid-auto-flow: row;
+		gap: 16px;
+		width: 100%;
+		min-width: fit-content;
+		max-width: calc(1248px);
+	}
+
+	.subgrid1-2-1 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-2-2 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-2-3 {
+		grid-column: 1 / span 6;
+	}
+
+	.subgrid1-3 {
+		display: grid;
+		grid-template-columns: repeat(20, 1fr);
+		grid-auto-flow: row;
+		column-gap: 16px;
+		width: 100%;
+		min-width: fit-content;
+		max-width: calc(1248px);
+	}
+
+	.subgrid1-3-1 {
+		grid-column: 1 / span 5;
+	}
+
+	.subgrid1-3-2 {
+		grid-column: 6 / span 5;
+	}
+
+	.subgrid1-3-3 {
+		grid-column: 11 / span 5;
+	}
+
+	.subgrid1-3-4 {
+		grid-column: 16 / span 5;
 	}
 </style>
