@@ -90,7 +90,7 @@
 				<PostMeta {post} {postUrl} {authorUrl} gutterBottom />
 			{/if}
 
-			{#if post.embed}
+			{#if post.embed && post.embed.external}
 				<h2>
 					<a href={post.embed.external.uri}
 						>{truncateRight(post.embed.external.title.trim().replace(/\s+/g, ' '), 190)}</a
@@ -101,6 +101,7 @@
 				</p>
 				<Embeds {post} embed={post.embed} />
 			{:else}
+				<Embeds {post} embed={post.embed} />
 				<RichtextRenderer text={record.text} facets={record.facets} />
 			{/if}
 			<div class="bskylink">

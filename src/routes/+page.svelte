@@ -80,12 +80,12 @@
 					</div>
 					<div class="subgrid1-2-2">
 						{#if filteredTimeline.items[2]}
-							<PostFeedItemNoImage item={filteredTimeline.items[2]} />
+							<PostFeedItemWithImage item={filteredTimeline.items[2]} />
 						{/if}
 					</div>
 					<div class="subgrid1-2-3">
 						{#if filteredTimeline.items[3]}
-							<PostFeedItemNoImage item={filteredTimeline.items[3]} />
+							<PostFeedItemWithImage item={filteredTimeline.items[3]} />
 						{/if}
 					</div>
 				</div>
@@ -133,9 +133,9 @@
 		max-width: calc(1248px);
 	}
 
-	@media screen and (max-width: 767px) {
+	@media screen and (max-width: 1279px) {
 		.grid1 {
-			grid-template-rows: unset;
+			max-width: calc(100% - 32px);
 		}
 	}
 
@@ -145,11 +145,19 @@
 		}
 	}
 
-	@media screen and (max-width: 1279px) {
+	@media screen and (max-width: 767px) {
 		.grid1 {
-			max-width: calc(100% - 32px);
+			grid-template-rows: unset;
 		}
 	}
+
+	/*
+	@media screen and (max-width: 599px) {
+		.grid1 {
+			grid-template-columns: repeat(12, 1fr);
+		}
+	}
+	*/
 
 	.grid1-1 {
 		grid-column: 1 / span 18;
@@ -179,14 +187,22 @@
 		}
 	}
 
-	.grid1-2 {
-		grid-area: 1 / 19 / span 2 / span 6;
+	@media screen and (max-width: 599px) {
+		.grid1-1 {
+			display: initial;
+		}
 	}
 
-	@media screen and (max-width: 767px) {
-		.grid1-2 {
-			grid-column: 1 / span 1;
+	/*
+	@media screen and (max-width: 599px) {
+		.grid1-1 {
+			grid-column: 1 / span 12;
 		}
+	}
+	*/
+
+	.grid1-2 {
+		grid-area: 1 / 19 / span 2 / span 6;
 	}
 
 	@media screen and (max-width: 1007px) {
@@ -209,18 +225,13 @@
 
 	@media screen and (max-width: 767px) {
 		.grid1-2 {
-			display: contents;
+			grid-column: 1 / span 1;
 		}
 	}
 
-	.grid1-3 {
-		grid-column: 1 / span 18;
-	}
-
-	@media screen and (max-width: 1007px) {
-		.grid1-3 {
+	@media screen and (max-width: 767px) {
+		.grid1-2 {
 			display: contents;
-			grid-column: 1 / span 1;
 		}
 	}
 
@@ -234,16 +245,188 @@
 		max-width: calc(1248px);
 	}
 
+	@media screen and (max-width: 1279px) {
+		.subgrid1-2 {
+			max-width: min(100% - 32px, 1008px);
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2 {
+			grid-template-columns: repeat(8, 1fr);
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2 {
+			display: grid;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2 {
+			max-width: min(100% - 32px, 722px);
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2 {
+			display: contents;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2 {
+			max-width: calc(100% - 32px);
+		}
+	}
+
 	.subgrid1-2-1 {
 		grid-column: 1 / span 6;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-1 {
+			grid-column: 1 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-1 {
+			grid-row: 2 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-1 {
+			grid-column: 1 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-2-1 {
+			grid-column: 1 / span 24;
+		}
 	}
 
 	.subgrid1-2-2 {
 		grid-column: 1 / span 6;
 	}
 
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-2 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-2 {
+			grid-column: 1 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-2 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-2 {
+			grid-row: 2 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-2 {
+			grid-column: 13 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-2-2 {
+			grid-row: 3 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-2-2 {
+			grid-column: 1 / span 24;
+		}
+	}
+
 	.subgrid1-2-3 {
 		grid-column: 1 / span 6;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-3 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-2-3 {
+			grid-column: 1 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-3 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-3 {
+			grid-row: 3 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-2-3 {
+			grid-column: 1 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-2-3 {
+			grid-row: 4 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-2-3 {
+			grid-column: 1 / span 24;
+		}
+	}
+
+	.grid1-3 {
+		grid-column: 1 / span 18;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-3 {
+			display: contents;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-3 {
+			grid-column: 1 / span 1;
+		}
 	}
 
 	.subgrid1-3 {
@@ -254,6 +437,12 @@
 		width: 100%;
 		min-width: fit-content;
 		max-width: calc(1248px);
+	}
+
+	@media screen and (max-width: 1279px) {
+		.subgrid1-3 {
+			max-width: min(100% - 32px, 1008px);
+		}
 	}
 
 	@media screen and (max-width: 1007px) {
@@ -268,9 +457,15 @@
 		}
 	}
 
-	@media screen and (max-width: 1279px) {
+	@media screen and (max-width: 767px) {
 		.subgrid1-3 {
-			max-width: min(100% - 32px, 1008px);
+			display: contents;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3 {
+			max-width: calc(100% - 32px);
 		}
 	}
 
@@ -278,12 +473,138 @@
 		grid-column: 1 / span 5;
 	}
 
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-1 {
+			grid-column: 1 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-1 {
+			grid-row: 4 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-1 {
+			grid-column: 1 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-1 {
+			grid-column: 1 / span 24;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-1 {
+			grid-row: 5 / span 1;
+		}
+	}
+
 	.subgrid1-3-2 {
 		grid-column: 6 / span 5;
 	}
 
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-2 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-2 {
+			grid-column: 9 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-2 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-2 {
+			grid-row: 4 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-2 {
+			grid-column: 13 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-2 {
+			grid-column: 1 / span 24;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-2 {
+			grid-row: 6 / span 1;
+		}
+	}
+
 	.subgrid1-3-3 {
 		grid-column: 11 / span 5;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-3 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-3 {
+			grid-column: 1 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-3 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-3 {
+			grid-row: 5 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-3 {
+			grid-column: 1 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-3 {
+			grid-column: 1 / span 24;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-3 {
+			grid-row: 7 / span 1;
+		}
 	}
 
 	.subgrid1-3-4 {
@@ -291,24 +612,44 @@
 	}
 
 	@media screen and (max-width: 1007px) {
-		.subgrid1-3-1 {
-			display: initial;
-			grid-column: 1 / span 8;
-		}
-
-		.subgrid1-3-2 {
-			display: initial;
-			grid-column: 9 / span 8;
-		}
-
-		.subgrid1-3-3 {
-			display: initial;
-			grid-column: 1 / span 8;
-		}
-
 		.subgrid1-3-4 {
 			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-4 {
 			grid-column: 9 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-4 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-4 {
+			grid-row: 5 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.subgrid1-3-4 {
+			grid-column: 13 / span 12;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-4 {
+			grid-column: 1 / span 24;
+		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.subgrid1-3-4 {
+			grid-row: 8 / span 1;
 		}
 	}
 </style>
