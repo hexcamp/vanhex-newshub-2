@@ -152,7 +152,7 @@
 	}
 
 	.content {
-		// display: flex;
+		/* display: flex; */
 		gap: 12px;
 
 		.aside {
