@@ -41,7 +41,11 @@
 			/* grid-template-areas: 'aside main'; */
 			/* grid-template-columns: minmax(0, 600px); */
 			grid-template-areas: 'main';
-			max-width: 960px;
+			/* max-width: 960px; */
+		}
+
+		@media screen and (max-width: 1279px) {
+			max-width: calc(100% - 32px);
 		}
 	}
 

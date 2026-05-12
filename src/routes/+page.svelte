@@ -133,16 +133,95 @@
 		max-width: calc(1248px);
 	}
 
+	@media screen and (max-width: 767px) {
+		.grid1 {
+			grid-template-rows: unset;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1 {
+			grid-template-rows: repeat(2, min-content) minmax(0px, 1fr);
+		}
+	}
+
+	@media screen and (max-width: 1279px) {
+		.grid1 {
+			max-width: calc(100% - 32px);
+		}
+	}
+
 	.grid1-1 {
 		grid-column: 1 / span 18;
+	}
+
+	@media screen and (max-width: 767px) {
+		.grid1-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-1 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-1 {
+			grid-column: 1 / span 16;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.grid1-1 {
+			grid-column: 1 / span 24;
+		}
 	}
 
 	.grid1-2 {
 		grid-area: 1 / 19 / span 2 / span 6;
 	}
 
+	@media screen and (max-width: 767px) {
+		.grid1-2 {
+			grid-column: 1 / span 1;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-2 {
+			grid-row: 1 / span 3;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-2 {
+			grid-column: 17 / span 8;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-2 {
+			display: initial;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.grid1-2 {
+			display: contents;
+		}
+	}
+
 	.grid1-3 {
 		grid-column: 1 / span 18;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.grid1-3 {
+			display: contents;
+			grid-column: 1 / span 1;
+		}
 	}
 
 	.subgrid1-2 {
@@ -177,6 +256,24 @@
 		max-width: calc(1248px);
 	}
 
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3 {
+			display: contents;
+		}
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3 {
+			max-width: min(100% - 32px, 1008px);
+		}
+	}
+
+	@media screen and (max-width: 1279px) {
+		.subgrid1-3 {
+			max-width: min(100% - 32px, 1008px);
+		}
+	}
+
 	.subgrid1-3-1 {
 		grid-column: 1 / span 5;
 	}
@@ -191,5 +288,27 @@
 
 	.subgrid1-3-4 {
 		grid-column: 16 / span 5;
+	}
+
+	@media screen and (max-width: 1007px) {
+		.subgrid1-3-1 {
+			display: initial;
+			grid-column: 1 / span 8;
+		}
+
+		.subgrid1-3-2 {
+			display: initial;
+			grid-column: 9 / span 8;
+		}
+
+		.subgrid1-3-3 {
+			display: initial;
+			grid-column: 1 / span 8;
+		}
+
+		.subgrid1-3-4 {
+			display: initial;
+			grid-column: 9 / span 8;
+		}
 	}
 </style>
